@@ -1,4 +1,4 @@
-import time, datetime
+import time, datetime, pymongo
 import numpy as np
 from collections import deque
 from pymongo import MongoClient
@@ -28,6 +28,8 @@ class RequestScheduler():
             except:
                 pass
             self._raw_coll = self._db[collection_name]
+            result = self._raw_coll.create_index([('id_str', pymongo.ASCENDING)],unique=True)
+            print(result)
             print("Connection was created successfully!")
         except:
             raise
@@ -37,44 +39,29 @@ class RequestScheduler():
         try:
             if self._client != None:
                 self._client.close()
-        
             print("Connection was closed successfully!")
         except:
             raise
         
-    def execute_request(self):
-        return None
-        
-    def run(self,delta_t,dev_ratio=0.2,sync_time=10, feedback_time=15*60):
-        """Run scheduler object. It will sleep for normally distributed seconds after each request.
-        'delta_t' is the mean and 'delta_t'*'dev_ratio' is the deviance of this normal distribution."""
-        start_time, last_feedback = time.time(), time.time()
-        print("Started at: %s\n" % time.strftime("%b %d %Y %H:%M:%S",time.localtime()))
-        while True:
-            # feedback
-            current_time = time.time()
-            if current_time - last_feedback > feedback_time:
-                td = datetime.timedelta(seconds=current_time - start_time)
-                print("Scheduler RUNNING since: %i days, %i hours and %i minutes" % (td.days, td.seconds//3600, (td.seconds//60)%60))
-                last_feedback = current_time
-                
-            # request
-            if len(self._requests) < self.max_requests:
-                time_str = time.strftime("%b %d %Y %H:%M:%S",time.localtime())
-                self._raw_coll.insert_one({"time":time_str,"result":self.execute_request()})
-                self._requests.append(time.time())
-                wait_for = np.random.normal(loc=delta_t,scale=delta_t*dev_ratio)
-                if self.verbose:
-                    print("A REQUEST was made!")
-                    print("Sleeping for %.1f seconds" % wait_for)
-                time.sleep(wait_for)
+    def verify_new_request(self,sync_time=20):
+        """Return only when a request can be made"""
+        if len(self._requests) < self.max_requests:
+            return True
+        else:
+            time_diff = time.time() - self._requests[0]
+            if time_diff > self.time_frame:
+                self._requests.popleft()
+                return self.verify_new_request(sync_time=sync_time)
             else:
-                time_diff = time.time() - self._requests[0]
-                if time_diff > self.time_frame:
-                    self._requests.popleft()
-                    continue
-                else:
-                    if self.verbose:
-                        print("Sleeping for %.1f seconds" % sync_time)
-                    time.sleep(sync_time)
+                print("VERIFYING: sleeping for %.1f seconds" % sync_time)
+                time.sleep(sync_time)
+                return self.verify_new_request(sync_time=sync_time)
+            
+    def register_request(self,delta_t,dev_ratio=0.1):
+        """Register a request with time stamp"""
+        self._requests.append(time.time())
+        wait_for = np.random.normal(loc=delta_t,scale=delta_t*dev_ratio)
+        if self.verbose:
+            print("A REQUEST was made: sleeping for %.1f seconds" % wait_for)
+        time.sleep(wait_for)
                     

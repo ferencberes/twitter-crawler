@@ -3,8 +3,9 @@ import numpy as np
 from collections import deque
 from pymongo import MongoClient
 
+
 class RequestScheduler():
-    def __init__(self,time_frame,max_requests,port=27017,db_name="twitter-crawler",verbose=False):
+    def __init__(self,time_frame,max_requests,verbose=False):
         """Abstract scheduler object. It enables only 'max_requests' requests in every 'time_frame' seconds."""
         # scheduler parameters
         self.time_frame = time_frame
@@ -14,14 +15,12 @@ class RequestScheduler():
         # mongodb parameters
         self._client, self._db = None, None
         self._raw_coll = None
-        self._port = port
-        self._db_name = db_name
         
-    def connect(self,collection_name):
+    def connect(self,collection_name,port=27017,db_name="twitter-crawler"):
         """Connect to MongoDB collection"""
         try:
-            self._client = MongoClient('mongodb://localhost:%i/' % self._port)
-            self._db = self._client[self._db_name]
+            self._client = MongoClient('mongodb://localhost:%i/' % port)
+            self._db = self._client[db_name]
             try:
                 self._db.create_collection(collection_name)
                 print("'%s' collection was created!" % collection_name)

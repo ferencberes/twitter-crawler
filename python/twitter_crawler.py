@@ -3,10 +3,12 @@ import numpy as np
 from twython import Twython
 from request_scheduler import *
 
-class TwitterCrawler(RequestScheduler):
-    def __init__(self,time_frame,max_requests):
+
+class TwitterCrawler(RequestScheduler):    
+    
+    def __init__(self,time_frame,max_requests,verbose=False):
         """Twitter API scheduler object. It enables only 'max_requests' requests in every 'time_frame' seconds."""
-        super(TwitterCrawler, self).__init__(time_frame,max_requests)
+        super(TwitterCrawler, self).__init__(time_frame,max_requests,verbose)
         self.twitter_api = None
         self.search_start_time, self.search_last_feedback = None, None
         self.stream_start_time, self.stream_last_feedback = None, None
@@ -24,7 +26,7 @@ class TwitterCrawler(RequestScheduler):
     def set_search_arguments(self,search_args):
         """Set search parameters with a dictionary"""
         self.search_args = search_args
-        print(self.search_args)
+        print(self.search_args)        
         
     def print_feedback(self, max_id=0, since_id=None, latest_id=None):
         current_time = time.time()
@@ -102,7 +104,7 @@ class TwitterCrawler(RequestScheduler):
             except Exception as exc:
                 raise
         
-        return current_max_id, latest_id, cnt
+        return current_max_id, latest_id, cnt  
     
     def stream_search(self, delta_t, termination_func, dev_ratio=0.1, feedback_time=15*60):
         self.stream_start_time, self.stream_last_feedback = time.time(), time.time()

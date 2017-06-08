@@ -30,6 +30,7 @@ You can find detailed usage examples in this jupyter [notebook](ipython/Samples.
 ### Initialize TwitterCrawler
 
 #### a.) API restrictions 
+
 In order to avoid exceeding your Twitter API limit you have to set 2 parameters:
 
    * **time_frame:** the length of the time interval (in seconds) where you want to limit the number of requests (e.g.: 900 ~ 15 minutes). 
@@ -38,7 +39,9 @@ In order to avoid exceeding your Twitter API limit you have to set 2 parameters:
 ```python
 tcs = TwitterCrawler(time_frame=900,max_requests=450)
 ```
+
 #### b.) MongoDB connection
+
 **TwitterCrawler** exports the collected events to a MongoDB collection (e.g: "raw"). You can connect to a running MongoDB database the following way:
 
 ```python
@@ -46,6 +49,7 @@ tcs.connect("raw", port=27017, db_name='twitter-crawler')
 ```
 
 ###Authentication
+
 In order to use Twitter API you have to create an API key for your application. Put your authentication credentials in a simple JSON file:
 
 ```json
@@ -61,7 +65,9 @@ tcs.authenticate("PATH_TO_JSON_FILE")
 ```
 
 ###Setting search parameters
+
 Before you run your **TwitterCrawler** instance you have to specify your search parameters in a Python dictionary.
+
 ```python
 search_params = {
     "q":"#machinelearning OR #bigdata",
@@ -71,10 +77,12 @@ search_params = {
 
 tcs.set_search_arguments(search_args=search_params)
 ```
+
 As I am using  [Twython](https://github.com/ryanmcgrath/twython) to handle my search requests you can find more information in the Twitter [Search API](https://dev.twitter.com/rest/public/search) about how to parametrize your search arguments properly .
 
 
 ### Available search strategies
+
 In order to work with the Twitter timelnie properly one should consider using **"max_id"** and **"since_id"** . So far I have implemented two search strategies. Most of them is probably implemented in other repositories. I just followed this simple [tutorial](https://dev.twitter.com/rest/public/timelines).
 
 #### Recursive search
@@ -89,6 +97,7 @@ In order to work with the Twitter timelnie properly one should consider using **
    * **interrupt the execution**
 
 **i.) Terminate by 'since_id'**
+
 ```python
 tcs.search_by_query(custom_since_id=870285658723684355)
 ```
@@ -117,6 +126,7 @@ After the termination function has been defined you can execute the search:
 ```python
 tcs.search_by_query(term_func=my_time_bound_filter)
 ```
+
 #### Stream search
 
    * This search starts with a **recursive search**, which goes back into the past until an event matches the termination function (**termination_func**).
@@ -130,7 +140,6 @@ For a stream search you must specify a **delta_t** parameter. Which is approxima
 ```python
 tcs.stream_search(delta_t=120, termination_func=my_time_bound_filter)
 ```
-
 
 ##Analyze collected events
 

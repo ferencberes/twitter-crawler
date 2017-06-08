@@ -48,7 +48,7 @@ tcs = TwitterCrawler(time_frame=900,max_requests=450)
 tcs.connect("raw", port=27017, db_name='twitter-crawler')
 ```
 
-###Authentication
+### Authentication
 
 In order to use Twitter API you have to create an API key for your application. Put your authentication credentials in a simple JSON file:
 
@@ -64,7 +64,7 @@ Then you can authenticate your **TwitterCrawler** instance:
 tcs.authenticate("PATH_TO_JSON_FILE")
 ```
 
-###Setting search parameters
+### Setting search parameters
 
 Before you run your **TwitterCrawler** instance you have to specify your search parameters in a Python dictionary.
 
@@ -85,7 +85,7 @@ As I am using  [Twython](https://github.com/ryanmcgrath/twython) to handle my se
 
 In order to work with the Twitter timelnie properly one should consider using **"max_id"** and **"since_id"** . So far I have implemented two search strategies. Most of them is probably implemented in other repositories. I just followed this simple [tutorial](https://dev.twitter.com/rest/public/timelines).
 
-#### Recursive search
+####  Recursive search
 
 * Here your search starts at a specific time. It is the current time if you does not set any **current_max_id** parameter
 * Then the search tries to explore past events that match your search parameters
@@ -127,7 +127,7 @@ After the termination function has been defined you can execute the search:
 tcs.search_by_query(term_func=my_time_bound_filter)
 ```
 
-#### Stream search
+####  Stream search
 
    * This search starts with a **recursive search**, which goes back into the past until an event matches the termination function (**termination_func**).
    * Then the search jumps back to the present and starts a new recursive search until all events are recovered since the starting time of the previous recursive search etc.
@@ -141,6 +141,6 @@ For a stream search you must specify a **delta_t** parameter. Which is approxima
 tcs.stream_search(delta_t=120, termination_func=my_time_bound_filter)
 ```
 
-##Analyze collected events
+## Analyze collected events
 
 The repository contains a Jupyter [notebook](ipython/EventAnalyzer.ipynb) as well, which shows how you can analyze the collected data.

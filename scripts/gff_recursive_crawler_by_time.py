@@ -9,7 +9,7 @@ def main(time_frame, max_request_per_time_frame, mongo_coll,search_params, max_i
     tcs.connect(mongo_coll)
     tcs.authenticate("../api_key.json")
     tcs.set_search_arguments(search_args=search_params)
-    tcs.search_by_query(wait_for=15, current_max_id=max_id, term_func=termination_function)
+    tcs.search_by_query(wait_for=3, current_max_id=max_id, term_func=termination_function)
     tcs.close()
 
 if __name__ == "__main__":
@@ -27,9 +27,15 @@ if __name__ == "__main__":
         def my_time_bound_filter(tweet):
             return su.time_bound_filter(tweet, created_at=my_created_at)
         
+        # termination function
+        my_since_id = 875383689844318208
+        def my_since_id_filter(tweet):
+            return su.id_bound_fiter(tweet, since_id=my_since_id)
+        
         # search parameters
-        htag_list_1 = ["#londonfire", "#LondonFire", "#grenfelltower", "#GrenfellTower", "#grenfell", "#Grenfell",  "#grenfelltowerfire", "#GrenfellTowerFire", "#GrenfellFire", "#Grenfellfire", "#grenfellfire", "#GlenfellTower", "#Glenfelltower", "#glenfelltower"]
-        htag_list_2 = ["#Londonfire", "#Grenfelltower", "#prayforlondon", "#PrayForLondon", "#GreenfellTower", "#londonfirebrigade", "#LondonFireBrigade", "#bedsforgrenfell", "#WestLondonFire", "#GrenFellTower", "#justice4grenfell", "#Justice4Grenfell", "#JUSTICE4Grenfell"]
+        htag_list_1 = ["#londonfire", "#Londonfire", "#LondonFire", "#grenfelltower", "#Grenfelltower", "#GrenfellTower", "#grenfell", "#Grenfell",  "#grenfelltowerfire", "#GrenfellTowerFire", "#GrenfellFire", "#Grenfellfire", "#grenfellfire", "#GlenfellTower", "#Glenfelltower", "#glenfelltower"]
+        htag_list_2 = ["#prayforlondon", "#PrayForLondon", "#GreenfellTower", "#londonfirebrigade", "#LondonFireBrigade", "#bedsforgrenfell", "#WestLondonFire", "#GrenFellTower", "#justice4grenfell", "#Justice4Grenfell", "#JUSTICE4Grenfell"]
+        #htag_list_total = htag_list_1 + htag_list_2 
         
         query = " OR ".join(htag_list_2)
         search_params = {
@@ -39,5 +45,6 @@ if __name__ == "__main__":
         }
         
         # run crawler
-        main(time_frame, max_request_per_time_frame, mongo_coll, search_params, my_max_id, termination_function=my_time_bound_filter)
+        #main(time_frame, max_request_per_time_frame, mongo_coll, search_params, my_max_id, termination_function=my_time_bound_filter)
+        main(time_frame, max_request_per_time_frame, mongo_coll, search_params, my_max_id, termination_function=my_since_id_filter)
         

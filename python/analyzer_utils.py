@@ -20,7 +20,20 @@ def find_some_docs(coll,sort_params=[('id',-1)],limit=10):
     res = coll.find().sort(sort_params).limit(limit)
     for item in res:
         print(item["id"],item["created_at"])
-        
+
+### tweets ###
+
+def get_tweets(coll,limit=None):
+    res = coll.find().limit(limit) if limit != None else coll.find()
+    tweet_info = []
+    for item in res:
+        if "RT " == item['text'][:3]:
+            continue
+        src_id, src_name = item['user']['id_str'], item['user']['name']
+        time = int(tweet_time_2_epoch(item['created_at']))
+        msg, lang = item["text"], item["lang"]
+        tweet_info.append((time, src_id, src_name, lang, msg.replace("\n"," ")))
+    return tweet_info
         
 ### mention network ###
 
@@ -36,12 +49,12 @@ def get_mentions(coll,limit=None,use_only_tweets=True):
         num_tweets += 1
         src_id, epoch = item['user']['id_str'], int(tweet_time_2_epoch(item['created_at']))
         users[src_id] = item['user']['name']
+        msg, lang = item["text"], item["lang"]
         if 'user_mentions' in item['entities']:
             for mention in item['entities']['user_mentions']:
                 trg_id = mention['id_str']
                 users[trg_id] = mention['name']
-                msg = item["text"]
-                edges.append((epoch,src_id,trg_id,msg))
+                edges.append((epoch,src_id,trg_id,lang,msg.replace("\n"," ")))
     return edges, users, num_tweets, num_retweets
 
 def show_frequent_items(df,user_names,col,k=10):
@@ -124,3 +137,20 @@ def show_colors_for_users(categories,colors):
         return ["background-color: %s" % val for val in col]
     legend_df = pd.DataFrame(list(zip(categories,colors)),columns=["name","color"])
     return legend_df.style.apply(color)
+
+### export ###
+
+def recode_and_export_mentions(fname,mentions_df,user_names,epoch_lower_bound=None):
+    recoder_map = dict(zip(user_names.keys(),range(1,len(user_names)+1)))
+    with open("/mnt/idms/fberes/network/roland_garros/data/rg17_recoder_map.txt","w") as f:
+        f.write("generated_id original_id\n")
+        for item in recoder_map.items():
+            f.write("%i %s\n" % (item[1],item[0]))
+    recoded_mentions_df = mentions_df[["epoch","src","trg"]].copy()
+    recoded_mentions_df["src"] = recoded_mentions_df["src"].apply(lambda x: recoder_map[x])
+    recoded_mentions_df["trg"] = recoded_mentions_df["trg"].apply(lambda x: recoder_map[x])
+    if epoch_lower_bound != None:
+        orig_length = len(recoded_mentions_df)
+        recoded_mentions_df = recoded_mentions_df[recoded_mentions_df["epoch"] > epoch_lower_bound]
+        print(orig_length, len(recoded_mentions_df))
+    recoded_mentions_df.to_csv(fname, sep=" ", header=False, index=False)

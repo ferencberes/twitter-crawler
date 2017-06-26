@@ -140,7 +140,7 @@ def show_colors_for_users(categories,colors):
 
 ### export ###
 
-def recode_and_export_mentions(fname,mentions_df,user_names,epoch_lower_bound=None):
+def recode_and_export_mentions(fname,mentions_df,user_names,epoch_lower_bound=None, epoch_upper_bound=None):
     recoder_map = dict(zip(user_names.keys(),range(1,len(user_names)+1)))
     with open("/mnt/idms/fberes/network/roland_garros/data/rg17_recoder_map.txt","w") as f:
         f.write("generated_id original_id\n")
@@ -150,7 +150,11 @@ def recode_and_export_mentions(fname,mentions_df,user_names,epoch_lower_bound=No
     recoded_mentions_df["src"] = recoded_mentions_df["src"].apply(lambda x: recoder_map[x])
     recoded_mentions_df["trg"] = recoded_mentions_df["trg"].apply(lambda x: recoder_map[x])
     if epoch_lower_bound != None:
-        orig_length = len(recoded_mentions_df)
+        length_before_lower_cut = len(recoded_mentions_df)
         recoded_mentions_df = recoded_mentions_df[recoded_mentions_df["epoch"] > epoch_lower_bound]
-        print(orig_length, len(recoded_mentions_df))
+        print(length_before_lower_cut, len(recoded_mentions_df))
+    if epoch_upper_bound != None:
+        length_before_upper_cut = len(recoded_mentions_df)
+        recoded_mentions_df = recoded_mentions_df[recoded_mentions_df["epoch"] < epoch_upper_bound]
+        print(length_before_upper_cut, len(recoded_mentions_df))
     recoded_mentions_df.to_csv(fname, sep=" ", header=False, index=False)

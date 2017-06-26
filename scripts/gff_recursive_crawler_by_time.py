@@ -28,7 +28,8 @@ if __name__ == "__main__":
             return su.time_bound_filter(tweet, created_at=my_created_at)
         
         # termination function
-        my_since_id = 875383689844318208
+        #my_since_id = 875383689844318208
+        my_since_id = 877022771372576768
         def my_since_id_filter(tweet):
             return su.id_bound_fiter(tweet, since_id=my_since_id)
         

@@ -40,7 +40,7 @@ def get_tweets(coll,limit=None):
 def get_mentions(coll,limit=None,use_only_tweets=True):
     res = coll.find().limit(limit) if limit != None else coll.find()
     num_tweets, num_retweets = 0, 0
-    users = {}
+    user_names, user_screen_names = {}, {}
     edges = []
     for item in res:
         if use_only_tweets and "RT " == item['text'][:3]:
@@ -48,14 +48,16 @@ def get_mentions(coll,limit=None,use_only_tweets=True):
             continue
         num_tweets += 1
         src_id, epoch = item['user']['id_str'], int(tweet_time_2_epoch(item['created_at']))
-        users[src_id] = item['user']['name']
+        user_names[src_id] = item['user']['name']
+        user_screen_names[src_id] = item['user']['screen_name']
         msg, lang = item["text"], item["lang"]
         if 'user_mentions' in item['entities']:
             for mention in item['entities']['user_mentions']:
                 trg_id = mention['id_str']
-                users[trg_id] = mention['name']
+                user_names[trg_id] = mention['name']
+                user_screen_names[trg_id] = mention['screen_name']
                 edges.append((epoch,src_id,trg_id,lang,msg.replace("\n"," ")))
-    return edges, users, num_tweets, num_retweets
+    return edges, user_names, user_screen_names, num_tweets, num_retweets
 
 def show_frequent_items(df,user_names,col,k=10):
     val_counts = pd.DataFrame(df[col].value_counts()[:k])

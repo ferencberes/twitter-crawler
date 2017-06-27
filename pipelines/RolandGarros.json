@@ -17,8 +17,16 @@
          "kernel_type": "py3-env", 
          "name": "EventAnalyzer.", 
          "path": "ipython/EventAnalyzer.ipynb", 
-         "pipeline_status": "on", 
+         "pipeline_status": "off", 
          "type": "Analyzer"
+      }, 
+      {
+         "is_clone": "no", 
+         "kernel_type": "py3-env", 
+         "name": "ScheduleAnalyzer", 
+         "path": "ipython/FindMatches.ipynb", 
+         "pipeline_status": "off", 
+         "type": "Experiment"
       }
    ], 
    "reports": [

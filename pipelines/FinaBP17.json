@@ -1,0 +1,17 @@
+{
+   "config_path": "pipelines/FinaBP17.json", 
+   "description": "Add some custom description for this pipeline!", 
+   "id": "4", 
+   "name": "FinaBP17", 
+   "notebooks": [
+      {
+         "is_clone": "no", 
+         "kernel_type": "py3-env", 
+         "name": "EventAnalyzerFINA", 
+         "path": "ipython/EventAnalyzerFINA.ipynb", 
+         "pipeline_status": "on", 
+         "type": "Analyzer"
+      }
+   ], 
+   "reports": []
+}

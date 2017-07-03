@@ -15,6 +15,16 @@
    ], 
    "reports": [
       {
+         "date": "2017-06-28", 
+         "id": "brussels_5_days_2017-06-28", 
+         "kernel_status": "active", 
+         "name": "brussels_5_days", 
+         "note": "Attack-Coldplay-Politics", 
+         "save_for_remote": "active", 
+         "type": "local", 
+         "user": "fberes"
+      }, 
+      {
          "date": "2017-06-22", 
          "id": "brussels_3_days_2017-06-22", 
          "kernel_status": "active", 

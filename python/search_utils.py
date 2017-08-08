@@ -1,4 +1,5 @@
-import time
+import time, os
+os.environ['TZ']='UTC'
 
 def tweet_time_2_epoch(time_str):
     """Convert Twitter 'created_at' time format to epoch"""

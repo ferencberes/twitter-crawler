@@ -15,6 +15,126 @@
    ], 
    "reports": [
       {
+         "date": "2017-08-07", 
+         "id": "failures_2017-08-07", 
+         "kernel_status": "active", 
+         "name": "failures", 
+         "note": "", 
+         "save_for_remote": "active", 
+         "type": "local", 
+         "user": "pillere"
+      }, 
+      {
+         "date": "2017-08-04", 
+         "id": "failures_2017-08-04", 
+         "kernel_status": "active", 
+         "name": "failures", 
+         "note": "", 
+         "save_for_remote": "active", 
+         "type": "local", 
+         "user": "pillere"
+      }, 
+      {
+         "date": "2017-08-03", 
+         "id": "failures_2017-08-03", 
+         "kernel_status": "active", 
+         "name": "failures", 
+         "note": "", 
+         "save_for_remote": "active", 
+         "type": "local", 
+         "user": "pillere"
+      }, 
+      {
+         "date": "2017-08-02", 
+         "id": "failures_2017-08-02", 
+         "kernel_status": "active", 
+         "name": "failures", 
+         "note": "", 
+         "save_for_remote": "active", 
+         "type": "local", 
+         "user": "pillere"
+      }, 
+      {
+         "date": "2017-08-01", 
+         "id": "failures_2017-08-01", 
+         "kernel_status": "active", 
+         "name": "failures", 
+         "note": "", 
+         "save_for_remote": "active", 
+         "type": "local", 
+         "user": "pillere"
+      }, 
+      {
+         "date": "2017-07-31", 
+         "id": "failures_2017-07-31", 
+         "kernel_status": "active", 
+         "name": "failures", 
+         "note": "", 
+         "save_for_remote": "active", 
+         "type": "local", 
+         "user": "pillere"
+      }, 
+      {
+         "date": "2017-07-27", 
+         "id": "failures_2017-07-27", 
+         "kernel_status": "active", 
+         "name": "failures", 
+         "note": "", 
+         "save_for_remote": "active", 
+         "type": "local", 
+         "user": "pillere"
+      }, 
+      {
+         "date": "2017-07-25", 
+         "id": "failures_2017-07-25", 
+         "kernel_status": "active", 
+         "name": "failures", 
+         "note": "", 
+         "save_for_remote": "active", 
+         "type": "local", 
+         "user": "pillere"
+      }, 
+      {
+         "date": "2017-07-24", 
+         "id": "failures_2017-07-24", 
+         "kernel_status": "active", 
+         "name": "failures", 
+         "note": "", 
+         "save_for_remote": "active", 
+         "type": "local", 
+         "user": "pillere"
+      }, 
+      {
+         "date": "2017-07-21", 
+         "id": "failures_2017-07-21", 
+         "kernel_status": "active", 
+         "name": "failures", 
+         "note": "", 
+         "save_for_remote": "active", 
+         "type": "local", 
+         "user": "pillere"
+      }, 
+      {
+         "date": "2017-07-20", 
+         "id": "failures_2017-07-20", 
+         "kernel_status": "active", 
+         "name": "failures", 
+         "note": "", 
+         "save_for_remote": "active", 
+         "type": "local", 
+         "user": "pillere"
+      }, 
+      {
+         "date": "2017-07-19", 
+         "id": "failures_2017-07-19", 
+         "kernel_status": "active", 
+         "name": "failures", 
+         "note": "twython.exceptions.TwythonError: ('Connection aborted.', OSError(\"(104, 'ECONNRESET')\",))\n\nEzut\u00e1n csak az eng \u00e9s a budapest lett \u00fajraind\u00edtva.", 
+         "save_for_remote": "active", 
+         "type": "local", 
+         "user": "pillere"
+      }, 
+      {
          "date": "2017-07-17", 
          "id": "failures_2017-07-17", 
          "kernel_status": "active", 

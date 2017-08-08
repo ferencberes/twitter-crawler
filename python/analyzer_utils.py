@@ -143,8 +143,9 @@ def show_colors_for_users(categories,colors):
 ### export ###
 
 def recode_and_export_mentions(fname,mentions_df,user_names,epoch_lower_bound=None, epoch_upper_bound=None):
+    dir_name = "/".join(fname.split("/")[:-1])
     recoder_map = dict(zip(user_names.keys(),range(1,len(user_names)+1)))
-    with open("/mnt/idms/fberes/network/roland_garros/data/rg17_recoder_map.txt","w") as f:
+    with open("%s/rg17_recoder_map.txt" % dir_name,"w") as f:
         f.write("generated_id original_id\n")
         for item in recoder_map.items():
             f.write("%i %s\n" % (item[1],item[0]))

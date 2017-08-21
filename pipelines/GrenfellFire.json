@@ -1,37 +1,37 @@
 {
-   "config_path": "pipelines/GrenfellFire.json", 
-   "description": "Grenfell tower fire 2017 twitter-crawler pipeline.", 
-   "id": "1", 
-   "name": "GrenfellFire", 
+   "config_path": "pipelines/GrenfellFire.json",
+   "description": "Grenfell tower fire 2017 twitter-crawler pipeline.",
+   "id": "1",
+   "name": "GrenfellFire",
    "notebooks": [
       {
-         "is_clone": "no", 
-         "kernel_type": "py3-env", 
-         "name": "EventAnalyzerGrenfell", 
-         "path": "ipython/EventAnalyzerGrenfell.ipynb", 
-         "pipeline_status": "on", 
+         "is_clone": "no",
+         "kernel_type": "py3-env",
+         "name": "EventAnalyzerGrenfell",
+         "path": "ipython/EventAnalyzerGrenfell.ipynb",
+         "pipeline_status": "on",
          "type": "Analyzer"
       }
-   ], 
+   ],
    "reports": [
       {
-         "date": "2017-06-26", 
-         "id": "grenfell_second_2017-06-26", 
-         "kernel_status": "active", 
-         "name": "grenfell_second", 
-         "note": "Now we have more days. Soon we should finish crawling this event.", 
-         "save_for_remote": "active", 
-         "type": "local", 
+         "date": "2017-06-26",
+         "id": "grenfell_second_2017-06-26",
+         "kernel_status": "active",
+         "name": "grenfell_second",
+         "note": "Now we have more days. Soon we should finish crawling this event.",
+         "save_for_remote": "active",
+         "type": "local",
          "user": "fberes"
-      }, 
+      },
       {
-         "date": "2017-06-20", 
-         "id": "grenfell_first_2017-06-20", 
-         "kernel_status": "active", 
-         "name": "grenfell_first", 
-         "note": "First report related to Grenfell Tower fire. The changes in daily popularity on the mention graph is interesting. The total data is huge, but the mention network is relatively small.", 
-         "save_for_remote": "active", 
-         "type": "local", 
+         "date": "2017-06-20",
+         "id": "grenfell_first_2017-06-20",
+         "kernel_status": "active",
+         "name": "grenfell_first",
+         "note": "First report related to Grenfell Tower fire. The changes in daily popularity on the mention graph is interesting. The total data is huge, but the mention network is relatively small.",
+         "save_for_remote": "active",
+         "type": "local",
          "user": "fberes"
       }
    ]

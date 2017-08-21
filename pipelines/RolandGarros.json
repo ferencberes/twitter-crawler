@@ -1,35 +1,35 @@
 {
-   "config_path": "pipelines/RolandGarros.json", 
-   "description": "Roland Garros 2017 twitter-crawler pipeline.", 
-   "id": "0", 
-   "name": "RolandGarros", 
+   "config_path": "pipelines/RolandGarros.json",
+   "description": "Roland Garros 2017 twitter-crawler pipeline.",
+   "id": "0",
+   "name": "RolandGarros",
    "notebooks": [
       {
-         "is_clone": "no", 
-         "kernel_type": "py3-env", 
-         "name": "Samples", 
-         "path": "ipython/Samples.ipynb", 
-         "pipeline_status": "off", 
+         "is_clone": "no",
+         "kernel_type": "py3-env",
+         "name": "Samples",
+         "path": "ipython/Samples.ipynb",
+         "pipeline_status": "off",
          "type": "Crawler"
-      }, 
+      },
       {
-         "is_clone": "no", 
-         "kernel_type": "py3-env", 
-         "name": "EventAnalyzer.", 
-         "path": "ipython/EventAnalyzer.ipynb", 
-         "pipeline_status": "off", 
+         "is_clone": "no",
+         "kernel_type": "py3-env",
+         "name": "EventAnalyzer.",
+         "path": "ipython/EventAnalyzer.ipynb",
+         "pipeline_status": "off",
          "type": "Analyzer"
       }
-   ], 
+   ],
    "reports": [
       {
-         "date": "2017-06-21", 
-         "id": "rg17_complete_2017-06-21", 
-         "kernel_status": "active", 
-         "name": "rg17_complete", 
-         "note": "Here is a report about the total roland garros data. It is interesting how the daily popularity oh the tennis players are changing over time. Finalist will dominate the mention traffic in the end.", 
-         "save_for_remote": "active", 
-         "type": "local", 
+         "date": "2017-06-21",
+         "id": "rg17_complete_2017-06-21",
+         "kernel_status": "active",
+         "name": "rg17_complete",
+         "note": "Here is a report about the total roland garros data. It is interesting how the daily popularity oh the tennis players are changing over time. Finalist will dominate the mention traffic in the end.",
+         "save_for_remote": "active",
+         "type": "local",
          "user": "fberes"
       }
    ]

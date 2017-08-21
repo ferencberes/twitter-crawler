@@ -1,25 +1,25 @@
 {
-   "config_path": "pipelines/Experiments.json", 
-   "description": "Add some custom description for this pipeline!", 
-   "id": "2", 
-   "name": "Experiments", 
+   "config_path": "pipelines/Experiments.json",
+   "description": "Add some custom description for this pipeline!",
+   "id": "2",
+   "name": "Experiments",
    "notebooks": [
       {
-         "is_clone": "no", 
-         "kernel_type": "py3-env", 
-         "name": "Trends", 
-         "path": "ipython/TrendsAndStreamer.ipynb", 
-         "pipeline_status": "on", 
+         "is_clone": "no",
+         "kernel_type": "py3-env",
+         "name": "Trends",
+         "path": "ipython/TrendsAndStreamer.ipynb",
+         "pipeline_status": "on",
          "type": "Experiment"
-      }, 
+      },
       {
-         "is_clone": "no", 
-         "kernel_type": "py3-env", 
-         "name": "Followers", 
-         "path": "ipython/Followers.ipynb", 
-         "pipeline_status": "on", 
+         "is_clone": "no",
+         "kernel_type": "py3-env",
+         "name": "Followers",
+         "path": "ipython/Followers.ipynb",
+         "pipeline_status": "on",
          "type": "Experiment"
       }
-   ], 
+   ],
    "reports": []
 }

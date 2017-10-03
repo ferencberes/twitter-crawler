@@ -15,8 +15,8 @@
       {
          "is_clone": "no",
          "kernel_type": "py3-env",
-         "name": "EventAnalyzer.",
-         "path": "ipython/EventAnalyzer.ipynb",
+         "name": "EventAnalyzer",
+         "path": "ipython/rg17/EventAnalyzer.ipynb",
          "pipeline_status": "off",
          "type": "Analyzer"
       },
@@ -25,7 +25,7 @@
          "kernel_type": "py3-env",
          "name": "CombinedOccurences",
          "path": "ipython/rg17/RG17_combined_occurences.ipynb",
-         "pipeline_status": "on",
+         "pipeline_status": "off",
          "type": "Experiment"
       },
       {
@@ -33,7 +33,7 @@
          "kernel_type": "py3-env",
          "name": "ShowConnections",
          "path": "ipython/rg17/ShowCombinedOccurences.ipynb",
-         "pipeline_status": "on",
+         "pipeline_status": "off",
          "type": "Experiment"
       },
       {
@@ -41,7 +41,7 @@
          "kernel_type": "py3-env",
          "name": "TF_IDF",
          "path": "ipython/rg17/TfIdfFilter.ipynb",
-         "pipeline_status": "on",
+         "pipeline_status": "off",
          "type": "Filter"
       },
       {
@@ -49,7 +49,7 @@
          "kernel_type": "py3-env",
          "name": "W2V",
          "path": "ipython/rg17/Word2Vec.ipynb",
-         "pipeline_status": "on",
+         "pipeline_status": "off",
          "type": "Experiment"
       }
    ],

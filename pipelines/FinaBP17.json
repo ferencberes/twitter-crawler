@@ -8,7 +8,7 @@
          "is_clone": "no",
          "kernel_type": "py3-env",
          "name": "EventAnalyzerFINA",
-         "path": "ipython/EventAnalyzerFINA.ipynb",
+         "path": "ipython/fina17/EventAnalyzerFINA.ipynb",
          "pipeline_status": "off",
          "type": "Analyzer"
       },
@@ -16,16 +16,16 @@
          "is_clone": "no",
          "kernel_type": "py3-env",
          "name": "DunaArenaGeolocation",
-         "path": "ipython/DunaArenaGeolocation.ipynb",
-         "pipeline_status": "on",
+         "path": "ipython/fina17/DunaArenaGeolocation.ipynb",
+         "pipeline_status": "off",
          "type": "Experiment"
       },
       {
          "is_clone": "no",
          "kernel_type": "py3-env",
          "name": "FINAGeolocation",
-         "path": "ipython/FINAGeolocation.ipynb",
-         "pipeline_status": "on",
+         "path": "ipython/fina17/FINAGeolocation.ipynb",
+         "pipeline_status": "off",
          "type": "Experiment"
       }
    ],

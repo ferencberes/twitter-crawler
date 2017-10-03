@@ -8,7 +8,7 @@
          "is_clone": "no",
          "kernel_type": "py3-env",
          "name": "EventAnalyzerBrussels",
-         "path": "ipython/EventAnalyzerBrussels.ipynb",
+         "path": "ipython/brussels/EventAnalyzerBrussels.ipynb",
          "pipeline_status": "on",
          "type": "Analyzer"
       }

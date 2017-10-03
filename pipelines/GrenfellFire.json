@@ -8,7 +8,7 @@
          "is_clone": "no",
          "kernel_type": "py3-env",
          "name": "EventAnalyzerGrenfell",
-         "path": "ipython/EventAnalyzerGrenfell.ipynb",
+         "path": "ipython/grenfell/EventAnalyzerGrenfell.ipynb",
          "pipeline_status": "on",
          "type": "Analyzer"
       }

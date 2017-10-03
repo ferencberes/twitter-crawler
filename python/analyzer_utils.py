@@ -23,7 +23,20 @@ def find_some_docs(coll,sort_params=[('id',-1)],limit=10):
 
 ### tweets ###
 
-def get_tweets(coll,limit=None):
+def get_text_with_no_urls(doc):
+    text = doc["text"]
+    # cut all urls from the text
+    for url_item in doc['entities']['urls']:
+        splitted = text.split(url_item['url'])
+        text = ''.join(splitted)
+    # url can occur in under 'media' key as well!
+    if 'media' in doc['entities']:
+        for url_item in doc['entities']['media']:
+            splitted = text.split(url_item['url'])
+            text = ''.join(splitted)
+    return text
+
+def get_tweets(coll,limit=None, without_urls=False):
     res = coll.find().limit(limit) if limit != None else coll.find()
     tweet_info = []
     for item in res:
@@ -31,8 +44,10 @@ def get_tweets(coll,limit=None):
             continue
         src_id, src_name = item['user']['id_str'], item['user']['name']
         time = int(tweet_time_2_epoch(item['created_at']))
-        msg, lang = item["text"], item["lang"]
-        tweet_info.append((time, src_id, src_name, lang, msg.replace("\n"," ")))
+        tweet_id, msg, lang = item["id_str"], item["text"], item["lang"]
+        if without_urls:
+            msg = get_text_with_no_urls(item)
+        tweet_info.append((tweet_id, time, src_id, src_name, lang, msg.replace("\n"," ")))
     return tweet_info
         
 ### mention network ###

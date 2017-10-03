@@ -1,0 +1,17 @@
+{
+   "config_path": "pipelines/Terror17.json",
+   "description": "Add some custom description for this pipeline!",
+   "id": "5",
+   "name": "Terror17",
+   "notebooks": [
+      {
+         "is_clone": "no",
+         "kernel_type": "py3-env",
+         "name": "TerrorAnalyzer",
+         "path": "ipython/terror17/EventAnalyzerTerror.ipynb",
+         "pipeline_status": "on",
+         "type": "Analyzer"
+      }
+   ],
+   "reports": []
+}

@@ -1,0 +1,17 @@
+{
+   "config_path": "pipelines/USOpen17.json",
+   "description": "Add some custom description for this pipeline!",
+   "id": "6",
+   "name": "USOpen17",
+   "notebooks": [
+      {
+         "is_clone": "no",
+         "kernel_type": "py3-env",
+         "name": "USOpen17",
+         "path": "ipython/usopen17/EventAnalyzerUSOpen17.ipynb",
+         "pipeline_status": "on",
+         "type": "Analyzer"
+      }
+   ],
+   "reports": []
+}

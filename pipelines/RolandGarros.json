@@ -1,68 +1,100 @@
 {
-   "config_path": "pipelines/RolandGarros.json",
-   "description": "Roland Garros 2017 twitter-crawler pipeline.",
-   "id": "0",
-   "name": "RolandGarros",
-   "notebooks": [
-      {
-         "is_clone": "no",
-         "kernel_type": "py3-env",
-         "name": "Samples",
-         "path": "ipython/Samples.ipynb",
-         "pipeline_status": "off",
-         "type": "Crawler"
-      },
-      {
-         "is_clone": "no",
-         "kernel_type": "py3-env",
-         "name": "EventAnalyzer",
-         "path": "ipython/rg17/EventAnalyzer.ipynb",
-         "pipeline_status": "off",
-         "type": "Analyzer"
-      },
-      {
-         "is_clone": "no",
-         "kernel_type": "py3-env",
-         "name": "CombinedOccurences",
-         "path": "ipython/rg17/RG17_combined_occurences.ipynb",
-         "pipeline_status": "off",
-         "type": "Experiment"
-      },
-      {
-         "is_clone": "no",
-         "kernel_type": "py3-env",
-         "name": "ShowConnections",
-         "path": "ipython/rg17/ShowCombinedOccurences.ipynb",
-         "pipeline_status": "off",
-         "type": "Experiment"
-      },
-      {
-         "is_clone": "no",
-         "kernel_type": "py3-env",
-         "name": "TF_IDF",
-         "path": "ipython/rg17/TfIdfFilter.ipynb",
-         "pipeline_status": "off",
-         "type": "Filter"
-      },
-      {
-         "is_clone": "no",
-         "kernel_type": "py3-env",
-         "name": "W2V",
-         "path": "ipython/rg17/Word2Vec.ipynb",
-         "pipeline_status": "off",
-         "type": "Experiment"
-      }
-   ],
-   "reports": [
-      {
-         "date": "2017-06-21",
-         "id": "rg17_complete_2017-06-21",
-         "kernel_status": "active",
-         "name": "rg17_complete",
-         "note": "Here is a report about the total roland garros data. It is interesting how the daily popularity oh the tennis players are changing over time. Finalist will dominate the mention traffic in the end.",
-         "save_for_remote": "active",
-         "type": "local",
-         "user": "fberes"
-      }
-   ]
+    "config_path": "pipelines/RolandGarros.json",
+    "description": "Roland Garros 2017 twitter-crawler pipeline.",
+    "id": "0",
+    "name": "RolandGarros",
+    "notebooks": [
+        {
+            "is_clone": "no",
+            "kernel_type": "py3-env",
+            "name": "Samples",
+            "path": "ipython/Samples.ipynb",
+            "pipeline_status": "off",
+            "type": "Crawler"
+        },
+        {
+            "is_clone": "no",
+            "kernel_type": "py3-env",
+            "name": "EventAnalyzer",
+            "path": "ipython/rg17/EventAnalyzer.ipynb",
+            "pipeline_status": "off",
+            "type": "Analyzer"
+        },
+        {
+            "dependencies": [
+                "TF_IDF"
+            ],
+            "is_clone": "no",
+            "kernel_type": "py3-env",
+            "name": "CombinedOccurences",
+            "path": "ipython/rg17/RG17_combined_occurences.ipynb",
+            "pipeline_status": "on",
+            "type": "Experiment"
+        },
+        {
+            "dependencies": [
+                "CombinedOccurences"
+            ],
+            "is_clone": "no",
+            "kernel_type": "py3-env",
+            "name": "ShowConnections",
+            "path": "ipython/rg17/ShowCombinedOccurences.ipynb",
+            "pipeline_status": "off",
+            "type": "Visualization"
+        },
+        {
+            "is_clone": "no",
+            "kernel_type": "py3-env",
+            "name": "TF_IDF",
+            "path": "ipython/rg17/TfIdfFilter.ipynb",
+            "pipeline_status": "off",
+            "type": "Filter"
+        },
+        {
+            "dependencies": [
+                "TF_IDF"
+            ],
+            "is_clone": "no",
+            "kernel_type": "py3-env",
+            "name": "W2V",
+            "path": "ipython/rg17/Word2Vec.ipynb",
+            "pipeline_status": "on",
+            "type": "Experiment"
+        },
+        {
+            "dependencies": [
+                "CombinedOccurences"
+            ],
+            "is_clone": "no",
+            "kernel_type": "py3-env",
+            "name": "AverageCoOccurences",
+            "path": "ipython/rg17/AverageCoOccurences.ipynb",
+            "pipeline_status": "on",
+            "type": "Analyzer"
+        },
+        {
+            "dependencies": [
+                "AverageCoOccurences"
+            ],
+            "is_clone": "no",
+            "kernel_type": "py3-env",
+            "name": "VisuToplist",
+            "path": "ipython/rg17/VisuToplist.ipynb",
+            "pipeline_status": "on",
+            "type": "Visualization"
+        }
+    ],
+    "py_scripts": [],
+    "reports": [
+        {
+            "date": "2017-06-21",
+            "id": "rg17_complete_2017-06-21",
+            "kernel_status": "active",
+            "name": "rg17_complete",
+            "note": "Here is a report about the total roland garros data. It is interesting how the daily popularity oh the tennis players are changing over time. Finalist will dominate the mention traffic in the end.",
+            "save_for_remote": "active",
+            "type": "local",
+            "user": "fberes"
+        }
+    ]
 }

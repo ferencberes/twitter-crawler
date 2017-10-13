@@ -1,38 +1,39 @@
 {
-   "config_path": "pipelines/Brussels.json",
-   "description": "Brussels attack 2017 twitter-crawler pipeline.",
-   "id": "3",
-   "name": "Brussels",
-   "notebooks": [
-      {
-         "is_clone": "no",
-         "kernel_type": "py3-env",
-         "name": "EventAnalyzerBrussels",
-         "path": "ipython/brussels/EventAnalyzerBrussels.ipynb",
-         "pipeline_status": "on",
-         "type": "Analyzer"
-      }
-   ],
-   "reports": [
-      {
-         "date": "2017-06-28",
-         "id": "brussels_5_days_2017-06-28",
-         "kernel_status": "active",
-         "name": "brussels_5_days",
-         "note": "Attack-Coldplay-Politics",
-         "save_for_remote": "active",
-         "type": "local",
-         "user": "fberes"
-      },
-      {
-         "date": "2017-06-22",
-         "id": "brussels_3_days_2017-06-22",
-         "kernel_status": "active",
-         "name": "brussels_3_days",
-         "note": "Monday-Tuesday-WednesDay. Bombing + Coldplay concert with many news and media sources.",
-         "save_for_remote": "active",
-         "type": "local",
-         "user": "fberes"
-      }
-   ]
+    "config_path": "pipelines/Brussels.json",
+    "description": "Brussels attack 2017 twitter-crawler pipeline.",
+    "id": "3",
+    "name": "Brussels",
+    "notebooks": [
+        {
+            "is_clone": "no",
+            "kernel_type": "py3-env",
+            "name": "EventAnalyzerBrussels",
+            "path": "ipython/brussels/EventAnalyzerBrussels.ipynb",
+            "pipeline_status": "on",
+            "type": "Analyzer"
+        }
+    ],
+    "py_scripts": [],
+    "reports": [
+        {
+            "date": "2017-06-28",
+            "id": "brussels_5_days_2017-06-28",
+            "kernel_status": "active",
+            "name": "brussels_5_days",
+            "note": "Attack-Coldplay-Politics",
+            "save_for_remote": "active",
+            "type": "local",
+            "user": "fberes"
+        },
+        {
+            "date": "2017-06-22",
+            "id": "brussels_3_days_2017-06-22",
+            "kernel_status": "active",
+            "name": "brussels_3_days",
+            "note": "Monday-Tuesday-WednesDay. Bombing + Coldplay concert with many news and media sources.",
+            "save_for_remote": "active",
+            "type": "local",
+            "user": "fberes"
+        }
+    ]
 }

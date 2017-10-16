@@ -82,6 +82,14 @@
             "path": "ipython/rg17/VisuToplist.ipynb",
             "pipeline_status": "on",
             "type": "Visualization"
+        },
+        {
+            "is_clone": "no",
+            "kernel_type": "py3-env",
+            "name": "ToplistEvaluator",
+            "path": "ipython/rg17/ToplistEvaluator.ipynb",
+            "pipeline_status": "on",
+            "type": "Evaluator"
         }
     ],
     "py_scripts": [],

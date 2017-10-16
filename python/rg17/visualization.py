@@ -5,27 +5,27 @@ from plotly.graph_objs import *
 import networkx as nx
 from .evaluate_toplist import *
 
-def show_graph(pair_occs_df, key_words, snapshot_ids, score_limit=None):
-    edges = get_toplist_with_max_scores(pair_occs_df,key_words,snapshot_ids)[["word_1","word_2","occ_score"]]
-    edges = edges.sort_values("occ_score")
-    node_color_map = edges.groupby("word_2")["occ_score"].mean()
+def show_graph(pair_occs_df, key_words, snapshot_ids, score_col="occ_score", score_limit=None):
+    edges = get_toplist_with_max_scores(pair_occs_df,key_words,snapshot_ids, score_col=score_col)[["word_1","word_2",score_col]]
+    edges = edges.sort_values(score_col)
+    node_color_map = edges.groupby("word_2")[score_col].mean()
     for key_w in key_words:
         node_color_map[key_w] = 0.0
     if score_limit != None:
-        edges = edges[edges["occ_score"] > score_limit]
+        edges = edges[edges[score_col] > score_limit]
     # If mention is bi-directional than this information is lost
     G = nx.Graph()
-    G.add_weighted_edges_from(edges.as_matrix(),weight="occ_score")
-    spring_layout = nx.spring_layout(G,iterations=100,weight="occ_score")
+    G.add_weighted_edges_from(edges.as_matrix(),weight=score_col)
+    spring_layout = nx.spring_layout(G,iterations=100,weight=score_col)
     draw_with_plotly(G, spring_layout, key_words, node_color_map, snapshot_id=snapshot_ids)
     
-def show_multiple_snapshots(pair_occs_df, key_words, snapshot_ids, score_limit=None):
+def show_multiple_snapshots(pair_occs_df, key_words, snapshot_ids, score_col="occ_score", score_limit=None):
     for snapshot_id in snapshot_ids:
         print(snapshot_id)
         if isinstance(snapshot_id, list):
-            show_graph(pair_occs_df, key_words, snapshot_id, score_limit=score_limit)
+            show_graph(pair_occs_df, key_words, snapshot_id, score_col=score_col, score_limit=score_limit)
         else:
-            show_graph(pair_occs_df, key_words, [snapshot_id], score_limit=score_limit)
+            show_graph(pair_occs_df, key_words, [snapshot_id], score_col=score_col, score_limit=score_limit)
     if isinstance(snapshot_ids[0], list):
         merged_time_stamps = []
         for ts_list in snapshot_ids:
@@ -33,7 +33,7 @@ def show_multiple_snapshots(pair_occs_df, key_words, snapshot_ids, score_limit=N
         merged_time_stamps = list(set(merged_time_stamps))
     else:
         merged_time_stamps = snapshot_ids
-    show_graph(pair_occs_df, key_words, merged_time_stamps, score_limit=score_limit)
+    show_graph(pair_occs_df, key_words, merged_time_stamps, score_col=score_col, score_limit=score_limit)
 
 ### Plotly ###
 

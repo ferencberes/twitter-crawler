@@ -16,14 +16,14 @@ def load_player_accounts(remove_digits=False):
     result = [transform_account_name(n, remove_digits=remove_digits) for n in result]
     return result
 
-def get_toplist(pair_occs_df, key_words, snapshot_ids):
+def get_toplist(pair_occs_df, key_words, snapshot_ids, score_col="occ_score"):
     """Get occurences for the given keywords in multiple snapshots. 
     If more than 1 snapshot id is specified then there could be duplications in the data!"""
     filtered_df = pair_occs_df[(pair_occs_df["word_1"].isin(key_words)) & pair_occs_df["time"].isin(snapshot_ids)]
-    return filtered_df.sort_values("occ_score", ascending=False)
+    return filtered_df.sort_values(score_col, ascending=False)
 
-def get_toplist_with_max_scores(pair_occs_df, key_words, snapshot_ids):
+def get_toplist_with_max_scores(pair_occs_df, key_words, snapshot_ids, score_col="occ_score"):
     """Get occurences for the given keywords in multiple snapshots. 
     If more than 1 snapshot id is specified then only the occurances with maximum score is kept from he duplicated items."""
-    df = get_toplist(pair_occs_df, key_words, snapshot_ids)
-    return df.groupby(by=["word_1","word_2"])["occ_score"].max().reset_index().sort_values("occ_score", ascending=False)
+    df = get_toplist(pair_occs_df, key_words, snapshot_ids, score_col=score_col)
+    return df.groupby(by=["word_1","word_2"])[score_col].max().reset_index().sort_values(score_col, ascending=False)

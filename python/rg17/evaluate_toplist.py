@@ -1,21 +1,23 @@
 import pandas as pd
 import json
 
-def transform_account_name(acc_name, remove_digits, remove_under_score):
-    result = acc_name.lower()
+def transform_account_name(acc_name, remove_digits, remove_under_score, to_lower):
+    result = acc_name
+    if to_lower:
+        result = result.lower()
     if remove_under_score:
         result = result.replace("_","")
     if remove_digits:
         result = ''.join([i for i in result if not i.isdigit()])
     return result
     
-def load_player_accounts(remove_digits=False, remove_under_score=False):
+def load_player_accounts(remove_digits=False, remove_under_score=False, to_lower=False):
     """Return player accounts with some text transformation"""
     file_name = "/mnt/idms/fberes/network/online_ranker/roland_garros_updated_schedule/filtered_true_matches_screen_names.json"
     with open(file_name) as f:
         filtered_screen_names = json.load(f)
     result = ["@" + n  for n in filtered_screen_names]
-    result = [transform_account_name(n, remove_digits=remove_digits, remove_under_score=remove_under_score) for n in result]
+    result = [transform_account_name(n, remove_digits=remove_digits, remove_under_score=remove_under_score, to_lower=to_lower) for n in result]
     return result
 
 def get_toplist(pair_occs_df, key_words, snapshot_ids, score_col="occ_score"):

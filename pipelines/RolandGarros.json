@@ -84,6 +84,9 @@
             "type": "Visualization"
         },
         {
+            "dependencies": [
+                "AverageCoOccurences"
+            ],
             "is_clone": "no",
             "kernel_type": "py3-env",
             "name": "ToplistEvaluator",

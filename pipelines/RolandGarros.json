@@ -58,7 +58,7 @@
             "kernel_type": "py3-env",
             "name": "W2V",
             "path": "ipython/rg17/Word2Vec.ipynb",
-            "pipeline_status": "on",
+            "pipeline_status": "off",
             "type": "Experiment"
         },
         {
@@ -80,12 +80,13 @@
             "kernel_type": "py3-env",
             "name": "VisuToplist",
             "path": "ipython/rg17/VisuToplist.ipynb",
-            "pipeline_status": "on",
+            "pipeline_status": "off",
             "type": "Visualization"
         },
         {
             "dependencies": [
-                "AverageCoOccurences"
+                "AverageCoOccurences",
+                "W2VecBaseline"
             ],
             "is_clone": "no",
             "kernel_type": "py3-env",
@@ -93,6 +94,17 @@
             "path": "ipython/rg17/ToplistEvaluator.ipynb",
             "pipeline_status": "on",
             "type": "Evaluator"
+        },
+        {
+            "dependencies": [
+                "TF_IDF"
+            ],
+            "is_clone": "no",
+            "kernel_type": "py3-env",
+            "name": "W2VecBaseline",
+            "path": "ipython/rg17/W2VecBaseline.ipynb",
+            "pipeline_status": "on",
+            "type": "Baseline"
         }
     ],
     "py_scripts": [],

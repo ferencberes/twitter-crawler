@@ -1,5 +1,18 @@
 {
     "config_path": "pipelines/TrendApproximation.json",
+    "default_config": {
+        "experiment_id": "rg17_20171018_8000_en-players_3h-plus2h_accurate",
+        "player_name_with_accounts_file_path": "/mnt/idms/fberes/network/online_ranker/roland_garros_updated_schedule/filtered_true_matches.json",
+        "player_names_file_path": "/mnt/idms/fberes/network/combined_occ/player_name_parts.txt",
+        "player_screen_names_file_path": "/mnt/idms/fberes/network/online_ranker/roland_garros_updated_schedule/filtered_true_matches_screen_names.json",
+        "schedule_file_path": "/mnt/idms/fberes/network/roland_garros/data/schedule_new_df.csv",
+        "stemmed_tweet_file_path": "/mnt/idms/fberes/network/roland_garros/data/rg17_tweets_eng_stemmed.csv",
+        "stop_words_file_path": "/mnt/idms/fberes/network/combined_occ/stop_words_en.txt",
+        "unstemmed_tweet_file_path": "/mnt/idms/fberes/network/roland_garros/data/rg17_tweets_eng.csv",
+        "w2v_model_dim": 100,
+        "w2v_root_folder": "/mnt/idms/fberes/network/combined_occ/models/",
+        "word_corpus": "/mnt/idms/fberes/network/roland_garros/data/rg17_8000_important_en_words_plus_players.txt"
+    },
     "description": "Add some custom description for this pipeline!",
     "id": "7",
     "name": "TrendApproximation",
@@ -42,7 +55,7 @@
             "kernel_type": "py3-env",
             "name": "GlobalWord2Vec",
             "path": "ipython/rg17/Word2Vec.ipynb",
-            "pipeline_status": "off",
+            "pipeline_status": "on",
             "type": "Word2Vec"
         },
         {
@@ -89,6 +102,14 @@
             "path": "ipython/rg17/VisuToplist.ipynb",
             "pipeline_status": "off",
             "type": "Visualization"
+        },
+        {
+            "is_clone": "no",
+            "kernel_type": "py3-env",
+            "name": "TrendApproxParams",
+            "path": "pipelines/TrendApproxParams.ipynb",
+            "pipeline_status": "off",
+            "type": "Parameters"
         }
     ],
     "py_scripts": [],

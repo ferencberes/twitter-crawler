@@ -11,10 +11,9 @@ def transform_account_name(acc_name, remove_digits, remove_under_score, to_lower
         result = ''.join([i for i in result if not i.isdigit()])
     return result
     
-def load_player_accounts(remove_digits=False, remove_under_score=False, to_lower=False):
-    """Return player accounts with some text transformation"""
-    file_name = "/mnt/idms/fberes/network/online_ranker/roland_garros_updated_schedule/filtered_true_matches_screen_names.json"
-    with open(file_name) as f:
+def load_player_accounts(file_path, remove_digits=False, remove_under_score=False, to_lower=False):
+    """Return player accounts with some text transformation. 'file_path' is the file that contains the screen_names of the players."""
+    with open(file_path) as f:
         filtered_screen_names = json.load(f)
     result = ["@" + n  for n in filtered_screen_names]
     result = [transform_account_name(n, remove_digits=remove_digits, remove_under_score=remove_under_score, to_lower=to_lower) for n in result]

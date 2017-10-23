@@ -1,0 +1,96 @@
+{
+    "config_path": "pipelines/TrendApproximation.json",
+    "description": "Add some custom description for this pipeline!",
+    "id": "7",
+    "name": "TrendApproximation",
+    "notebooks": [
+        {
+            "is_clone": "no",
+            "kernel_type": "py3-env",
+            "name": "FilterRelevantWords",
+            "path": "ipython/rg17/TfIdfFilter.ipynb",
+            "pipeline_status": "off",
+            "type": "Preprocessor"
+        },
+        {
+            "dependencies": [
+                "FilterRelevantWords"
+            ],
+            "is_clone": "no",
+            "kernel_type": "py3-env",
+            "name": "CoOccurenceDataFormatter",
+            "path": "ipython/rg17/RG17_combined_occurences.ipynb",
+            "pipeline_status": "on",
+            "type": "Preprocessor"
+        },
+        {
+            "dependencies": [
+                "CoOccurenceDataFormatter"
+            ],
+            "is_clone": "no",
+            "kernel_type": "py3-env",
+            "name": "AverageCoOccurences",
+            "path": "ipython/rg17/AverageCoOccurences.ipynb",
+            "pipeline_status": "on",
+            "type": "Statistics"
+        },
+        {
+            "dependencies": [
+                "FilterRelevantWords"
+            ],
+            "is_clone": "no",
+            "kernel_type": "py3-env",
+            "name": "GlobalWord2Vec",
+            "path": "ipython/rg17/Word2Vec.ipynb",
+            "pipeline_status": "off",
+            "type": "Word2Vec"
+        },
+        {
+            "dependencies": [
+                "FilterRelevantWords"
+            ],
+            "is_clone": "no",
+            "kernel_type": "py3-env",
+            "name": "W2VecBaseline",
+            "path": "ipython/rg17/W2VecBaseline.ipynb",
+            "pipeline_status": "on",
+            "type": "Word2Vec"
+        },
+        {
+            "dependencies": [
+                "AverageCoOccurences",
+                "W2VecBaseline"
+            ],
+            "is_clone": "no",
+            "kernel_type": "py3-env",
+            "name": "ToplistEvaluator",
+            "path": "ipython/rg17/ToplistEvaluator.ipynb",
+            "pipeline_status": "on",
+            "type": "Evaluator"
+        },
+        {
+            "dependencies": [
+                "CoOccurenceDataFormatter"
+            ],
+            "is_clone": "no",
+            "kernel_type": "py3-env",
+            "name": "ShowCoOccurences",
+            "path": "ipython/rg17/ShowCombinedOccurences.ipynb",
+            "pipeline_status": "off",
+            "type": "Visualization"
+        },
+        {
+            "dependencies": [
+                "AverageCoOccurences"
+            ],
+            "is_clone": "no",
+            "kernel_type": "py3-env",
+            "name": "VisuToplist",
+            "path": "ipython/rg17/VisuToplist.ipynb",
+            "pipeline_status": "off",
+            "type": "Visualization"
+        }
+    ],
+    "py_scripts": [],
+    "reports": []
+}

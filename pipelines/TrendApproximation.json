@@ -1,16 +1,29 @@
 {
     "config_path": "pipelines/TrendApproximation.json",
     "default_config": {
+        "distance_root_folder": "/mnt/idms/fberes/network/combined_occ/models/distance/",
         "experiment_id": "rg17_20171018_8000_en-players_3h-plus2h_accurate",
+        "keywords_for_eval_path": "/mnt/idms/fberes/network/combined_occ/eval_keywords.csv",
         "player_name_with_accounts_file_path": "/mnt/idms/fberes/network/online_ranker/roland_garros_updated_schedule/filtered_true_matches.json",
         "player_names_file_path": "/mnt/idms/fberes/network/combined_occ/player_name_parts.txt",
         "player_screen_names_file_path": "/mnt/idms/fberes/network/online_ranker/roland_garros_updated_schedule/filtered_true_matches_screen_names.json",
         "schedule_file_path": "/mnt/idms/fberes/network/roland_garros/data/schedule_new_df.csv",
+        "score_const": 1.0,
         "stemmed_tweet_file_path": "/mnt/idms/fberes/network/roland_garros/data/rg17_tweets_eng_stemmed.csv",
         "stop_words_file_path": "/mnt/idms/fberes/network/combined_occ/stop_words_en.txt",
+        "time_hour_vals": [
+            1,
+            4,
+            7,
+            10,
+            13,
+            16,
+            19,
+            22
+        ],
         "unstemmed_tweet_file_path": "/mnt/idms/fberes/network/roland_garros/data/rg17_tweets_eng.csv",
         "w2v_model_dim": 100,
-        "w2v_root_folder": "/mnt/idms/fberes/network/combined_occ/models/",
+        "w2v_root_folder": "/mnt/idms/fberes/network/combined_occ/models/w2v/",
         "word_corpus": "/mnt/idms/fberes/network/roland_garros/data/rg17_8000_important_en_words_plus_players.txt"
     },
     "description": "Add some custom description for this pipeline!",
@@ -33,7 +46,7 @@
             "kernel_type": "py3-env",
             "name": "CoOccurenceDataFormatter",
             "path": "ipython/rg17/RG17_combined_occurences.ipynb",
-            "pipeline_status": "on",
+            "pipeline_status": "off",
             "type": "Preprocessor"
         },
         {
@@ -44,7 +57,7 @@
             "kernel_type": "py3-env",
             "name": "AverageCoOccurences",
             "path": "ipython/rg17/AverageCoOccurences.ipynb",
-            "pipeline_status": "on",
+            "pipeline_status": "off",
             "type": "Statistics"
         },
         {
@@ -55,7 +68,7 @@
             "kernel_type": "py3-env",
             "name": "GlobalWord2Vec",
             "path": "ipython/rg17/Word2Vec.ipynb",
-            "pipeline_status": "on",
+            "pipeline_status": "off",
             "type": "Word2Vec"
         },
         {
@@ -66,10 +79,13 @@
             "kernel_type": "py3-env",
             "name": "W2VecBaseline",
             "path": "ipython/rg17/W2VecBaseline.ipynb",
-            "pipeline_status": "on",
+            "pipeline_status": "off",
             "type": "Word2Vec"
         },
         {
+            "config": {
+                "score_const": 1.0
+            },
             "dependencies": [
                 "AverageCoOccurences",
                 "W2VecBaseline"
@@ -110,8 +126,37 @@
             "path": "pipelines/TrendApproxParams.ipynb",
             "pipeline_status": "off",
             "type": "Parameters"
+        },
+        {
+            "is_clone": "no",
+            "kernel_type": "py3-env",
+            "name": "BaslineDistances",
+            "path": "ipython/rg17/BaselineDistances.ipynb",
+            "pipeline_status": "on",
+            "type": "Baseline"
         }
     ],
     "py_scripts": [],
-    "reports": []
+    "reports": [
+        {
+            "date": "2017-10-23",
+            "id": "occ_score_without_popular_discrimination_2017-10-23",
+            "kernel_status": "active",
+            "name": "occ_score without popular discrimination",
+            "note": "Changing the constant in the occ_score formula. As the constant decreases the performance of the proposed score is getting worse :( BUT the alpha order is stable for low c=0.01 for example.",
+            "save_for_remote": "active",
+            "type": "local",
+            "user": "fberes"
+        },
+        {
+            "date": "2017-10-23",
+            "id": "occ_score_with_popular_discrimination_2017-10-23",
+            "kernel_status": "active",
+            "name": "occ_score with popular discrimination",
+            "note": "Changing the constant in the occ_score formula. As the constant decreases the performance of the proposed score is getting worse :(",
+            "save_for_remote": "active",
+            "type": "local",
+            "user": "fberes"
+        }
+    ]
 }

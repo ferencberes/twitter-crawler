@@ -7,6 +7,7 @@
         "player_name_with_accounts_file_path": "/mnt/idms/fberes/network/online_ranker/roland_garros_updated_schedule/filtered_true_matches.json",
         "player_names_file_path": "/mnt/idms/fberes/network/combined_occ/player_name_parts.txt",
         "player_screen_names_file_path": "/mnt/idms/fberes/network/online_ranker/roland_garros_updated_schedule/filtered_true_matches_screen_names.json",
+        "relevance_type": "multi",
         "schedule_file_path": "/mnt/idms/fberes/network/roland_garros/data/schedule_new_df.csv",
         "score_const": 1.0,
         "stemmed_tweet_file_path": "/mnt/idms/fberes/network/roland_garros/data/rg17_tweets_eng_stemmed.csv",
@@ -84,11 +85,12 @@
         },
         {
             "config": {
-                "score_const": 1.0
+                "relevance_type": "multi"
             },
             "dependencies": [
                 "AverageCoOccurences",
-                "W2VecBaseline"
+                "W2VecBaseline",
+                "BaslineDistances"
             ],
             "is_clone": "no",
             "kernel_type": "py3-env",
@@ -128,16 +130,29 @@
             "type": "Parameters"
         },
         {
+            "dependencies": [
+                "CoOccurenceDataFormatter"
+            ],
             "is_clone": "no",
             "kernel_type": "py3-env",
             "name": "BaslineDistances",
             "path": "ipython/rg17/BaselineDistances.ipynb",
-            "pipeline_status": "on",
+            "pipeline_status": "off",
             "type": "Baseline"
         }
     ],
     "py_scripts": [],
     "reports": [
+        {
+            "date": "2017-10-25",
+            "id": "binary_vs_multi_relevance_2017-10-25",
+            "kernel_status": "active",
+            "name": "binary_vs_multi_relevance",
+            "note": "In this report we can see the difference between the two evaluation cases.",
+            "save_for_remote": "active",
+            "type": "local",
+            "user": "fberes"
+        },
         {
             "date": "2017-10-23",
             "id": "occ_score_without_popular_discrimination_2017-10-23",

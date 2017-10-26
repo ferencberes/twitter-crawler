@@ -100,28 +100,6 @@
             "type": "Evaluator"
         },
         {
-            "dependencies": [
-                "CoOccurenceDataFormatter"
-            ],
-            "is_clone": "no",
-            "kernel_type": "py3-env",
-            "name": "ShowCoOccurences",
-            "path": "ipython/rg17/ShowCombinedOccurences.ipynb",
-            "pipeline_status": "off",
-            "type": "Visualization"
-        },
-        {
-            "dependencies": [
-                "AverageCoOccurences"
-            ],
-            "is_clone": "no",
-            "kernel_type": "py3-env",
-            "name": "VisuToplist",
-            "path": "ipython/rg17/VisuToplist.ipynb",
-            "pipeline_status": "off",
-            "type": "Visualization"
-        },
-        {
             "is_clone": "no",
             "kernel_type": "py3-env",
             "name": "TrendApproxParams",
@@ -143,6 +121,16 @@
     ],
     "py_scripts": [],
     "reports": [
+        {
+            "date": "2017-10-26",
+            "id": "occ_score_plus_rayleigh_2017-10-26",
+            "kernel_status": "active",
+            "name": "occ_score_plus_rayleigh",
+            "note": "I was experimenting with occ_score + rayleigh. It has almost as good performance as former rayleigh version.",
+            "save_for_remote": "active",
+            "type": "local",
+            "user": "fberes"
+        },
         {
             "date": "2017-10-25",
             "id": "binary_vs_multi_relevance_2017-10-25",

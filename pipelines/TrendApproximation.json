@@ -7,6 +7,7 @@
         "player_name_with_accounts_file_path": "/mnt/idms/fberes/network/online_ranker/roland_garros_updated_schedule/filtered_true_matches.json",
         "player_names_file_path": "/mnt/idms/fberes/network/combined_occ/player_name_parts.txt",
         "player_screen_names_file_path": "/mnt/idms/fberes/network/online_ranker/roland_garros_updated_schedule/filtered_true_matches_screen_names.json",
+        "relevance_subset": "discriminative",
         "relevance_type": "binary",
         "schedule_file_path": "/mnt/idms/fberes/network/roland_garros/data/schedule_new_df.csv",
         "score_alphas": [
@@ -90,6 +91,9 @@
             "type": "Word2Vec"
         },
         {
+            "config": {
+                "relevance_subset": "discriminative"
+            },
             "dependencies": [
                 "AverageCoOccurences",
                 "W2VecBaseline",
@@ -132,6 +136,16 @@
     ],
     "py_scripts": [],
     "reports": [
+        {
+            "date": "2017-10-26",
+            "id": "3_version_of_evaluation_2017-10-26",
+            "kernel_status": "active",
+            "name": "3_version_of_evaluation",
+            "note": "discriminative, signed and positive evaluation.",
+            "save_for_remote": "active",
+            "type": "local",
+            "user": "fberes"
+        },
         {
             "date": "2017-10-26",
             "id": "occ_score_plus_rayleigh_2017-10-26",

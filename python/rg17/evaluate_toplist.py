@@ -68,3 +68,25 @@ def get_w2v_toplist(w2v_models, key_words, snapshot_ids, top_k):
     If more than 1 snapshot id is specified then there could be duplications in the data!"""
     dfs = [w2v_query(w2v_models, kw, sid, top_k) for kw in key_words for sid in snapshot_ids]
     return pd.concat(dfs).sort_values("w2v_score", ascending=False)
+
+
+### Jaccard and Cosine distance ###
+
+def load_distance_model(distance_model_path):
+    """Load distance model (Jaccard or Cosine) trained for snapshots"""
+    return pd.read_csv(distance_model_path, sep="|")
+
+def distance_query(distance_df, key_word, snapshot_id, top_k=None):
+    """Handle distance request for only one key word and snapshot id."""
+    out_df = distance_df[(distance_df["word_1"] == key_word) & (distance_df["snapshot_id"] == snapshot_id)]
+    out_df = out_df.sort_values("distance", ascending=True)
+    if top_k != None:
+        out_df = out_df.head(top_k)
+    out_df["time"] = out_df["snapshot_id"]
+    return out_df[["time","word_1","word_2","distance"]]
+
+def get_distance_toplist(distance_df, key_words, snapshot_ids, top_k):
+    """Get most similar words based on 'distance_df'. 
+    If more than 1 snapshot id is specified then there could be duplications in the data!"""
+    dfs = [distance_query(distance_df, kw, sid, top_k) for kw in key_words for sid in snapshot_ids]
+    return pd.concat(dfs).sort_values("distance", ascending=True)

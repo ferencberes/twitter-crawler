@@ -7,8 +7,14 @@
         "player_name_with_accounts_file_path": "/mnt/idms/fberes/network/online_ranker/roland_garros_updated_schedule/filtered_true_matches.json",
         "player_names_file_path": "/mnt/idms/fberes/network/combined_occ/player_name_parts.txt",
         "player_screen_names_file_path": "/mnt/idms/fberes/network/online_ranker/roland_garros_updated_schedule/filtered_true_matches_screen_names.json",
-        "relevance_type": "multi",
+        "relevance_type": "binary",
         "schedule_file_path": "/mnt/idms/fberes/network/roland_garros/data/schedule_new_df.csv",
+        "score_alphas": [
+            0,
+            1,
+            2,
+            5
+        ],
         "score_const": 1.0,
         "stemmed_tweet_file_path": "/mnt/idms/fberes/network/roland_garros/data/rg17_tweets_eng_stemmed.csv",
         "stop_words_file_path": "/mnt/idms/fberes/network/combined_occ/stop_words_en.txt",
@@ -84,9 +90,6 @@
             "type": "Word2Vec"
         },
         {
-            "config": {
-                "relevance_type": "multi"
-            },
             "dependencies": [
                 "AverageCoOccurences",
                 "W2VecBaseline",
@@ -117,6 +120,14 @@
             "path": "ipython/rg17/BaselineDistances.ipynb",
             "pipeline_status": "off",
             "type": "Baseline"
+        },
+        {
+            "is_clone": "no",
+            "kernel_type": "py3-env",
+            "name": "SelectKeysFromSchedule",
+            "path": "ipython/rg17/SelectKeysFromSchedule.ipynb",
+            "pipeline_status": "off",
+            "type": "Preprocessor"
         }
     ],
     "py_scripts": [],

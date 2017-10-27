@@ -17,6 +17,7 @@
             5
         ],
         "score_const": 1.0,
+        "score_eps": 0.0,
         "stemmed_tweet_file_path": "/mnt/idms/fberes/network/roland_garros/data/rg17_tweets_eng_stemmed.csv",
         "stop_words_file_path": "/mnt/idms/fberes/network/combined_occ/stop_words_en.txt",
         "time_hour_vals": [
@@ -65,7 +66,7 @@
             "kernel_type": "py3-env",
             "name": "AverageCoOccurences",
             "path": "ipython/rg17/AverageCoOccurences.ipynb",
-            "pipeline_status": "off",
+            "pipeline_status": "on",
             "type": "Statistics"
         },
         {
@@ -92,7 +93,8 @@
         },
         {
             "config": {
-                "relevance_subset": "discriminative"
+                "score_const": 0,
+                "score_eps": 1.0
             },
             "dependencies": [
                 "AverageCoOccurences",
@@ -136,6 +138,16 @@
     ],
     "py_scripts": [],
     "reports": [
+        {
+            "date": "2017-10-27",
+            "id": "rel_count_modified_2017-10-27",
+            "kernel_status": "active",
+            "name": "rel_count_modified",
+            "note": "Based on Andras idea we use constant for relative count calculation.",
+            "save_for_remote": "active",
+            "type": "local",
+            "user": "fberes"
+        },
         {
             "date": "2017-10-26",
             "id": "3_version_of_evaluation_2017-10-26",

@@ -2,7 +2,7 @@
     "config_path": "pipelines/TrendApproximation.json",
     "default_config": {
         "distance_root_folder": "/mnt/idms/fberes/network/combined_occ/models/distance/",
-        "experiment_id": "rg17_20171018_8000_en-players_3h-plus2h_accurate",
+        "experiment_id": "rg17_20171027_8000_en-players_3h-plus2h_accurate",
         "keywords_for_eval_path": "/mnt/idms/fberes/network/combined_occ/eval_keywords.csv",
         "player_name_with_accounts_file_path": "/mnt/idms/fberes/network/online_ranker/roland_garros_updated_schedule/filtered_true_matches.json",
         "player_names_file_path": "/mnt/idms/fberes/network/combined_occ/player_name_parts.txt",
@@ -17,7 +17,7 @@
             5
         ],
         "score_const": 1.0,
-        "score_eps": 0.0,
+        "score_eps": 0.5,
         "stemmed_tweet_file_path": "/mnt/idms/fberes/network/roland_garros/data/rg17_tweets_eng_stemmed.csv",
         "stop_words_file_path": "/mnt/idms/fberes/network/combined_occ/stop_words_en.txt",
         "time_hour_vals": [
@@ -55,7 +55,7 @@
             "kernel_type": "py3-env",
             "name": "CoOccurenceDataFormatter",
             "path": "ipython/rg17/RG17_combined_occurences.ipynb",
-            "pipeline_status": "off",
+            "pipeline_status": "on",
             "type": "Preprocessor"
         },
         {
@@ -77,7 +77,7 @@
             "kernel_type": "py3-env",
             "name": "GlobalWord2Vec",
             "path": "ipython/rg17/Word2Vec.ipynb",
-            "pipeline_status": "off",
+            "pipeline_status": "on",
             "type": "Word2Vec"
         },
         {
@@ -88,7 +88,7 @@
             "kernel_type": "py3-env",
             "name": "W2VecBaseline",
             "path": "ipython/rg17/W2VecBaseline.ipynb",
-            "pipeline_status": "off",
+            "pipeline_status": "on",
             "type": "Word2Vec"
         },
         {
@@ -124,7 +124,7 @@
             "kernel_type": "py3-env",
             "name": "BaslineDistances",
             "path": "ipython/rg17/BaselineDistances.ipynb",
-            "pipeline_status": "off",
+            "pipeline_status": "on",
             "type": "Baseline"
         },
         {
@@ -138,6 +138,26 @@
     ],
     "py_scripts": [],
     "reports": [
+        {
+            "date": "2017-10-27",
+            "id": "long_run_2017-10-27",
+            "kernel_status": "active",
+            "name": "long run",
+            "note": "AverageCoOccurences-nak volt zero division error-ja. BaselineDistances sok mem\u00f3ri\u00e1t eszik. Nem k\u00e9ne tarolni semmit! mindent rogton ki k\u00e9ne irnom!!!",
+            "save_for_remote": "active",
+            "type": "local",
+            "user": "fberes"
+        },
+        {
+            "date": "2017-10-27",
+            "id": "detailed_experiment_for_parameters_2017-10-27",
+            "kernel_status": "active",
+            "name": "detailed_experiment_for_parameters",
+            "note": "Jaccard improved a lot from random shuffle. If eps is not zero then there are difference between norm alpha version. The order is always the same 0, 1, 2, 5 for discriminative, signed and positive as well. It is interesting why big alphas are better. norm performance decreases as c get bigger. The results are the best for the signed case. Frequent words are unfortunately still in the toplists...",
+            "save_for_remote": "active",
+            "type": "local",
+            "user": "fberes"
+        },
         {
             "date": "2017-10-27",
             "id": "rel_count_modified_2017-10-27",

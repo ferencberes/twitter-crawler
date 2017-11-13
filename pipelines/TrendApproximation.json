@@ -16,7 +16,7 @@
             2,
             5
         ],
-        "score_const": 1.0,
+        "score_const": 5.0,
         "score_eps": 0.5,
         "stemmed_tweet_file_path": "/mnt/idms/fberes/network/roland_garros/data/rg17_tweets_eng_stemmed.csv",
         "stop_words_file_path": "/mnt/idms/fberes/network/combined_occ/stop_words_en.txt",
@@ -55,7 +55,7 @@
             "kernel_type": "py3-env",
             "name": "CoOccurenceDataFormatter",
             "path": "ipython/rg17/RG17_combined_occurences.ipynb",
-            "pipeline_status": "on",
+            "pipeline_status": "off",
             "type": "Preprocessor"
         },
         {
@@ -66,7 +66,7 @@
             "kernel_type": "py3-env",
             "name": "AverageCoOccurences",
             "path": "ipython/rg17/AverageCoOccurences.ipynb",
-            "pipeline_status": "on",
+            "pipeline_status": "off",
             "type": "Statistics"
         },
         {
@@ -77,7 +77,7 @@
             "kernel_type": "py3-env",
             "name": "GlobalWord2Vec",
             "path": "ipython/rg17/Word2Vec.ipynb",
-            "pipeline_status": "on",
+            "pipeline_status": "off",
             "type": "Word2Vec"
         },
         {
@@ -88,14 +88,10 @@
             "kernel_type": "py3-env",
             "name": "W2VecBaseline",
             "path": "ipython/rg17/W2VecBaseline.ipynb",
-            "pipeline_status": "on",
+            "pipeline_status": "off",
             "type": "Word2Vec"
         },
         {
-            "config": {
-                "score_const": 0,
-                "score_eps": 1.0
-            },
             "dependencies": [
                 "AverageCoOccurences",
                 "W2VecBaseline",
@@ -124,7 +120,7 @@
             "kernel_type": "py3-env",
             "name": "BaslineDistances",
             "path": "ipython/rg17/BaselineDistances.ipynb",
-            "pipeline_status": "on",
+            "pipeline_status": "off",
             "type": "Baseline"
         },
         {
@@ -138,6 +134,26 @@
     ],
     "py_scripts": [],
     "reports": [
+        {
+            "date": "2017-11-11",
+            "id": "multiple_const_values_2017-11-11",
+            "kernel_status": "active",
+            "name": "multiple_const_values",
+            "note": "norm model performance did not improve significantly due to const_score in rel_count... ",
+            "save_for_remote": "active",
+            "type": "local",
+            "user": "fberes"
+        },
+        {
+            "date": "2017-11-11",
+            "id": "results_with_refactored_preproc_2017-11-11",
+            "kernel_status": "active",
+            "name": "results_with_refactored_preproc",
+            "note": "After I refactored the stemming and text cleaning. The ndcg-s improved a lot (for all models). Now jaccard is the best model. In AverageCoOccurences notebook the rel_count distribution looks better for c=5,10.",
+            "save_for_remote": "active",
+            "type": "local",
+            "user": "fberes"
+        },
         {
             "date": "2017-10-27",
             "id": "long_run_2017-10-27",

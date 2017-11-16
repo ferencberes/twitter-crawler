@@ -92,6 +92,9 @@
             "type": "Word2Vec"
         },
         {
+            "config": {
+                "relevance_subset": "positive"
+            },
             "dependencies": [
                 "AverageCoOccurences",
                 "W2VecBaseline",
@@ -134,6 +137,36 @@
     ],
     "py_scripts": [],
     "reports": [
+        {
+            "date": "2017-11-16",
+            "id": "rayleigh_revisited_2017-11-16",
+            "kernel_status": "active",
+            "name": "rayleigh_revisited",
+            "note": "I used rayleigh again. Discriminative models improve a lot. occ_score is better than norm.",
+            "save_for_remote": "active",
+            "type": "local",
+            "user": "fberes"
+        },
+        {
+            "date": "2017-11-15",
+            "id": "eval_reaults_with_c_less_manipulation_2017-11-15",
+            "kernel_status": "active",
+            "name": "eval_reaults_with_c_less_manipulation",
+            "note": "",
+            "save_for_remote": "active",
+            "type": "local",
+            "user": "fberes"
+        },
+        {
+            "date": "2017-11-14",
+            "id": "eval_results_with_new_norm_c_2017-11-14",
+            "kernel_status": "active",
+            "name": "eval_results_with_new_norm_c",
+            "note": "These are the first results realted to Andras ideas (rel_count, global, snapshot refactors). 3 types of evaluations were measures (positive, binary, discriminative). Norm_c is the best (except for discriminative).",
+            "save_for_remote": "active",
+            "type": "local",
+            "user": "fberes"
+        },
         {
             "date": "2017-11-11",
             "id": "multiple_const_values_2017-11-11",

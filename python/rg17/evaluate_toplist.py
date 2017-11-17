@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 import gensim, os, json
 
 def transform_account_name(acc_name, remove_digits, remove_under_score, to_lower):
@@ -113,3 +114,32 @@ def get_distance_toplist(distance_df, key_words, snapshot_ids, top_k, excluded_w
     if excluded_words != None:
         filtered_df = filtered_df[~filtered_df["word_2"].isin(excluded_words)]
     return filtered_df.sort_values("distance", ascending=True).head(top_k)
+
+### NDCG ###
+
+def get_relevance_order(relevant_map):
+    """Get the ordered list of words based on relevance. The input is a dictionary!"""
+    relevant_df = pd.DataFrame(list(relevant_map.items()), columns=["word","relevance"])
+    relevant_df = relevant_df.sort_values("relevance", ascending=False)
+    return list(relevant_df["word"])
+
+def dcg(relevant_map, pred_order, k=None):
+    """Calculate discounted cumulative gain"""
+    if k == None:
+        k = len(pred_order)
+    k = min(k, len(pred_order))
+    dcg_score = 0.0
+    for i in range(k):
+        word = pred_order[i]
+        if word in relevant_map:
+            dcg_score += relevant_map[word] / np.log(i+2)
+    return dcg_score
+
+def ndcg(relevant_map, pred_order, k=None):
+    """Calculate normalized discounted cumulative gain"""
+    if len(pred_order) == 0.0:
+        return 0.0
+    else:
+        relevance_order = get_relevance_order(relevant_map)
+        dcg_val, idcg_val = dcg(relevant_map,pred_order,k=k), dcg(relevant_map,relevance_order,k=k)
+        return float(dcg_val) / idcg_val

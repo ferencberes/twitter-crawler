@@ -5,6 +5,47 @@ from plotly.graph_objs import *
 import networkx as nx
 from .evaluate_toplist import *
 
+
+def get_trace(name, x_arr, y_arr, text_arr, color, size):
+    """Get trace for word statistics"""
+    trace = Scatter(
+        x = x_arr,
+        y = y_arr,
+        #z = z_arr,
+        name = name,
+        mode = 'markers',
+        text = text_arr,
+        marker = dict(
+            size = size,
+            color = color,
+            line = dict(width = 2)
+        )
+    )
+    return trace
+
+def get_layout(title, x_label, y_label):
+    """Get layout for word statistics"""
+    layout = Layout(
+        title=title,
+        xaxis=dict(
+            title=x_label,
+            titlefont=dict(
+                family='Courier New, monospace',
+                size=18,
+                color='#7f7f7f'
+            )
+        ),
+        yaxis=dict(
+            title=y_label,
+            titlefont=dict(
+                family='Courier New, monospace',
+                size=18,
+                color='#7f7f7f'
+            )
+        )
+    )
+    return layout
+
 def show_graph(pair_occs_df, key_words, snapshot_ids, score_col="occ_score", score_limit=None):
     edges = get_toplist_with_max_scores(pair_occs_df,key_words,snapshot_ids, score_col=score_col)[["word_1","word_2",score_col]]
     edges = edges.sort_values(score_col)

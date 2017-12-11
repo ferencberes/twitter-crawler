@@ -37,7 +37,7 @@
         "w2v_root_folder": "/mnt/idms/fberes/network/combined_occ/models/w2v/",
         "word_corpus": "/mnt/idms/fberes/network/roland_garros/data/rg17_8000_important_en_words_plus_players.txt"
     },
-    "description": "Add some custom description for this pipeline!",
+    "description": "Pipeline for word co-occurrence analysis.",
     "id": "7",
     "name": "TrendApproximation",
     "notebooks": [
@@ -94,6 +94,15 @@
             "type": "Word2Vec"
         },
         {
+            "config": {
+                "frequency_weight": 0.3,
+                "score_c_vals": [
+                    0,
+                    5,
+                    10
+                ],
+                "snapshot_weight": 0.3
+            },
             "dependencies": [
                 "AverageCoOccurences",
                 "W2VecBaseline",
@@ -101,8 +110,8 @@
             ],
             "is_clone": "no",
             "kernel_type": "py3-env",
-            "name": "ToplistEvaluator",
-            "path": "ipython/rg17/ToplistEvaluator.ipynb",
+            "name": "ToplistEvaluatorFinals",
+            "path": "ipython/rg17/ToplistEvaluatorFinals.ipynb",
             "pipeline_status": "on",
             "type": "Evaluator"
         },
@@ -128,14 +137,24 @@
         {
             "is_clone": "no",
             "kernel_type": "py3-env",
-            "name": "SelectKeysFromSchedule",
-            "path": "ipython/rg17/SelectKeysFromSchedule.ipynb",
+            "name": "ToplistEvaluatorGeneral",
+            "path": "ipython/rg17/ToplistEvaluatorGeneral.ipynb",
             "pipeline_status": "off",
-            "type": "Preprocessor"
+            "type": "Evaluator"
         }
     ],
     "py_scripts": [],
     "reports": [
+        {
+            "date": "2017-11-17",
+            "id": "changing_r_member_weights_2017-11-17",
+            "kernel_status": "active",
+            "name": "changing_r_member_weights",
+            "note": "I introduced \"frequency_val\" into \"r\". I was experimenting with the combination weights. There are no major differences in performance. We must not assign 1.0 weight to \"frequency_val\". This would result inf \"norm_c\" scores when \"r\" = \"frequency_val\" = 0!  ",
+            "save_for_remote": "active",
+            "type": "local",
+            "user": "fberes"
+        },
         {
             "date": "2017-11-16",
             "id": "rayleigh_revisited_2017-11-16",

@@ -1,11 +1,11 @@
 from nltk.stem.snowball import SnowballStemmer
 import re
 
-def clean_text(t):
-    """Remove non-alphabetical characters + remove commans and numbers"""
+def clean_text(t, pattern="[\w,\@,',\#]+"):
+    """Remove non-alphabetical characters + remove commas"""
     # get only alphabetical words + full mentions
-    clean_1 = ' '.join(re.findall("[\w,\@,']+",t))
-    # remove numbers and comma
+    clean_1 = ' '.join(re.findall(pattern,t))
+    # remove comma
     clean_2 = ' '.join(re.findall("[^\,]+",clean_1))
     return clean_2.lower()
 
@@ -39,7 +39,7 @@ class CustomStemmer:
         return word[1:] if has_hashtag else word
         
     def stem_words(self, text, remove_hashtag=True, pattern="[\w,\@,',\#]+"):
-        words = re.findall(pattern,text)
+        words = clean_text(text, pattern=pattern).split()
         if remove_hashtag:
             return [self.remove_hashtag(self.stem_word(w)) for w in words]
         else:

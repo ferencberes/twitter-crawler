@@ -2,7 +2,7 @@
     "config_path": "pipelines/TrendApproximation.json",
     "default_config": {
         "distance_root_folder": "/mnt/idms/fberes/network/combined_occ/models/distance/",
-        "experiment_id": "rg17_20171027_8000_en-players_3h-plus2h_accurate",
+        "experiment_id": "rg17_20171211_8000_en-players_3h-plus2h_accurate",
         "frequency_weight": 0.3,
         "keywords_for_eval_path": "/mnt/idms/fberes/network/combined_occ/eval_keywords.csv",
         "player_name_with_accounts_file_path": "/mnt/idms/fberes/network/online_ranker/roland_garros_updated_schedule/filtered_true_matches.json",
@@ -57,7 +57,7 @@
             "kernel_type": "py3-env",
             "name": "CoOccurenceDataFormatter",
             "path": "ipython/rg17/RG17_combined_occurences.ipynb",
-            "pipeline_status": "off",
+            "pipeline_status": "on",
             "type": "Preprocessor"
         },
         {
@@ -68,7 +68,7 @@
             "kernel_type": "py3-env",
             "name": "AverageCoOccurences",
             "path": "ipython/rg17/AverageCoOccurences.ipynb",
-            "pipeline_status": "off",
+            "pipeline_status": "on",
             "type": "Statistics"
         },
         {
@@ -90,29 +90,20 @@
             "kernel_type": "py3-env",
             "name": "W2VecBaseline",
             "path": "ipython/rg17/W2VecBaseline.ipynb",
-            "pipeline_status": "off",
+            "pipeline_status": "on",
             "type": "Word2Vec"
         },
         {
-            "config": {
-                "frequency_weight": 0.3,
-                "score_c_vals": [
-                    0,
-                    5,
-                    10
-                ],
-                "snapshot_weight": 0.3
-            },
             "dependencies": [
                 "AverageCoOccurences",
                 "W2VecBaseline",
-                "BaslineDistances"
+                "BaselineDistances"
             ],
             "is_clone": "no",
             "kernel_type": "py3-env",
             "name": "ToplistEvaluatorFinals",
             "path": "ipython/rg17/ToplistEvaluatorFinals.ipynb",
-            "pipeline_status": "on",
+            "pipeline_status": "off",
             "type": "Evaluator"
         },
         {
@@ -129,17 +120,22 @@
             ],
             "is_clone": "no",
             "kernel_type": "py3-env",
-            "name": "BaslineDistances",
+            "name": "BaselineDistances",
             "path": "ipython/rg17/BaselineDistances.ipynb",
-            "pipeline_status": "off",
+            "pipeline_status": "on",
             "type": "Baseline"
         },
         {
+            "dependencies": [
+                "AverageCoOccurences",
+                "W2VecBaseline",
+                "BaselineDistances"
+            ],
             "is_clone": "no",
             "kernel_type": "py3-env",
             "name": "ToplistEvaluatorGeneral",
             "path": "ipython/rg17/ToplistEvaluatorGeneral.ipynb",
-            "pipeline_status": "off",
+            "pipeline_status": "on",
             "type": "Evaluator"
         }
     ],

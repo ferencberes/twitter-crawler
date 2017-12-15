@@ -115,6 +115,13 @@ def get_distance_toplist(distance_df, key_words, snapshot_ids, top_k, excluded_w
         filtered_df = filtered_df[~filtered_df["word_2"].isin(excluded_words)]
     return filtered_df.sort_values("distance", ascending=True).head(top_k)
 
+
+### Relevant Words ###
+
+def list2relevance(values, relevance):
+    return dict(zip(values, relevance * np.ones(len(values))))
+
+
 ### NDCG ###
 
 def get_relevance_order(relevant_map):

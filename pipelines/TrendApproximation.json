@@ -3,7 +3,7 @@
     "default_config": {
         "distance_root_folder": "/mnt/idms/fberes/network/combined_occ/models/distance/",
         "experiment_id": "rg17_20171211_8000_en-players_3h-plus2h_accurate",
-        "frequency_weight": 0.3,
+        "frequency_weight": 0.0,
         "keywords_for_eval_path": "/mnt/idms/fberes/network/combined_occ/eval_keywords.csv",
         "player_name_with_accounts_file_path": "/mnt/idms/fberes/network/online_ranker/roland_garros_updated_schedule/filtered_true_matches.json",
         "player_names_file_path": "/mnt/idms/fberes/network/combined_occ/player_name_parts.txt",
@@ -19,7 +19,7 @@
             8,
             10
         ],
-        "snapshot_weight": 0.3,
+        "snapshot_weight": 0.5,
         "stemmed_tweet_file_path": "/mnt/idms/fberes/network/roland_garros/data/rg17_tweets_eng_stemmed.csv",
         "stop_words_file_path": "/mnt/idms/fberes/network/combined_occ/stop_words_en.txt",
         "time_hour_vals": [

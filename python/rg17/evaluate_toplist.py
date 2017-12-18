@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 import gensim, os, json
+import multiprocessing, functools
 
 def transform_account_name(acc_name, remove_digits, remove_under_score, to_lower):
     result = acc_name
@@ -120,6 +121,53 @@ def get_distance_toplist(distance_df, key_words, snapshot_ids, top_k, excluded_w
 
 def list2relevance(values, relevance):
     return dict(zip(values, relevance * np.ones(len(values))))
+
+
+### NDCG Utils ###
+
+def get_ndcg_single_thread(top_k, rel_rec, rel_cols, get_pred_words_func, general_words, score_col, verbose=False):
+    """'general_words' must be a relevance dictionary."""
+    time_id, key_word = rel_rec["time"], rel_rec["key_word"]
+    snapshot_id = "%sT%s" % (rel_rec["date"], time_id)
+    # define relevant words
+    relevant_words = dict()
+    for rc in rel_cols:
+        relevant_words.update(rel_rec[rc])
+    if general_words != None:
+        relevant_words.update(general_words)
+    # define words to be excluded from the toplist    
+    if "key_exclude_words" in rel_rec:
+        to_be_excluded = rel_rec["key_exclude_words"]
+    else:
+        to_be_excluded = None
+    # get toplist
+    pred_words = get_pred_words_func(score_col, key_word, snapshot_id, top_k, to_be_excluded)
+    if verbose:
+        print(pred_words)
+        print(relevant_words)
+    ndcg_score = ndcg(relevant_words, pred_words, k=top_k)
+    return (snapshot_id, rel_rec["date"], time_id, score_col, key_word, ndcg_score)
+
+def get_ndcg_from_threads(top_k, rel_cols, relevant_df, get_pred_words_func, time_ids, score_cols, general_words, n_threads=1):
+    print(len(relevant_df))
+    filtered_relevant_df = relevant_df[relevant_df["time"].isin(time_ids)]
+    print(len(filtered_relevant_df))
+    ndcg_info_list = []
+    if n_threads > 1:
+        print("Calculating NDCG on %i threads" % n_threads)
+    for idx, row in filtered_relevant_df.iterrows():
+        if n_threads == 1:
+            for score_col in score_cols:
+                ndcg_info_list += [get_ndcg_single_thread(top_k, row, rel_cols, get_pred_words_func, general_words, score_col)]
+        else:
+            f_partial = functools.partial(get_ndcg_single_thread, top_k, row, rel_cols, get_pred_words_func, general_words)
+            pool = multiprocessing.Pool(processes=n_threads)
+            res = pool.map(f_partial, score_cols)
+            pool.close()
+            pool.join()
+            ndcg_info_list += res
+    ndcg_df = pd.DataFrame(ndcg_info_list, columns=["snapshot_id","date","time","score_id","key_word","ndcg"])
+    return ndcg_df   
 
 
 ### NDCG ###

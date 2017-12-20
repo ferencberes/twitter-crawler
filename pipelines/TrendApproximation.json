@@ -1,8 +1,11 @@
 {
     "config_path": "pipelines/TrendApproximation.json",
     "default_config": {
-        "distance_root_folder": "/mnt/idms/fberes/network/combined_occ/models/distance/",
-        "experiment_id": "rg17_20171211_8000_en-players_3h-plus2h_accurate",
+        "distance_root_folder": "/mnt/idms/fberes/network/combined_occ/experiments//rg17_20171218_hashmax20000_8000_en-players_3h-plus2h_accurate/models/distance/",
+        "experiment_dir": "/mnt/idms/fberes/network/combined_occ/experiments//rg17_20171218_hashmax20000_8000_en-players_3h-plus2h_accurate",
+        "experiment_id": "rg17_20171218_hashmax20000_8000_en-players_3h-plus2h_accurate",
+        "experiment_prefix": "/mnt/idms/fberes/network/combined_occ/experiments/",
+        "flink_outs_prefix": "/mnt/idms/fberes/network/combined_occ/flink_jobs/outputs/",
         "frequency_weight": 0.0,
         "keywords_for_eval_path": "/mnt/idms/fberes/network/combined_occ/eval_keywords.csv",
         "player_name_with_accounts_file_path": "/mnt/idms/fberes/network/online_ranker/roland_garros_updated_schedule/filtered_true_matches.json",
@@ -34,7 +37,7 @@
         ],
         "unstemmed_tweet_file_path": "/mnt/idms/fberes/network/roland_garros/data/rg17_tweets_eng.csv",
         "w2v_model_dim": 100,
-        "w2v_root_folder": "/mnt/idms/fberes/network/combined_occ/models/w2v/",
+        "w2v_root_folder": "/mnt/idms/fberes/network/combined_occ/experiments//rg17_20171218_hashmax20000_8000_en-players_3h-plus2h_accurate/models/w2v/",
         "word_corpus": "/mnt/idms/fberes/network/roland_garros/data/rg17_8000_important_en_words_plus_players.txt"
     },
     "description": "Pipeline for word co-occurrence analysis.",
@@ -103,7 +106,7 @@
             "kernel_type": "py3-env",
             "name": "ToplistEvaluatorFinals",
             "path": "ipython/rg17/ToplistEvaluatorFinals.ipynb",
-            "pipeline_status": "off",
+            "pipeline_status": "on",
             "type": "Evaluator"
         },
         {

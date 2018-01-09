@@ -1,0 +1,18 @@
+{
+    "config_path": "pipelines/AusOpen18.json",
+    "description": "Add some custom description for this pipeline!",
+    "id": "8",
+    "name": "AusOpen18",
+    "notebooks": [
+        {
+            "is_clone": "no",
+            "kernel_type": "py3-env",
+            "name": "EventAnalyzerAusOpen18",
+            "path": "ipython/ausopen18/EventAnalyzerAusOpen18.ipynb",
+            "pipeline_status": "on",
+            "type": "Analyzer"
+        }
+    ],
+    "py_scripts": [],
+    "reports": []
+}

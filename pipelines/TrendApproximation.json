@@ -1,9 +1,9 @@
 {
     "config_path": "pipelines/TrendApproximation.json",
     "default_config": {
-        "distance_root_folder": "/mnt/idms/fberes/network/combined_occ/experiments//rg17_20171218_hashmax10000_8000_en-players_3h-plus2h_murmur/models/distance/",
-        "experiment_dir": "/mnt/idms/fberes/network/combined_occ/experiments//rg17_20171218_hashmax10000_8000_en-players_3h-plus2h_murmur",
-        "experiment_id": "rg17_20171218_hashmax10000_8000_en-players_3h-plus2h_murmur",
+        "distance_root_folder": "/mnt/idms/fberes/network/combined_occ/experiments//rg17_20171218_hashmax3000_8000_en-players_3h-plus2h_murmur/models/distance/",
+        "experiment_dir": "/mnt/idms/fberes/network/combined_occ/experiments//rg17_20171218_hashmax3000_8000_en-players_3h-plus2h_murmur",
+        "experiment_id": "rg17_20171218_hashmax3000_8000_en-players_3h-plus2h_murmur",
         "experiment_prefix": "/mnt/idms/fberes/network/combined_occ/experiments/",
         "flink_outs_prefix": "/mnt/idms/fberes/network/combined_occ/flink_jobs/outputs/",
         "frequency_weight": 0.0,
@@ -37,7 +37,7 @@
         ],
         "unstemmed_tweet_file_path": "/mnt/idms/fberes/network/roland_garros/data/rg17_tweets_eng.csv",
         "w2v_model_dim": 100,
-        "w2v_root_folder": "/mnt/idms/fberes/network/combined_occ/experiments//rg17_20171218_hashmax10000_8000_en-players_3h-plus2h_murmur/models/w2v/",
+        "w2v_root_folder": "/mnt/idms/fberes/network/combined_occ/experiments//rg17_20171218_hashmax3000_8000_en-players_3h-plus2h_murmur/models/w2v/",
         "word_corpus": "/mnt/idms/fberes/network/roland_garros/data/rg17_8000_important_en_words_plus_players.txt"
     },
     "description": "Pipeline for word co-occurrence analysis.",
@@ -60,7 +60,7 @@
             "kernel_type": "py3-env",
             "name": "CoOccurenceDataFormatter",
             "path": "ipython/rg17/RG17_combined_occurences.ipynb",
-            "pipeline_status": "on",
+            "pipeline_status": "off",
             "type": "Preprocessor"
         },
         {
@@ -93,7 +93,7 @@
             "kernel_type": "py3-env",
             "name": "W2VecBaseline",
             "path": "ipython/rg17/W2VecBaseline.ipynb",
-            "pipeline_status": "on",
+            "pipeline_status": "off",
             "type": "Word2Vec"
         },
         {
@@ -125,7 +125,7 @@
             "kernel_type": "py3-env",
             "name": "BaselineDistances",
             "path": "ipython/rg17/BaselineDistances.ipynb",
-            "pipeline_status": "on",
+            "pipeline_status": "off",
             "type": "Baseline"
         },
         {
@@ -144,6 +144,16 @@
     ],
     "py_scripts": [],
     "reports": [
+        {
+            "date": "2018-01-11",
+            "id": "fixing_account_names_lower_2018-01-11",
+            "kernel_status": "active",
+            "name": "fixing_account_names_lower",
+            "note": "I had to use lowered account names in the evaluation again. NDCG values improved a bit. ",
+            "save_for_remote": "active",
+            "type": "local",
+            "user": "fberes"
+        },
         {
             "date": "2018-01-08",
             "id": "results_hashmax_10000_murmur__2018-01-08",

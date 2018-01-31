@@ -1,6 +1,6 @@
 {
     "config_path": "pipelines/AusOpen18.json",
-    "description": "Add some custom description for this pipeline!",
+    "description": "Pipeline for Australian Open 2018 data crawling and analysis.",
     "id": "8",
     "name": "AusOpen18",
     "notebooks": [

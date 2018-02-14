@@ -1,4 +1,4 @@
-twitter-crawler
+﻿twitter-crawler
 ============
 A simple Python Twitter crawler is implemented in this repository. The crawler can search for events on Twitter with the help of [Twython](https://github.com/ryanmcgrath/twython). The crawled events are inserted into a [MongoDB](https://www.mongodb.com/) collection in order to be more accessible for further analysis.
 
@@ -25,6 +25,13 @@ b.) Packages only needed for the data analyzer notebook:
 
 Usage
 --------
+
+#### Simple Example
+
+You can see a simple usage example in tihs [notebook](ipython/SimpleSearch.ipynb). In this version the Twitter collection is written to file.
+
+#### Detailed Example
+
 You can find detailed usage examples in this jupyter [notebook](ipython/Samples.ipynb). But you can find information about how to use **TwitterCrawler** below.
 
 ### Initialize TwitterCrawler
@@ -47,6 +54,16 @@ tcs = TwitterCrawler(time_frame=900,max_requests=450)
 ```python
 tcs.connect("raw", port=27017, db_name='twitter-crawler')
 ```
+
+#### c.) Export to file
+
+**TwitterCrawler** can export the collected events to a File as well:
+
+```python
+tcs.connect("sample.txt")
+```
+
+If the file already exists then the new content will be appended. It won't be overwritten completely.
 
 ### Authentication
 

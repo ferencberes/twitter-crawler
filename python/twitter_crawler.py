@@ -135,7 +135,7 @@ class TwitterCrawler(RequestScheduler):
                 if self._connection_type == "mongo":
                     self._mongo_coll.insert_one(tweet)
                 elif self._connection_type == "file":
-                    self._output_file.write("%s\n" % str(tweet))
+                    self._output_file.write("%s\n" % json.dumps(tweet))
                 else:
                     raise RuntimeError("Use did not specify output for your search. Use connect_to_mongodb() ot connect_to_file() functions!")
             except Exception as err:

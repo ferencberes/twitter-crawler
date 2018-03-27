@@ -19,6 +19,14 @@
             "path": "ipython/Followers.ipynb",
             "pipeline_status": "on",
             "type": "Experiment"
+        },
+        {
+            "is_clone": "no",
+            "kernel_type": "py3-env",
+            "name": "SimpleSearch",
+            "path": "ipython/SimpleSearch.ipynb",
+            "pipeline_status": "on",
+            "type": "Sample"
         }
     ],
     "py_scripts": [],

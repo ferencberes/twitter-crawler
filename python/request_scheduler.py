@@ -1,4 +1,4 @@
-import time, datetime, pymongo
+import time, datetime, pymongo, os
 import numpy as np
 from collections import deque
 from pymongo import MongoClient
@@ -14,9 +14,10 @@ class RequestScheduler():
         self._requests = deque([])
         # mongodb parameters
         self._client, self._db = None, None
-        self._raw_coll = None
+        self._mongo_coll, self._output_file = None, None
+        self._connection_type = None
         
-    def connect(self,collection_name,port=27017,db_name="twitter-crawler"):
+    def connect_to_mongodb(self,collection_name,port=27017,db_name="twitter-crawler"):
         """Connect to MongoDB collection"""
         try:
             self._client = MongoClient('mongodb://localhost:%i/' % port)
@@ -26,18 +27,30 @@ class RequestScheduler():
                 print("'%s' collection was created!" % collection_name)
             except:
                 pass
-            self._raw_coll = self._db[collection_name]
-            result = self._raw_coll.create_index([('id_str', pymongo.ASCENDING)],unique=True)
+            self._mongo_coll = self._db[collection_name]
+            result = self._mongo_coll.create_index([('id_str', pymongo.ASCENDING)],unique=True)
             print(result)
             print("Connection was created successfully!")
+            self._connection_type = "mongo"
         except:
             raise
-        
+
+    def connect_to_file(self, file_name):
+        """Connect to output file. Collected tweets and retweets will be stored in tihs file."""
+        if os.path.exists(file_name):
+            self._output_file = open(file_name, 'a')
+        else:
+            self._output_file = open(file_name, 'w')
+        self._connection_type = "file"
+
     def close(self):
         """Close MongoDB connection"""
         try:
-            if self._client != None:
-                self._client.close()
+            if self._connection_type == "mongo":
+                if self._client != None:
+                    self._client.close()
+            elif self._connection_type == "file":
+                self._output_file.close()
             print("Connection was closed successfully!")
         except:
             raise

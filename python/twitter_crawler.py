@@ -94,9 +94,10 @@ class TwitterCrawler(RequestScheduler):
                 if custom_since_id != None and current_max_id <= custom_since_id + 1:
                     stop_search = True
 
-                self.insert_tweets_to_coll(result_tweets)
+                # export tweets
+                self.export_tweets_to_output_framework(result_tweets)
                 cnt += len(result_tweets)
-                    
+
                 if stop_search:
                     break
             except twython.exceptions.TwythonRateLimitError:
@@ -128,9 +129,14 @@ class TwitterCrawler(RequestScheduler):
                 print("STREAM epoch: Sleeping for %.1f seconds" % wait_for)
             time.sleep(wait_for)
             
-    def insert_tweets_to_coll(self,tweets):
+    def export_tweets_to_output_framework(self,tweets):
         for tweet in tweets:
             try:
-                self._raw_coll.insert_one(tweet)
+                if self._connection_type == "mongo":
+                    self._mongo_coll.insert_one(tweet)
+                elif self._connection_type == "file":
+                    self._output_file.write("%s\n" % json.dumps(tweet))
+                else:
+                    raise RuntimeError("Use did not specify output for your search. Use connect_to_mongodb() ot connect_to_file() functions!")
             except Exception as err:
                 print(str(err))

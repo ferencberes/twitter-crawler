@@ -14,5 +14,16 @@
         }
     ],
     "py_scripts": [],
-    "reports": []
+    "reports": [
+        {
+            "date": "2018-01-22",
+            "id": "usopen_first_report_2018-01-22",
+            "kernel_status": "active",
+            "name": "usopen_first_Report",
+            "note": "Here is the first report of usopen17 dataset. Due to the fact that more hashtags were collected than for RG17 we have a bigger dataset. Almost 500K mentions for 21 days.",
+            "save_for_remote": "active",
+            "type": "local",
+            "user": "fberes"
+        }
+    ]
 }

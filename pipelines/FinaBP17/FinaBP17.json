@@ -1,0 +1,205 @@
+{
+    "config_path": "pipelines/FinaBP17/FinaBP17.json",
+    "description": "Add some custom description for this pipeline!",
+    "id": "4",
+    "imports": [],
+    "name": "FinaBP17",
+    "notebooks": [
+        {
+            "is_clone": "no",
+            "kernel_type": "py3-env",
+            "name": "DunaArenaGeolocation",
+            "path": "ipython/fina17/DunaArenaGeolocation.ipynb",
+            "pipeline_status": "off",
+            "type": "Experiment"
+        },
+        {
+            "is_clone": "no",
+            "kernel_type": "py3-env",
+            "name": "EventAnalyzerFINA",
+            "path": "ipython/fina17/EventAnalyzerFINA.ipynb",
+            "pipeline_status": "off",
+            "type": "Analyzer"
+        },
+        {
+            "is_clone": "no",
+            "kernel_type": "py3-env",
+            "name": "FINAGeolocation",
+            "path": "ipython/fina17/FINAGeolocation.ipynb",
+            "pipeline_status": "off",
+            "type": "Experiment"
+        }
+    ],
+    "parameter_notebooks": [],
+    "py_scripts": [],
+    "reports": [
+        {
+            "date": "2017-07-03",
+            "id": "failures_2017-07-03",
+            "name": "failures",
+            "note": "",
+            "type": "local",
+            "user": "pillere"
+        },
+        {
+            "date": "2017-07-04",
+            "id": "failures_2017-07-04",
+            "name": "failures",
+            "note": "twython.exceptions.TwythonError: (\"Connection aborted.\", OSError(\"(104, \"ECONNRESET\")\",))",
+            "type": "local",
+            "user": "pillere"
+        },
+        {
+            "date": "2017-07-05",
+            "id": "failures_2017-07-05",
+            "name": "failures",
+            "note": "twython.exceptions.TwythonError: (\"Connection aborted.\", OSError(\"(104, \"ECONNRESET\")\",))",
+            "type": "local",
+            "user": "pillere"
+        },
+        {
+            "date": "2017-07-10",
+            "id": "failures_2017-07-10",
+            "name": "failures",
+            "note": "twython.exceptions.TwythonError: (\"Connection aborted.\", OSError(\"(104, \"ECONNRESET\")\",))",
+            "type": "local",
+            "user": "pillere"
+        },
+        {
+            "date": "2017-07-11",
+            "id": "failures_2017-07-11",
+            "name": "failures",
+            "note": "twython.exceptions.TwythonError: (\"Connection aborted.\", OSError(\"(104, \"ECONNRESET\")\",))",
+            "type": "local",
+            "user": "pillere"
+        },
+        {
+            "date": "2017-07-12",
+            "id": "failures_2017-07-12",
+            "name": "failures",
+            "note": "twython.exceptions.TwythonError: (\"Connection aborted.\", OSError(\"(104, \"ECONNRESET\")\",))\n\nMost csak eng \u00e9s budapest halt meg.",
+            "type": "local",
+            "user": "pillere"
+        },
+        {
+            "date": "2017-07-13",
+            "id": "failures_2017-07-13",
+            "name": "failures",
+            "note": "twython.exceptions.TwythonError: (\"Connection aborted.\", OSError(\"(104, \"ECONNRESET\")\",))",
+            "type": "local",
+            "user": "pillere"
+        },
+        {
+            "date": "2017-07-14",
+            "id": "failures_2017-07-14",
+            "name": "failures",
+            "note": "twython.exceptions.TwythonError: (\"Connection aborted.\", OSError(\"(104, \"ECONNRESET\")\",))",
+            "type": "local",
+            "user": "pillere"
+        },
+        {
+            "date": "2017-07-17",
+            "id": "failures_2017-07-17",
+            "name": "failures",
+            "note": "twython.exceptions.TwythonError: (\"Connection aborted.\", OSError(\"(104, \"ECONNRESET\")\",))",
+            "type": "local",
+            "user": "pillere"
+        },
+        {
+            "date": "2017-07-19",
+            "id": "failures_2017-07-19",
+            "name": "failures",
+            "note": "twython.exceptions.TwythonError: (\"Connection aborted.\", OSError(\"(104, \"ECONNRESET\")\",))\n\nEzut\u00e1n csak az eng \u00e9s a budapest lett \u00fajraind\u00edtva.",
+            "type": "local",
+            "user": "pillere"
+        },
+        {
+            "date": "2017-07-20",
+            "id": "failures_2017-07-20",
+            "name": "failures",
+            "note": "",
+            "type": "local",
+            "user": "pillere"
+        },
+        {
+            "date": "2017-07-21",
+            "id": "failures_2017-07-21",
+            "name": "failures",
+            "note": "",
+            "type": "local",
+            "user": "pillere"
+        },
+        {
+            "date": "2017-07-24",
+            "id": "failures_2017-07-24",
+            "name": "failures",
+            "note": "",
+            "type": "local",
+            "user": "pillere"
+        },
+        {
+            "date": "2017-07-25",
+            "id": "failures_2017-07-25",
+            "name": "failures",
+            "note": "",
+            "type": "local",
+            "user": "pillere"
+        },
+        {
+            "date": "2017-07-27",
+            "id": "failures_2017-07-27",
+            "name": "failures",
+            "note": "",
+            "type": "local",
+            "user": "pillere"
+        },
+        {
+            "date": "2017-07-31",
+            "id": "failures_2017-07-31",
+            "name": "failures",
+            "note": "",
+            "type": "local",
+            "user": "pillere"
+        },
+        {
+            "date": "2017-08-01",
+            "id": "failures_2017-08-01",
+            "name": "failures",
+            "note": "",
+            "type": "local",
+            "user": "pillere"
+        },
+        {
+            "date": "2017-08-02",
+            "id": "failures_2017-08-02",
+            "name": "failures",
+            "note": "",
+            "type": "local",
+            "user": "pillere"
+        },
+        {
+            "date": "2017-08-03",
+            "id": "failures_2017-08-03",
+            "name": "failures",
+            "note": "",
+            "type": "local",
+            "user": "pillere"
+        },
+        {
+            "date": "2017-08-04",
+            "id": "failures_2017-08-04",
+            "name": "failures",
+            "note": "",
+            "type": "local",
+            "user": "pillere"
+        },
+        {
+            "date": "2017-08-07",
+            "id": "failures_2017-08-07",
+            "name": "failures",
+            "note": "",
+            "type": "local",
+            "user": "pillere"
+        }
+    ]
+}

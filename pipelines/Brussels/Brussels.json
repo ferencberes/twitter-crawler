@@ -1,7 +1,8 @@
 {
-    "config_path": "pipelines/Brussels.json",
+    "config_path": "pipelines/Brussels/Brussels.json",
     "description": "Brussels attack 2017 twitter-crawler pipeline.",
     "id": "3",
+    "imports": [],
     "name": "Brussels",
     "notebooks": [
         {
@@ -13,25 +14,22 @@
             "type": "Analyzer"
         }
     ],
+    "parameter_notebooks": [],
     "py_scripts": [],
     "reports": [
         {
-            "date": "2017-06-28",
-            "id": "brussels_5_days_2017-06-28",
-            "kernel_status": "active",
-            "name": "brussels_5_days",
-            "note": "Attack-Coldplay-Politics",
-            "save_for_remote": "active",
+            "date": "2017-06-22",
+            "id": "brussels_3_days_2017-06-22",
+            "name": "brussels_3_days",
+            "note": "Monday-Tuesday-WednesDay. Bombing + Coldplay concert with many news and media sources.",
             "type": "local",
             "user": "fberes"
         },
         {
-            "date": "2017-06-22",
-            "id": "brussels_3_days_2017-06-22",
-            "kernel_status": "active",
-            "name": "brussels_3_days",
-            "note": "Monday-Tuesday-WednesDay. Bombing + Coldplay concert with many news and media sources.",
-            "save_for_remote": "active",
+            "date": "2017-06-28",
+            "id": "brussels_5_days_2017-06-28",
+            "name": "brussels_5_days",
+            "note": "Attack-Coldplay-Politics",
             "type": "local",
             "user": "fberes"
         }

@@ -1,7 +1,8 @@
 {
-    "config_path": "pipelines/GrenfellFire.json",
+    "config_path": "pipelines/GrenfellFire/GrenfellFire.json",
     "description": "Grenfell tower fire 2017 twitter-crawler pipeline.",
     "id": "1",
+    "imports": [],
     "name": "GrenfellFire",
     "notebooks": [
         {
@@ -13,25 +14,22 @@
             "type": "Analyzer"
         }
     ],
+    "parameter_notebooks": [],
     "py_scripts": [],
     "reports": [
         {
-            "date": "2017-06-26",
-            "id": "grenfell_second_2017-06-26",
-            "kernel_status": "active",
-            "name": "grenfell_second",
-            "note": "Now we have more days. Soon we should finish crawling this event.",
-            "save_for_remote": "active",
+            "date": "2017-06-20",
+            "id": "grenfell_first_2017-06-20",
+            "name": "grenfell_first",
+            "note": "First report related to Grenfell Tower fire. The changes in daily popularity on the mention graph is interesting. The total data is huge, but the mention network is relatively small.",
             "type": "local",
             "user": "fberes"
         },
         {
-            "date": "2017-06-20",
-            "id": "grenfell_first_2017-06-20",
-            "kernel_status": "active",
-            "name": "grenfell_first",
-            "note": "First report related to Grenfell Tower fire. The changes in daily popularity on the mention graph is interesting. The total data is huge, but the mention network is relatively small.",
-            "save_for_remote": "active",
+            "date": "2017-06-26",
+            "id": "grenfell_second_2017-06-26",
+            "name": "grenfell_second",
+            "note": "Now we have more days. Soon we should finish crawling this event.",
             "type": "local",
             "user": "fberes"
         }

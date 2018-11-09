@@ -1,7 +1,8 @@
 {
-    "config_path": "pipelines/Terror17.json",
+    "config_path": "pipelines/Terror17/Terror17.json",
     "description": "Add some custom description for this pipeline!",
     "id": "5",
+    "imports": [],
     "name": "Terror17",
     "notebooks": [
         {
@@ -13,6 +14,7 @@
             "type": "Analyzer"
         }
     ],
+    "parameter_notebooks": [],
     "py_scripts": [],
     "reports": []
 }

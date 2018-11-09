@@ -1,7 +1,8 @@
 {
-    "config_path": "pipelines/AusOpen18.json",
+    "config_path": "pipelines/AusOpen18/AusOpen18.json",
     "description": "Pipeline for Australian Open 2018 data crawling and analysis.",
     "id": "8",
+    "imports": [],
     "name": "AusOpen18",
     "notebooks": [
         {
@@ -13,6 +14,7 @@
             "type": "Analyzer"
         }
     ],
+    "parameter_notebooks": [],
     "py_scripts": [],
     "reports": []
 }

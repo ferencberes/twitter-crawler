@@ -72,7 +72,9 @@ In order to use Twitter API you have to create an API key for your application. 
 ```json
 {
   "api_key":"YOUR_API_KEY",
-  "api_secret":"YOUR_API_SECRET"
+  "api_secret":"YOUR_API_SECRET",
+  "access_token":"YOUR_ACCESS_TOKEN",
+  "access_token_secret":"YOUR_ACCESS_TOKEN_SECRET"
 }
 ```
 Then you can authenticate your **TwitterCrawler** instance:
@@ -100,7 +102,7 @@ As I am using  [Twython](https://github.com/ryanmcgrath/twython) to handle my se
 
 ### Available search strategies
 
-In order to work with the Twitter timelnie properly one should consider using **"max_id"** and **"since_id"** . So far I have implemented two search strategies. Most of them is probably implemented in other repositories. I just followed this simple [tutorial](https://dev.twitter.com/rest/public/timelines).
+In order to work with the Twitter timeline properly one should consider using **"max_id"** and **"since_id"** . So far I have implemented two search strategies. Most of them is probably implemented in other repositories. I just followed this simple [tutorial](https://dev.twitter.com/rest/public/timelines).
 
 ####  Recursive search
 

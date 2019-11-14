@@ -100,7 +100,7 @@ As I am using  [Twython](https://github.com/ryanmcgrath/twython) to handle my se
 
 ### Available search strategies
 
-In order to work with the Twitter timelnie properly one should consider using **"max_id"** and **"since_id"** . So far I have implemented two search strategies. Most of them is probably implemented in other repositories. I just followed this simple [tutorial](https://dev.twitter.com/rest/public/timelines).
+In order to work with the Twitter timeline properly one should consider using **"max_id"** and **"since_id"** . So far I have implemented two search strategies. Most of them is probably implemented in other repositories. I just followed this simple [tutorial](https://dev.twitter.com/rest/public/timelines).
 
 ####  Recursive search
 

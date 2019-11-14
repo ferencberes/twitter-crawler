@@ -18,7 +18,7 @@ class TwitterCrawler(RequestScheduler):
         try:
             with open(auth_file_path,"r") as f:
                 auth_info = json.load(f)
-            self.twitter_api = Twython(auth_info["api_key"], auth_info["api_secret"])
+            self.twitter_api = Twython(auth_info["api_key"], auth_info["api_secret"], auth_info["access_token"], auth_info["access_token_secret"])
             print("Authentication was successful!")
         except:
             raise

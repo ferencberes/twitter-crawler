@@ -42,7 +42,14 @@
     },
     "description": "Pipeline for word co-occurrence analysis.",
     "id": "7",
-    "imports": [],
+    "imports": [
+        {
+            "kernel_type": "py3-env",
+            "name": "text_cleaning",
+            "path": "python/rg17/text_cleaning.py",
+            "type": "Text"
+        }
+    ],
     "name": "TrendApproximation",
     "notebooks": [
         {
@@ -83,6 +90,14 @@
             "kernel_type": "py3-env",
             "name": "FilterRelevantWords",
             "path": "ipython/rg17/TfIdfFilter.ipynb",
+            "pipeline_status": "off",
+            "type": "Preprocessor"
+        },
+        {
+            "is_clone": "no",
+            "kernel_type": "py3-env",
+            "name": "FilterRelevantWordsRefactor",
+            "path": "ipython/rg17/TfIdfFilterRefactor.ipynb",
             "pipeline_status": "off",
             "type": "Preprocessor"
         },

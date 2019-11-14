@@ -72,7 +72,9 @@ In order to use Twitter API you have to create an API key for your application. 
 ```json
 {
   "api_key":"YOUR_API_KEY",
-  "api_secret":"YOUR_API_SECRET"
+  "api_secret":"YOUR_API_SECRET",
+  "access_token":"YOUR_ACCESS_TOKEN",
+  "access_token_secret":"YOUR_ACCESS_TOKEN_SECRET"
 }
 ```
 Then you can authenticate your **TwitterCrawler** instance:

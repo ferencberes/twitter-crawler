@@ -159,7 +159,3 @@ For a stream search you must specify a **delta_t** parameter. Which is approxima
 ```python
 tcs.stream_search(delta_t=120, termination_func=my_time_bound_filter)
 ```
-
-## Analyze collected events
-
-The repository contains a Jupyter [notebook](ipython/EventAnalyzer.ipynb) as well, which shows how you can analyze the collected data.

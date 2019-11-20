@@ -1,13 +1,23 @@
-from search_utils import tweet_time_2_epoch
+from .search import tweet_time_2_epoch
 
 from pymongo import MongoClient
 import networkx as nx
 import pandas as pd
 import numpy as np
+import json
 
 from matplotlib import pyplot as plt
 from bokeh.plotting import figure, show
 from bokeh.palettes import Category20
+
+### json ###
+
+def load_json_result(file_name):
+    messages = []
+    with open(file_name) as f:
+        for line in f:
+            messages.append(json.loads(line.rstrip()))
+    return messages
 
 ### mongodb ###
 

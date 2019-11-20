@@ -1,7 +1,7 @@
 import json, twython, time
 import numpy as np
 from twython import Twython
-from request_scheduler import *
+from .scheduler import *
 
 
 class TwitterCrawler(RequestScheduler):    

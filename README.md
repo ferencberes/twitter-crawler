@@ -1,42 +1,32 @@
-﻿twitter-crawler
-============
+﻿# twitter-crawler
+
 A simple Python Twitter crawler is implemented in this repository. The crawler can search for events on Twitter with the help of [Twython](https://github.com/ryanmcgrath/twython). The crawled events are inserted into a [MongoDB](https://www.mongodb.com/) collection in order to be more accessible for further analysis.
 
-Requirements
-------------------
-As the crawler inserts events into a MongoDB collection you need to be able to connect to a MongoDB database.
+# How to deploy?
 
-Here are the Python packages that this project depends on:
+## Requirements
 
-a.) Packages used in TwitterCrawler:
+This package was developed in Python 3.5 conda environment.
 
-   * **twython**
-   * **pymongo**
-   * collections
-   * numpy
-   * datetime
+## Install
 
-b.) Packages only needed for the data analyzer notebook:
+```bash
+pip install .
+```
 
-   * pandas
-   * networkx
-   * matplotlib
+# Examples
 
+### a.) With file output
 
-Usage
---------
+You can see a simple example in this [notebook](ipython/SimpleSearch.ipynb) when the collected data is written to a single file.
 
-#### Simple Example
+### b.) With MongoDB connection
 
-You can see a simple usage example in tihs [notebook](ipython/SimpleSearch.ipynb). In this version the Twitter collection is written to file.
+You can find detailed usage examples in this jupyter [notebook](ipython/MultipleSearchWithMongoDB.ipynb). Here the collected data is exported to a MongoDB collection.
 
-#### Detailed Example
+# Usage
 
-You can find detailed usage examples in this jupyter [notebook](ipython/Samples.ipynb). But you can find information about how to use **TwitterCrawler** below.
-
-### Initialize TwitterCrawler
-
-#### a.) API restrictions 
+## 1.) API restrictions 
 
 In order to avoid exceeding your Twitter API limit you have to set 2 parameters:
 
@@ -47,25 +37,25 @@ In order to avoid exceeding your Twitter API limit you have to set 2 parameters:
 tcs = TwitterCrawler(time_frame=900,max_requests=450)
 ```
 
-#### b.) MongoDB connection
+## 2.a) MongoDB connection
 
 **TwitterCrawler** exports the collected events to a MongoDB collection (e.g: "raw"). You can connect to a running MongoDB database the following way:
 
 ```python
-tcs.connect("raw", port=27017, db_name='twitter-crawler')
+tcs.connect_to_mongodb("raw", port=27017, db_name='twitter-crawler')
 ```
 
-#### c.) Export to file
+## 2.b) Export to file
 
 **TwitterCrawler** can export the collected events to a File as well:
 
 ```python
-tcs.connect("sample.txt")
+tcs.connect_to_file("sample.txt")
 ```
 
 If the file already exists then the new content will be appended. It won't be overwritten completely.
 
-### Authentication
+## 3.) Authentication
 
 In order to use Twitter API you have to create an API key for your application. Put your authentication credentials in a simple JSON file:
 
@@ -83,7 +73,7 @@ Then you can authenticate your **TwitterCrawler** instance:
 tcs.authenticate("PATH_TO_JSON_FILE")
 ```
 
-### Setting search parameters
+## 4.) Setting search parameters
 
 Before you run your **TwitterCrawler** instance you have to specify your search parameters in a Python dictionary.
 
@@ -100,11 +90,11 @@ tcs.set_search_arguments(search_args=search_params)
 As I am using  [Twython](https://github.com/ryanmcgrath/twython) to handle my search requests you can find more information in the Twitter [Search API](https://dev.twitter.com/rest/public/search) about how to parametrize your search arguments properly .
 
 
-### Available search strategies
+## 5.) Choose search strategy
 
 In order to work with the Twitter timeline properly one should consider using **"max_id"** and **"since_id"** . So far I have implemented two search strategies. Most of them is probably implemented in other repositories. I just followed this simple [tutorial](https://dev.twitter.com/rest/public/timelines).
 
-####  Recursive search
+### A.)  Recursive search
 
 * Here your search starts at a specific time. It is the current time if you does not set any **current_max_id** parameter
 * Then the search tries to explore past events that match your search parameters
@@ -124,6 +114,7 @@ tcs.search_by_query(custom_since_id=870285658723684355)
 Here are two simple termination function example. Some utility function has been already prepared for you.
 
    * Terminate based on some time stamp
+
 ```python
 import search_utils as su
 
@@ -133,6 +124,7 @@ def my_time_bound_filter(tweet):
 ```
 
    * Terminate based on since_id (it has the same effect as in the above example, when I set *custom\_since\_id=870285658723684355*)
+
 ```python
 import search_utils as su
 
@@ -146,7 +138,7 @@ After the termination function has been defined you can execute the search:
 tcs.search_by_query(term_func=my_time_bound_filter)
 ```
 
-####  Stream search
+### B.) Stream search
 
    * This search starts with a **recursive search**, which goes back into the past until an event matches the termination function (**termination_func**).
    * Then the search jumps back to the present and starts a new recursive search until all events are recovered since the starting time of the previous recursive search etc.

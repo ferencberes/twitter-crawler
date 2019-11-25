@@ -36,26 +36,7 @@ In order to avoid exceeding your Twitter API limit you have to set 2 parameters:
 ```python
 tcs = TwitterCrawler(time_frame=900,max_requests=450)
 ```
-
-## 2.a) MongoDB connection
-
-**TwitterCrawler** exports the collected events to a MongoDB collection (e.g: "raw"). You can connect to a running MongoDB database the following way:
-
-```python
-tcs.connect_to_mongodb("raw", port=27017, db_name='twitter-crawler')
-```
-
-## 2.b) Export to file
-
-**TwitterCrawler** can export the collected events to a File as well:
-
-```python
-tcs.connect_to_file("sample.txt")
-```
-
-If the file already exists then the new content will be appended. It won't be overwritten completely.
-
-## 3.) Authentication
+## 2.) Authentication
 
 In order to use Twitter API you have to create an API key for your application. Put your authentication credentials in a simple JSON file:
 
@@ -72,6 +53,24 @@ Then you can authenticate your **TwitterCrawler** instance:
 ```python
 tcs.authenticate("PATH_TO_JSON_FILE")
 ```
+
+## 3.a) MongoDB connection
+
+**TwitterCrawler** exports the collected events to a MongoDB collection (e.g: "raw"). You can connect to a running MongoDB database the following way:
+
+```python
+tcs.connect_to_mongodb("raw", port=27017, db_name='twitter-crawler')
+```
+
+## 3.b) Export to file
+
+**TwitterCrawler** can export the collected events to a File as well:
+
+```python
+tcs.connect_to_file("sample.txt")
+```
+
+If the file already exists then the new content will be appended. It won't be overwritten completely.
 
 ## 4.) Setting search parameters
 

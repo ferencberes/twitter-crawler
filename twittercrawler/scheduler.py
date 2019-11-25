@@ -5,11 +5,12 @@ from pymongo import MongoClient
 
 
 class RequestScheduler():
-    def __init__(self,time_frame,max_requests,verbose=False):
+    def __init__(self, time_frame, max_requests, sync_time, verbose=False):
         """Abstract scheduler object. It enables only 'max_requests' requests in every 'time_frame' seconds."""
         # scheduler parameters
         self.time_frame = time_frame
         self.max_requests = max_requests
+        self.sync_time = sync_time
         self.verbose = verbose
         self._requests = deque([])
         # mongodb parameters
@@ -55,7 +56,7 @@ class RequestScheduler():
         except:
             raise
         
-    def verify_new_request(self,sync_time=20):
+    def _verify_new_request(self):
         """Return only when a request can be made"""
         if len(self._requests) < self.max_requests:
             return True
@@ -63,13 +64,13 @@ class RequestScheduler():
             time_diff = time.time() - self._requests[0]
             if time_diff > self.time_frame:
                 self._requests.popleft()
-                return self.verify_new_request(sync_time=sync_time)
+                return self.verify_new_request()
             else:
-                print("VERIFYING: sleeping for %.1f seconds" % sync_time)
-                time.sleep(sync_time)
-                return self.verify_new_request(sync_time=sync_time)
+                print("VERIFYING: sleeping for %.1f seconds" % self.sync_time)
+                time.sleep(self.sync_time)
+                return self.verify_new_request()
             
-    def register_request(self,delta_t,dev_ratio=0.1):
+    def _register_request(self,delta_t,dev_ratio=0.1):
         """Register a request with time stamp"""
         self._requests.append(time.time())
         wait_for = np.random.normal(loc=delta_t,scale=delta_t*dev_ratio)

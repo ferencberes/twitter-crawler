@@ -2,6 +2,7 @@
 api_key.json
 *.pyc
 *.tmp
+*.txt
 .datawand/
 datawand_info.json
 */luigi.cfg

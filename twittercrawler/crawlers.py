@@ -3,7 +3,7 @@ from .search import search_people
 import datetime, time
 
 class PeopleCrawler(TwitterCrawler):
-    def __init__(self, time_frame=900, max_requests=800, sync_time=60, verbose=False):
+    def __init__(self, time_frame=900, max_requests=100, sync_time=60, verbose=False):
         super(PeopleCrawler, self).__init__(time_frame, max_requests, sync_time, verbose)
         
     def _print_feedback(self, max_id=0, since_id=None, latest_id=None, user_page=None):
@@ -30,7 +30,6 @@ class PeopleCrawler(TwitterCrawler):
             _ = self._verify_new_request()
             # new request
             hits, last_page = search_people(self.twitter_api, search_params, page)
-            print(hits)
             self._register_request(delta_t=wait_for)
             # postprocess
             self._export_to_output_framework(hits)
@@ -41,7 +40,7 @@ class PeopleCrawler(TwitterCrawler):
 
     
 class RecursiveCrawler(TwitterCrawler):
-    def __init__(self, time_frame=900, max_requests=250, sync_time=60, verbose=False):
+    def __init__(self, time_frame=900, max_requests=200, sync_time=60, verbose=False):
         super(RecursiveCrawler, self).__init__(time_frame, max_requests, sync_time, verbose)
         
     def _print_feedback(self, max_id=0, since_id=None, latest_id=None, user_page=None):
@@ -59,7 +58,7 @@ class RecursiveCrawler(TwitterCrawler):
         
         
 class StreamCrawler(TwitterCrawler):
-    def __init__(self, time_frame=900, max_requests=350, sync_time=60, verbose=False):
+    def __init__(self, time_frame=900, max_requests=200, sync_time=60, verbose=False):
         super(StreamCrawler, self).__init__(time_frame, max_requests, sync_time, verbose)
         
     def _print_feedback(self, max_id=0, since_id=None, latest_id=None, user_page=None):

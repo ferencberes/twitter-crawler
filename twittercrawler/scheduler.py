@@ -64,11 +64,11 @@ class RequestScheduler():
             time_diff = time.time() - self._requests[0]
             if time_diff > self.time_frame:
                 self._requests.popleft()
-                return self.verify_new_request()
+                return self._verify_new_request()
             else:
                 print("VERIFYING: sleeping for %.1f seconds" % self.sync_time)
                 time.sleep(self.sync_time)
-                return self.verify_new_request()
+                return self._verify_new_request()
             
     def _register_request(self,delta_t,dev_ratio=0.1):
         """Register a request with time stamp"""

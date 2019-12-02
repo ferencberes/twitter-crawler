@@ -14,6 +14,7 @@ setup(name='twittercrawler',
           'datetime',
           'pandas',
           'networkx',
-          'matplotlib'
+          'matplotlib',
+          'pytest'
       ],
 zip_safe=False)

@@ -34,7 +34,7 @@ class Crawler(RequestScheduler):
     def _terminate(self, increment=True):
         if increment:
             self._num_requests += 1
-        return self._num_requests != None and self._num_requests > self._limit
+        return self._limit != None and self._num_requests > self._limit
 
     def _export_to_output_framework(self, results):
         for res in results:
@@ -65,40 +65,46 @@ class NetworkCrawler(Crawler):
             user_id_list = user_ids[idx:]
         else:
             user_id_list = user_ids
-        for u_id in user_id_list:
-            has_more = True
-            while has_more:
-                # feedback
-                if time.time() - self._last_feedback > feedback_time:
-                    self._show_time_diff()
+        try:
+            for u_id in user_id_list:
+                has_more = True
+                while has_more:
+                    # feedback
+                    if time.time() - self._last_feedback > feedback_time:
+                        self._show_time_diff()
                     print("type: %s, user_id: %s, cursor: %s" % (str(self._network_type), str(u_id), str(cursor)))
-                 # verify
-                _ = self._verify_new_request()
-                # new request
-                if self._network_type == "friend":
-                    res = self.twitter_api.get_friends_ids(user_id=u_id, cursor=cursor)
-                else:
-                    res = self.twitter_api.get_follower_ids(user_id=u_id, cursor=cursor)
-                self._register_request(delta_t=wait_for)
-                # postprocess
-                new_links = []
-                for node in res["ids"]:
+                    print(self._num_requests)
+                    # verify
+                    _ = self._verify_new_request()
+                    # new request
                     if self._network_type == "friend":
-                        new_links.append({"source":u_id, "target":node})
+                        res = self.twitter_api.get_friends_ids(user_id=u_id, cursor=cursor)
                     else:
-                        new_links.append({"target":u_id, "source":node})
-                if len(new_links) > 0:
-                    cnt += len(new_links)
-                    self._export_to_output_framework(new_links)
-                if res["next_cursor"] == 0:
-                    cursor = -1
-                    has_more = False
-                else:
-                    cursor = res["next_cursor"]
-                if self._terminate():
+                        res = self.twitter_api.get_follower_ids(user_id=u_id, cursor=cursor)
+                    self._register_request(delta_t=wait_for)
+                    # postprocess
+                    new_links = []
+                    for node in res["ids"]:
+                        if self._network_type == "friend":
+                            new_links.append({"source":u_id, "target":node})
+                        else:
+                            new_links.append({"target":u_id, "source":node})
+                    if len(new_links) > 0:
+                        cnt += len(new_links)
+                        self._export_to_output_framework(new_links)
+                    if res["next_cursor"] == 0:
+                        cursor = -1
+                        has_more = False
+                    else:
+                        cursor = res["next_cursor"]
+                    if self._terminate():
+                        break
+                if self._terminate(False):
                     break
-            if self._terminate(False):
-                break
+        except twython.exceptions.TwythonRateLimitError:
+                raise
+            except Exception as exc:
+                raise
         return u_id, cursor, cnt
                 
 class SearchCrawler(Crawler):    

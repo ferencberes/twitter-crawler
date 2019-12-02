@@ -114,9 +114,6 @@ class SearchCrawler(Crawler):
         """Set search parameters with a dictionary"""
         self.search_args = search_args
         print(self.search_args)
-        
-    def _print_feedback(self, max_id=0, since_id=None, latest_id=None, user_page=None):
-        pass
           
     def _search_by_query(self, wait_for, current_max_id=0, custom_since_id=None, term_func=None, feedback_time=15*60):
         if "max_id" in self.search_args:
@@ -133,7 +130,7 @@ class SearchCrawler(Crawler):
             # feedback
             if time.time() - self._last_feedback > feedback_time:
                 self._show_time_diff()
-                print("max_id: %s, since_id: %s, latest_id: %s" % (str(max_id), str(since_id), str(latest_id)))
+                print("max_id: %s, since_id: %s, latest_id: %s" % (str(current_max_id), str(custom_since_id), str(latest_id)))
                 
             stop_search = False
             try:

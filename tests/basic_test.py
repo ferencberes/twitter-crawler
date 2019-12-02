@@ -23,7 +23,7 @@ def test_recursive():
     assert cnt > 0
     
 def test_stream():
-    crawler = StreamCrawler(limit=2)
+    crawler = StreamCrawler(sync_time=1, limit=10)
     crawler.authenticate(api_key_file_path)
     crawler.connect_to_file("stream_results.txt")
     search_params = {

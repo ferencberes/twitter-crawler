@@ -97,6 +97,8 @@ class NetworkCrawler(Crawler):
                     cursor = res["next_cursor"]
                 if self._terminate():
                     break
+            if self._terminate(False):
+                break
         return u_id, cursor, cnt
                 
 class SearchCrawler(Crawler):    

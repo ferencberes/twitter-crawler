@@ -1,5 +1,4 @@
 import json, twython, time
-import numpy as np
 from twython import Twython
 from .scheduler import *
 
@@ -34,7 +33,7 @@ class Crawler(RequestScheduler):
     def _terminate(self, increment=True):
         if increment:
             self._num_requests += 1
-        return self._limit != None and self._num_requests > self._limit
+        return self._limit != None and self._num_requests >= self._limit
 
     def _export_to_output_framework(self, results):
         for res in results:
@@ -73,7 +72,6 @@ class NetworkCrawler(Crawler):
                     if time.time() - self._last_feedback > feedback_time:
                         self._show_time_diff()
                     print("type: %s, user_id: %s, cursor: %s" % (str(self._network_type), str(u_id), str(cursor)))
-                    print(self._num_requests)
                     # verify
                     _ = self._verify_new_request()
                     # new request
@@ -102,9 +100,9 @@ class NetworkCrawler(Crawler):
                 if self._terminate(False):
                     break
         except twython.exceptions.TwythonRateLimitError:
-                raise
-            except Exception as exc:
-                raise
+            raise
+        except Exception as exc:
+            raise
         return u_id, cursor, cnt
                 
 class SearchCrawler(Crawler):    

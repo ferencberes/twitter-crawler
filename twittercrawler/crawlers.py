@@ -1,6 +1,7 @@
 from .base import SearchCrawler, NetworkCrawler
 from .search import search_people
 import time
+import numpy as np
     
 class RecursiveCrawler(SearchCrawler):
     def __init__(self, time_frame=900, max_requests=200, sync_time=60, limit=None, verbose=False):
@@ -70,7 +71,7 @@ class PeopleCrawler(SearchCrawler):
     
 class FriendsCollector(NetworkCrawler):
     def __init__(self, time_frame=900, max_requests=12, sync_time=60, limit=None, verbose=False):
-        super(FriendsCollector, self).__init__("friend", time_frame, max_requests, limit, sync_time, verbose)
+        super(FriendsCollector, self).__init__("friend", time_frame, max_requests, sync_time, limit, verbose)
 
 class FollowersCollector(NetworkCrawler):
     def __init__(self, time_frame=900, max_requests=12, sync_time=60, limit=None, verbose=False):

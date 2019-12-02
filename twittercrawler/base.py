@@ -3,12 +3,14 @@ import numpy as np
 from twython import Twython
 from .scheduler import *
 
-class TwitterCrawler(RequestScheduler):    
+
+class Crawler(RequestScheduler):    
     
-    def __init__(self, time_frame=900, max_requests=300, sync_time=60, verbose=False):
+    def __init__(self, time_frame, max_requests, sync_time, limit, verbose=False):
         """Twitter API scheduler object. It enables only 'max_requests' requests in every 'time_frame' seconds."""
-        super(TwitterCrawler, self).__init__(time_frame, max_requests , sync_time, verbose)
+        super(Crawler, self).__init__(time_frame, max_requests , sync_time, verbose)
         self.twitter_api = None
+        self._limit = limit
         self._start_time, self._last_feedback = None, None
         
     def authenticate(self,auth_file_path):
@@ -20,12 +22,20 @@ class TwitterCrawler(RequestScheduler):
             print("Authentication was successful!")
         except:
             raise
-            
-    def set_search_arguments(self,search_args):
-        """Set search parameters with a dictionary"""
-        self.search_args = search_args
-        print(self.search_args)        
         
+    def _show_time_diff(self):
+        current_time = time.time()
+        print("### FEEDBACK ###")
+        td = datetime.timedelta(seconds=current_time-self._start_time)
+        print(self._msg + " is RUNNING since: %i days, %i hours and %i minutes %i seconds" % (td.days, td.seconds//3600, (td.seconds//60)%60, td.seconds%60))
+        self._last_feedback = current_time
+        #print("################")
+        
+    def _terminate(self, increment=True):
+        if increment:
+            self._num_requests += 1
+        return self._num_requests != None and self._num_requests > self._limit
+
     def _export_to_output_framework(self, results):
         for res in results:
             try:
@@ -37,10 +47,71 @@ class TwitterCrawler(RequestScheduler):
                     raise RuntimeError("You did not specify any output for your search! Use connect_to_mongodb() ot connect_to_file() functions!")
             except Exception as err:
                 print("ERROR occured:", str(err))
+                
+class NetworkCrawler(Crawler):
+    def __init__(self, network_type, time_frame, max_requests, sync_time, limit, verbose=False):
+        super(NetworkCrawler, self).__init__(time_frame, max_requests , sync_time, limit, verbose)
+        if network_type in ["friend","follower"]:
+            self._network_type = network_type
+        else:
+            raise RuntimeError("Choose 'network_type' parameter from values 'friend' or 'follower'!")
+
+    def collect(self, user_ids, from_user=None, from_cursor=-1, wait_for=2, feedback_time=15*60):
+        self._num_requests, cnt = 0, 0
+        self._start_time, self._last_feedback = time.time(), time.time()
+        cursor = from_cursor
+        if from_user != None:
+            idx = user_ids.index(from_user)
+            user_id_list = user_ids[idx:]
+        else:
+            user_id_list = user_ids
+        for u_id in user_id_list:
+            has_more = True
+            while has_more:
+                # feedback
+                if time.time() - self._last_feedback > feedback_time:
+                    self._show_time_diff()
+                    print("type: %s, user_id: %s, cursor: %s" % (str(self._network_type), str(u_id), str(cursor)))
+                 # verify
+                _ = self._verify_new_request()
+                # new request
+                if self._network_type == "friend":
+                    res = self.twitter_api.get_friends_ids(user_id=u_id, cursor=cursor)
+                else:
+                    res = self.twitter_api.get_follower_ids(user_id=u_id, cursor=cursor)
+                self._register_request(delta_t=wait_for)
+                # postprocess
+                new_links = []
+                for node in res["ids"]:
+                    if self._network_type == "friend":
+                        new_links.append({"source":u_id, "target":node})
+                    else:
+                        new_links.append({"target":u_id, "source":node})
+                if len(new_links) > 0:
+                    cnt += len(new_links)
+                    self._export_to_output_framework(new_links)
+                if res["next_cursor"] == 0:
+                    cursor = -1
+                    has_more = False
+                else:
+                    cursor = res["next_cursor"]
+                if self._terminate():
+                    break
+        return u_id, cursor, cnt
+                
+class SearchCrawler(Crawler):    
+    
+    def __init__(self, time_frame, max_requests, sync_time, limit, verbose=False):
+        super(SearchCrawler, self).__init__(time_frame, max_requests, sync_time, limit, verbose)
+            
+    def set_search_arguments(self,search_args):
+        """Set search parameters with a dictionary"""
+        self.search_args = search_args
+        print(self.search_args)
         
     def _print_feedback(self, max_id=0, since_id=None, latest_id=None, user_page=None):
         pass
-        
+          
     def _search_by_query(self, wait_for, current_max_id=0, custom_since_id=None, term_func=None, feedback_time=15*60):
         if "max_id" in self.search_args:
             del self.search_args["max_id"]
@@ -55,7 +126,8 @@ class TwitterCrawler(RequestScheduler):
             
             # feedback
             if time.time() - self._last_feedback > feedback_time:
-                self._print_feedback(current_max_id, custom_since_id, latest_id, user_page=None)
+                self._show_time_diff()
+                print("max_id: %s, since_id: %s, latest_id: %s" % (str(max_id), str(since_id), str(latest_id)))
                 
             stop_search = False
             try:
@@ -96,29 +168,10 @@ class TwitterCrawler(RequestScheduler):
 
                 if stop_search:
                     break
+                if self._terminate():
+                    break
             except twython.exceptions.TwythonRateLimitError:
                 raise
             except Exception as exc:
                 raise
-        return current_max_id, latest_id, cnt  
-    
-    def _stream_search(self, delta_t, termination_func, dev_ratio, feedback_time):
-        last_since_id = 0
-        since_id = None
-        while True:
-            # feedback
-            #if time.time() - self.stream_last_feedback > feedback_time:
-                #self.search_start_time, self.search_last_feedback = time.time(), time.time()
-                #self.print_feedback(since_id=since_id)
-                
-            if last_since_id != since_id:
-                # termination function is needed only for the first round!!!
-                recursive_info = self._search_by_query(wait_for=2, custom_since_id=since_id, term_func=termination_func, feedback_time=feedback_time)
-                print("Recursive search result: %s" % str(recursive_info))
-                max_id, latest_id, cnt = recursive_info
-                last_since_id = since_id
-                since_id = latest_id
-            wait_for = np.random.normal(loc=delta_t,scale=delta_t*dev_ratio)
-            if self.verbose:
-                print("STREAM epoch: Sleeping for %.1f seconds" % wait_for)
-            time.sleep(wait_for)
+        return current_max_id, latest_id, cnt

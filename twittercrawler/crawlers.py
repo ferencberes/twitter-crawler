@@ -41,6 +41,7 @@ class StreamCrawler(SearchCrawler):
 class PeopleCrawler(SearchCrawler):
     def __init__(self, time_frame=900, max_requests=100, sync_time=60, limit=None, verbose=False):
         super(PeopleCrawler, self).__init__(time_frame, max_requests, sync_time, limit, verbose)
+        self._msg = "People search"
         
     def search(self, wait_for=2, feedback_time=15*60):
         search_params = {}
@@ -72,7 +73,9 @@ class PeopleCrawler(SearchCrawler):
 class FriendsCollector(NetworkCrawler):
     def __init__(self, time_frame=900, max_requests=12, sync_time=60, limit=None, verbose=False):
         super(FriendsCollector, self).__init__("friend", time_frame, max_requests, sync_time, limit, verbose)
+        self._msg = "Friends network collector"
 
 class FollowersCollector(NetworkCrawler):
     def __init__(self, time_frame=900, max_requests=12, sync_time=60, limit=None, verbose=False):
         super(FollowersCollector, self).__init__("follower", time_frame, max_requests, sync_time, limit, verbose)
+        self._msg = "Follower network collector"

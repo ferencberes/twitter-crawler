@@ -9,6 +9,7 @@ class Crawler(RequestScheduler):
         """Twitter API scheduler object. It enables only 'max_requests' requests in every 'time_frame' seconds."""
         super(Crawler, self).__init__(time_frame, max_requests , sync_time, verbose)
         self.twitter_api = None
+        self._msg = ""
         self._limit = limit
         self._start_time, self._last_feedback = None, None
         

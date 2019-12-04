@@ -100,12 +100,12 @@ class NetworkCrawler(Crawler):
                         break
                 if self._terminate(False):
                     break
-            except twython.exceptions.TwythonRateLimitError:
-                raise
             except twython.exceptions.TwythonAuthError:
                 print("%i : TwythonAuthError" % u_id)
                 continue
-            except Exception as exc:
+            #except twython.exceptions.TwythonRateLimitError:
+            #    raise
+            except:# Exception as exc:
                 raise
         return u_id, cursor, cnt
                 

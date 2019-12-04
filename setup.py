@@ -15,6 +15,7 @@ setup(name='twittercrawler',
           'pandas',
           'networkx',
           'matplotlib',
+          'bokeh',
           'pytest'
       ],
 zip_safe=False)

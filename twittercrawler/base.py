@@ -65,9 +65,9 @@ class NetworkCrawler(Crawler):
             user_id_list = user_ids[idx:]
         else:
             user_id_list = user_ids
-        try:
-            for u_id in user_id_list:
-                has_more = True
+        for u_id in user_id_list:
+            has_more = True
+            try:
                 while has_more:
                     # feedback
                     if time.time() - self._last_feedback > feedback_time:
@@ -100,10 +100,13 @@ class NetworkCrawler(Crawler):
                         break
                 if self._terminate(False):
                     break
-        except twython.exceptions.TwythonRateLimitError:
-            raise
-        except Exception as exc:
-            raise
+            except twython.exceptions.TwythonRateLimitError:
+                raise
+            except twython.exceptions.TwythonAuthError:
+                print("%i : TwythonAuthError" % u_id)
+                continue
+            except Exception as exc:
+                raise
         return u_id, cursor, cnt
                 
 class SearchCrawler(Crawler):    

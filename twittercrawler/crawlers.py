@@ -4,7 +4,7 @@ import time
 import numpy as np
     
 class RecursiveCrawler(SearchCrawler):
-    def __init__(self, time_frame=900, max_requests=200, sync_time=60, limit=None, verbose=False):
+    def __init__(self, time_frame=900, max_requests=200, sync_time=15, limit=None, verbose=False):
         super(RecursiveCrawler, self).__init__(time_frame, max_requests, sync_time, limit, verbose)
         self._msg = "Recursive search"
         
@@ -14,7 +14,7 @@ class RecursiveCrawler(SearchCrawler):
         return self._search_by_query(wait_for, current_max_id, custom_since_id, term_func, feedback_time)
                
 class StreamCrawler(SearchCrawler):
-    def __init__(self, time_frame=900, max_requests=200, sync_time=60, limit=None, verbose=False):
+    def __init__(self, time_frame=900, max_requests=200, sync_time=15, limit=None, verbose=False):
         super(StreamCrawler, self).__init__(time_frame, max_requests, sync_time, limit, verbose)
         self._msg = "Stream search"
         
@@ -39,7 +39,7 @@ class StreamCrawler(SearchCrawler):
             time.sleep(wait_for)
             
 class PeopleCrawler(SearchCrawler):
-    def __init__(self, time_frame=900, max_requests=100, sync_time=60, limit=None, verbose=False):
+    def __init__(self, time_frame=900, max_requests=100, sync_time=15, limit=None, verbose=False):
         super(PeopleCrawler, self).__init__(time_frame, max_requests, sync_time, limit, verbose)
         self._msg = "People search"
         
@@ -57,7 +57,7 @@ class PeopleCrawler(SearchCrawler):
                 self._show_time_diff()
                 print("user page: %s" % str(user_page))
             # verify
-            _ = self._verify_new_request()
+            _ = self._verify_new_request(self.twitter_api)
             # new request
             hits, last_page = search_people(self.twitter_api, search_params, page)
             self._register_request(delta_t=wait_for)
@@ -71,11 +71,11 @@ class PeopleCrawler(SearchCrawler):
         return page, cnt
     
 class FriendsCollector(NetworkCrawler):
-    def __init__(self, time_frame=900, max_requests=12, sync_time=60, limit=None, verbose=False):
+    def __init__(self, time_frame=900, max_requests=12, sync_time=15, limit=None, verbose=False):
         super(FriendsCollector, self).__init__("friend", time_frame, max_requests, sync_time, limit, verbose)
         self._msg = "Friends network collector"
 
 class FollowersCollector(NetworkCrawler):
-    def __init__(self, time_frame=900, max_requests=12, sync_time=60, limit=None, verbose=False):
+    def __init__(self, time_frame=900, max_requests=12, sync_time=15, limit=None, verbose=False):
         super(FollowersCollector, self).__init__("follower", time_frame, max_requests, sync_time, limit, verbose)
         self._msg = "Follower network collector"

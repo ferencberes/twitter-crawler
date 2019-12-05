@@ -1,7 +1,7 @@
 import json, twython, time
 from twython import Twython
 from .scheduler import *
-
+from twython.exceptions import TwythonAuthError 
 
 class Crawler(RequestScheduler):    
     
@@ -38,15 +38,15 @@ class Crawler(RequestScheduler):
 
     def _export_to_output_framework(self, results):
         for res in results:
-            try:
-                if self._connection_type == "mongo":
-                    self._mongo_coll.insert_one(res)
-                elif self._connection_type == "file":
-                    self._output_file.write("%s\n" % json.dumps(res))
-                else:
-                    raise RuntimeError("You did not specify any output for your search! Use connect_to_mongodb() ot connect_to_file() functions!")
-            except Exception as err:
-                print("ERROR occured:", str(err))
+            #try:
+            if self._connection_type == "mongo":
+                self._mongo_coll.insert_one(res)
+            elif self._connection_type == "file":
+                self._output_file.write("%s\n" % json.dumps(res))
+            else:
+                raise RuntimeError("You did not specify any output for your search! Use connect_to_mongodb() ot connect_to_file() functions!")
+            #except Exception as err:
+            #    print("ERROR occured:", str(err))
                 
 class NetworkCrawler(Crawler):
     def __init__(self, network_type, time_frame, max_requests, sync_time, limit, verbose=False):
@@ -67,46 +67,45 @@ class NetworkCrawler(Crawler):
             user_id_list = user_ids
         for u_id in user_id_list:
             has_more = True
-            try:
-                while has_more:
-                    # feedback
-                    if time.time() - self._last_feedback > feedback_time:
-                        self._show_time_diff()
-                    print("type: %s, user_id: %s, cursor: %s" % (str(self._network_type), str(u_id), str(cursor)))
-                    # verify
-                    _ = self._verify_new_request()
-                    # new request
+            while has_more:
+                # feedback
+                if time.time() - self._last_feedback > feedback_time:
+                    self._show_time_diff()
+                print("type: %s, user_id: %s, cursor: %s" % (str(self._network_type), str(u_id), str(cursor)))
+                # verify
+                _ = self._verify_new_request(self.twitter_api)
+                # new request
+                try:
+                    self._register_request(delta_t=wait_for)
                     if self._network_type == "friend":
                         res = self.twitter_api.get_friends_ids(user_id=u_id, cursor=cursor)
                     else:
                         res = self.twitter_api.get_follower_ids(user_id=u_id, cursor=cursor)
-                    self._register_request(delta_t=wait_for)
-                    # postprocess
-                    new_links = []
-                    for node in res["ids"]:
-                        if self._network_type == "friend":
-                            new_links.append({"source":u_id, "target":node})
-                        else:
-                            new_links.append({"target":u_id, "source":node})
-                    if len(new_links) > 0:
-                        cnt += len(new_links)
-                        self._export_to_output_framework(new_links)
-                    if res["next_cursor"] == 0:
-                        cursor = -1
-                        has_more = False
+                except TwythonAuthError:
+                   # This error can occur when the node is not available!
+                   print(u_id, "TwythonAuthError")
+                   break
+                except:
+                   raise	
+                # postprocess
+                new_links = []
+                for node in res["ids"]:
+                    if self._network_type == "friend":
+                        new_links.append({"source":u_id, "target":node})
                     else:
-                        cursor = res["next_cursor"]
-                    if self._terminate():
-                        break
-                if self._terminate(False):
+                        new_links.append({"target":u_id, "source":node})
+                if len(new_links) > 0:
+                    cnt += len(new_links)
+                    self._export_to_output_framework(new_links)
+                if res["next_cursor"] == 0:
+                    cursor = -1
+                    has_more = False
+                else:
+                    cursor = res["next_cursor"]
+                if self._terminate():
                     break
-            except twython.exceptions.TwythonAuthError:
-                print("%i : TwythonAuthError" % u_id)
-                continue
-            #except twython.exceptions.TwythonRateLimitError:
-            #    raise
-            except:# Exception as exc:
-                raise
+            if self._terminate(False):
+                break
         return u_id, cursor, cnt
                 
 class SearchCrawler(Crawler):    
@@ -143,7 +142,7 @@ class SearchCrawler(Crawler):
                 if custom_since_id != None:
                     self.search_args["since_id"] = custom_since_id
                 
-                _ = self._verify_new_request()
+                _ = self._verify_new_request(self.twitter_api)
                 tweets = self.twitter_api.search(**self.search_args)
                 self._register_request(delta_t=wait_for)
                 

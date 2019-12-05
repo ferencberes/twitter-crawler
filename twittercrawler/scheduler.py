@@ -2,7 +2,7 @@ import time, datetime, pymongo, os
 import numpy as np
 from collections import deque
 from pymongo import MongoClient
-
+from twython.exceptions import TwythonError
 
 class RequestScheduler():
     def __init__(self, time_frame, max_requests, sync_time, verbose=False):
@@ -56,19 +56,35 @@ class RequestScheduler():
         except:
             raise
         
-    def _verify_new_request(self):
+    def _check_remaining_limit(self, twitter_api, current_time):
+        valid, wait_for = True, self.sync_time
+        try:
+            num_remaining = int(twitter_api.get_lastfunction_header('x-rate-limit-remaining'))
+            rate_limit_reset = int(twitter_api.get_lastfunction_header('x-rate-limit-reset'))
+            valid = num_remaining > 0
+            wait_for = rate_limit_reset - current_time + self.sync_time 
+        except TwythonError:
+           print("No former request were made!") 
+        except:
+            raise
+        finally:
+            return valid, wait_for
+
+    def _verify_new_request(self, twitter_api):
         """Return only when a request can be made"""
-        if len(self._requests) < self.max_requests:
-            return True
-        else:
-            time_diff = time.time() - self._requests[0]
-            if time_diff > self.time_frame:
+        current_time = time.time()
+        valid, wait_for = self._check_remaining_limit(twitter_api, current_time)
+        if valid:
+            while len(self._requests) > 0 and current_time - self._requests[0] > self.time_frame:
                 self._requests.popleft()
-                return self._verify_new_request()
-            else:
-                print("VERIFYING: sleeping for %.1f seconds" % self.sync_time)
-                time.sleep(self.sync_time)
-                return self._verify_new_request()
+            if len(self._requests) >= self.max_requests:
+                wait_for = self.time_frame - (current_time - self._requests[0]) + self.sync_time
+                print("VERIFYING: sleeping for %.1f seconds" % wait_for)
+                time.sleep(wait_for)
+        else:
+            print("RATE LIMIT RESET in %.1f seconds" % wait_for)
+            time.sleep(wait_for)
+        return True
             
     def _register_request(self,delta_t,dev_ratio=0.1):
         """Register a request with time stamp"""

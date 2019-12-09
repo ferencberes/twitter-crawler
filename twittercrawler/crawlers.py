@@ -55,7 +55,7 @@ class PeopleCrawler(SearchCrawler):
             # feedback
             if time.time() - self._last_feedback > feedback_time:
                 self._show_time_diff()
-                print("user page: %s" % str(user_page))
+            print("user page: %s" % str(page))
             # verify
             _ = self._verify_new_request(self.twitter_api)
             # new request

@@ -3,6 +3,19 @@ from .search import search_people
 import time
 import numpy as np
     
+class InteractiveCrawler(SearchCrawler):
+    def __init__(self, time_frame=900, max_requests=200, sync_time=15, limit=None, verbose=False):
+        super(InteractiveCrawler, self).__init__(time_frame, max_requests, sync_time, limit, verbose)
+        self._msg = "Interactive search"
+        self._start_time, self._last_feedback = time.time(), time.time()
+        self._num_requests = 0
+
+    def search(self, wait_for=0):
+        _ = self._verify_new_request(self.twitter_api)
+        resp = self.twitter_api.search(**self.search_args)
+        self._register_request(delta_t=wait_for)
+        return resp
+
 class RecursiveCrawler(SearchCrawler):
     def __init__(self, time_frame=900, max_requests=200, sync_time=15, limit=None, verbose=False):
         super(RecursiveCrawler, self).__init__(time_frame, max_requests, sync_time, limit, verbose)

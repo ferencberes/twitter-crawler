@@ -30,7 +30,7 @@ print(max_id, latest_id, cnt)
 time.sleep(5*60)
 
 # NEW termination (collect only new tweets)
-id_terminator =  get_id_termination(max_id)
+id_terminator =  get_id_termination(latest_id)
 
 # NEW search - SECOND STAGE
 new_max_id, new_latest_id, new_cnt = recursive.search(term_func=id_terminator)

@@ -22,7 +22,6 @@ def show_tweets_text(http_resp, seen_tweet_ids, max_size=10000):
 # initialize
 interactive = InteractiveCrawler()
 interactive.authenticate("../api_key.json")
-interactive.connect_to_file("interactive_results.txt")
 
 # query
 search_params = {

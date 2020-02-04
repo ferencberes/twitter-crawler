@@ -33,7 +33,7 @@ time.sleep(5*60)
 id_terminator =  get_id_termination(max_id)
 
 # NEW search - SECOND STAGE
-new_max_id, new_latest_id, new_cnt = recursive.search(term_func=time_terminator)
+new_max_id, new_latest_id, new_cnt = recursive.search(term_func=id_terminator)
 print(new_max_id, new_latest_id, new_cnt)
 
 # close

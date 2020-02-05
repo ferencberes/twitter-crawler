@@ -1,5 +1,8 @@
 ﻿twitter-crawler
 ============
+
+**WARNING: This branch contains a very old version of the `twittercrawler` package. The latest version can be found on the `master` branch.**
+
 A simple Python Twitter crawler is implemented in this repository. The crawler can search for events on Twitter with the help of [Twython](https://github.com/ryanmcgrath/twython). The crawled events are inserted into a [MongoDB](https://www.mongodb.com/) collection in order to be more accessible for further analysis.
 
 Requirements

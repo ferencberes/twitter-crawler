@@ -1,7 +1,7 @@
 import json, twython, time
 from twython import Twython
 from .scheduler import *
-from twython.exceptions import TwythonAuthError 
+from twython.exceptions import TwythonAuthError, TwythonError
 
 class Crawler(RequestScheduler):    
     
@@ -29,7 +29,6 @@ class Crawler(RequestScheduler):
         td = datetime.timedelta(seconds=current_time-self._start_time)
         print(self._msg + " is RUNNING since: %i days, %i hours and %i minutes %i seconds" % (td.days, td.seconds//3600, (td.seconds//60)%60, td.seconds%60))
         self._last_feedback = current_time
-        #print("################")
         
     def _terminate(self, increment=True):
         if increment:
@@ -38,15 +37,12 @@ class Crawler(RequestScheduler):
 
     def _export_to_output_framework(self, results):
         for res in results:
-            #try:
             if self._connection_type == "mongo":
                 self._mongo_coll.insert_one(res)
             elif self._connection_type == "file":
                 self._output_file.write("%s\n" % json.dumps(res))
             else:
                 raise RuntimeError("You did not specify any output for your search! Use connect_to_mongodb() ot connect_to_file() functions!")
-            #except Exception as err:
-            #    print("ERROR occured:", str(err))
                 
 class NetworkCrawler(Crawler):
     def __init__(self, network_type, time_frame, max_requests, sync_time, limit, verbose=False):
@@ -85,6 +81,9 @@ class NetworkCrawler(Crawler):
                    # This error can occur when the node is not available!
                    print(u_id, "TwythonAuthError")
                    break
+                except TwythonError:
+                   print(u_id, "TwythonError")
+                   break
                 except:
                    raise	
                 # postprocess
@@ -109,7 +108,6 @@ class NetworkCrawler(Crawler):
         return u_id, cursor, cnt
                 
 class SearchCrawler(Crawler):    
-    
     def __init__(self, time_frame, max_requests, sync_time, limit, verbose=False):
         super(SearchCrawler, self).__init__(time_frame, max_requests, sync_time, limit, verbose)
             

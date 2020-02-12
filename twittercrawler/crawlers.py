@@ -4,6 +4,20 @@ import time
 import numpy as np
     
 class InteractiveCrawler(SearchCrawler):
+    """
+    Execute search queries interactively (basic Twython functionality).
+
+    Parameters
+    ----------
+    time_frame
+        The time duration you define the request policy
+    max_requests
+        The number of enabled requests within the time_frame
+    sync_time
+        Time to wait (seconds) in addition to halting time defined by API rate limits
+    limit
+        Terminate after the given number of Twitter API calls
+    """
     def __init__(self, time_frame=900, max_requests=200, sync_time=15, limit=None, verbose=False):
         super(InteractiveCrawler, self).__init__(time_frame, max_requests, sync_time, limit, verbose)
         self._msg = "Interactive search"
@@ -11,12 +25,34 @@ class InteractiveCrawler(SearchCrawler):
         self._num_requests = 0
 
     def search(self, wait_for=0):
+        """
+        Search for events
+        
+        Parameters
+        ----------
+        wait_for
+           Seconds to pause after each Twitter API call
+        """
         _ = self._verify_new_request(self.twitter_api)
         resp = self.twitter_api.search(**self.search_args)
         self._register_request(delta_t=wait_for)
         return resp
 
 class RecursiveCrawler(SearchCrawler):
+    """
+    Execute search queries from a time in the past up to the current timestamp.
+
+    Parameters
+    ----------
+    time_frame
+        The time duration you define the request policy
+    max_requests
+        The number of enabled requests within the time_frame
+    sync_time
+        Time to wait (seconds) in addition to halting time defined by API rate limits
+    limit
+        Terminate after the given number of Twitter API calls
+    """
     def __init__(self, time_frame=900, max_requests=200, sync_time=15, limit=None, verbose=False):
         super(RecursiveCrawler, self).__init__(time_frame, max_requests, sync_time, limit, verbose)
         self._msg = "Recursive search"
@@ -27,6 +63,20 @@ class RecursiveCrawler(SearchCrawler):
         return self._search_by_query(wait_for, current_max_id, custom_since_id, term_func, feedback_time)
                
 class StreamCrawler(SearchCrawler):
+    """
+    Execute search queries online.
+
+    Parameters
+    ----------
+    time_frame
+        The time duration you define the request policy
+    max_requests
+        The number of enabled requests within the time_frame
+    sync_time
+        Time to wait (seconds) in addition to halting time defined by API rate limits
+    limit
+        Terminate after the given number of Twitter API calls
+    """
     def __init__(self, time_frame=900, max_requests=200, sync_time=15, limit=None, verbose=False):
         super(StreamCrawler, self).__init__(time_frame, max_requests, sync_time, limit, verbose)
         self._msg = "Stream search"
@@ -52,6 +102,20 @@ class StreamCrawler(SearchCrawler):
             time.sleep(wait_for)
             
 class PeopleCrawler(SearchCrawler):
+    """
+    Search for Twitter users.
+
+    Parameters
+    ----------
+    time_frame
+        The time duration you define the request policy
+    max_requests
+        The number of enabled requests within the time_frame
+    sync_time
+        Time to wait (seconds) in addition to halting time defined by API rate limits
+    limit
+        Terminate after the given number of Twitter API calls
+    """
     def __init__(self, time_frame=900, max_requests=100, sync_time=15, limit=None, verbose=False):
         super(PeopleCrawler, self).__init__(time_frame, max_requests, sync_time, limit, verbose)
         self._msg = "People search"
@@ -84,11 +148,39 @@ class PeopleCrawler(SearchCrawler):
         return page, cnt
     
 class FriendsCollector(NetworkCrawler):
+    """
+    Crawl friends for a given set of Twitter accounts.
+
+    Parameters
+    ----------
+    time_frame
+        The time duration you define the request policy
+    max_requests
+        The number of enabled requests within the time_frame
+    sync_time
+        Time to wait (seconds) in addition to halting time defined by API rate limits
+    limit
+        Terminate after the given number of Twitter API calls
+    """
     def __init__(self, time_frame=900, max_requests=12, sync_time=15, limit=None, verbose=False):
         super(FriendsCollector, self).__init__("friend", time_frame, max_requests, sync_time, limit, verbose)
         self._msg = "Friends network collector"
 
 class FollowersCollector(NetworkCrawler):
+    """
+    Crawl followers for a given set of Twitter accounts.
+
+    Parameters
+    ----------
+    time_frame
+        The time duration you define the request policy
+    max_requests
+        The number of enabled requests within the time_frame
+    sync_time
+        Time to wait (seconds) in addition to halting time defined by API rate limits
+    limit
+        Terminate after the given number of Twitter API calls
+    """
     def __init__(self, time_frame=900, max_requests=12, sync_time=15, limit=None, verbose=False):
         super(FollowersCollector, self).__init__("follower", time_frame, max_requests, sync_time, limit, verbose)
         self._msg = "Follower network collector"

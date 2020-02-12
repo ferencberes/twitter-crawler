@@ -1,17 +1,22 @@
 ﻿# twitter-crawler
+ 
+ [![Documentation Status](https://readthedocs.org/projects/twittercrawler/badge/?version=latest)](https://twittercrawler.readthedocs.io/en/latest/?badge=latest)
 
-I implemented a simple Python Twitter crawler on top of the popular [Twython](https://github.com/ryanmcgrath/twython) package. My solution provides the following **key features in addition to Twython:**
+`twittercrawler` is a simple Python crawler on top of the popular [Twython](https://twython.readthedocs.io/en/latest/) package. The main objective during development was to provide an API that ease Twitter data collection for events that span across several days. The key features of this package are as follows:
 
-   * respect Twitter API [rate limits](https://developer.twitter.com/en/docs/basics/rate-limits) during search
-   * recursive or streaming search option for tweets and events
-   * search for people
-   * export search results to [MongoDB](https://www.mongodb.com/) collections (or files)
+- collect tweets over several days (online or offline)
+- respect Twitter API [rate limits](https://developer.twitter.com/en/docs/basics/rate-limits) during search
+- search for people
+- collect friend or follower network
+- export search results to MongoDB collections (or files)
+   
+**Detailed documentation:** https://twittercrawler.readthedocs.io/en/latest/
 
 # How to deploy?
 
 ## Requirements
 
-This package was developed in Python 3.5 conda environment.
+This package was developed in Python 3.5 (conda environment) but it works with Python 3.6 and 3.7 as well.
 
 ## Install
 

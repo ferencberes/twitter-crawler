@@ -47,6 +47,11 @@ py.test
 
 # Examples
 
+## Notebook
+
+- [Quick example](examples/SimpleSearch.ipynb)
+
+## Scripts
 - [Recursive search](examples/recursive.py)
 - [Stream search](examples/stream.py)
 - [People search](examples/people.py)

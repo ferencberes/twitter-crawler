@@ -21,6 +21,8 @@ This package was developed in Python 3.5 (conda environment) but it works with P
 ## Install
 
 ```bash
+git clone https://github.com/ferencberes/twitter-crawler.git
+cd twitter-crawler
 pip install .
 ```
 

@@ -1,4 +1,4 @@
-from .base import SearchCrawler, NetworkCrawler
+from .base import SearchCrawler, NetworkCrawler, UserLookup
 from .search import search_people
 import time
 import numpy as np

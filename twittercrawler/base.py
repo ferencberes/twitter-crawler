@@ -43,6 +43,48 @@ class Crawler(RequestScheduler):
                 self._output_file.write("%s\n" % json.dumps(res))
             else:
                 raise RuntimeError("You did not specify any output for your search! Use connect_to_mongodb() ot connect_to_file() functions!")
+
+class UserLookup(Crawler):
+    def __init__(self, time_frame=900, max_requests=300, sync_time=15, limit=None, verbose=False):
+        super(UserLookup, self).__init__(time_frame, max_requests , sync_time, limit, verbose)
+        
+    def collect(self, user_ids=None, screen_names=None, from_index=None, offset=100, wait_for=2, feedback_time=15*60):
+        def stringify(l):
+            return ','.join([str(val) for val in l])
+        self._num_requests, cnt = 0, 0
+        self._start_time, self._last_feedback = time.time(), time.time()
+        if user_ids == None and screen_names == None:
+            raise RuntimeError("Specify the list of user IDs or screen names!")
+        else:
+            is_ids = user_ids != None
+            items = user_ids if is_ids else screen_names
+            if from_index != None:
+                items = items[from_index:]
+            queries = [stringify(items[i:i+offset]) for i in range(0,len(items),offset)]
+        for q_idx, query in enumerate(queries):
+            # verify
+            _ = self._verify_new_request(self.twitter_api)
+            # new request
+            try:
+                self._register_request(delta_t=wait_for)
+                if is_ids:
+                    res = self.twitter_api.lookup_user(user_id=query)
+                else:
+                    res = self.twitter_api.lookup_user(screen_name=query)
+                # postprocess
+                cnt += len(res)
+                self._export_to_output_framework(res)
+            except TwythonAuthError:
+               # This error can occur when some ids are not available!
+               print("TwythonAuthError", query)
+            except TwythonError:
+                # This error can occur when some ids are not available!
+                print("TwythonError", query)
+            except:
+                raise
+            if self._terminate():
+                    break
+        return q_idx*offset, cnt
                 
 class NetworkCrawler(Crawler):
     def __init__(self, network_type, time_frame, max_requests, sync_time, limit, verbose=False):

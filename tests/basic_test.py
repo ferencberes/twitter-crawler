@@ -1,4 +1,5 @@
 import os, sys
+#from twittercrawler.base import UserLookup
 from twittercrawler.crawlers import *
 from twittercrawler.utils import load_json_result
 
@@ -49,6 +50,15 @@ def test_people():
     page, cnt = crawler.search()
     crawler.close()
     os.remove("people_results.txt")
+    assert cnt > 0
+    
+def test_lookup():
+    crawler = UserLookup()
+    crawler.authenticate(api_key_file_path)
+    crawler.connect_to_file("lookup_results.txt")
+    query_idx, cnt = crawler.collect(screen_names=["ferencberes91","Istvan_A_Seres"])
+    crawler.close()
+    os.remove("lookup_results.txt")
     assert cnt > 0
 
 def test_friends():

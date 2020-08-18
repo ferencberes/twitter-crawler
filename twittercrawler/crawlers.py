@@ -18,8 +18,8 @@ class InteractiveCrawler(SearchCrawler):
     limit
         Terminate after the given number of Twitter API calls
     """
-    def __init__(self, time_frame=900, max_requests=200, sync_time=15, limit=None, verbose=False):
-        super(InteractiveCrawler, self).__init__(time_frame, max_requests, sync_time, limit, verbose)
+    def __init__(self, time_frame=900, max_requests=200, sync_time=15, limit=None, only_geo=False, verbose=False):
+        super(InteractiveCrawler, self).__init__(time_frame, max_requests, sync_time, limit, only_geo, verbose)
         self._msg = "Interactive search"
         self._start_time, self._last_feedback = time.time(), time.time()
         self._num_requests = 0
@@ -35,6 +35,13 @@ class InteractiveCrawler(SearchCrawler):
         """
         _ = self._verify_new_request(self.twitter_api)
         resp = self.twitter_api.search(**self.search_args)
+        if self.only_geo:
+            new_status = []
+            for tweet in resp['statuses']:
+                if self.only_geo and tweet["geo"] == None:
+                    continue
+                new_status.append(tweet)
+            resp['statuses'] = new_status
         self._register_request(delta_t=wait_for)
         return resp
 
@@ -53,8 +60,8 @@ class RecursiveCrawler(SearchCrawler):
     limit
         Terminate after the given number of Twitter API calls
     """
-    def __init__(self, time_frame=900, max_requests=200, sync_time=15, limit=None, verbose=False):
-        super(RecursiveCrawler, self).__init__(time_frame, max_requests, sync_time, limit, verbose)
+    def __init__(self, time_frame=900, max_requests=200, sync_time=15, limit=None, only_geo=False, verbose=False):
+        super(RecursiveCrawler, self).__init__(time_frame, max_requests, sync_time, limit, only_geo, verbose)
         self._msg = "Recursive search"
         
     def search(self, wait_for=2, current_max_id=0, custom_since_id=None, term_func=None, feedback_time=15*60):
@@ -77,8 +84,8 @@ class StreamCrawler(SearchCrawler):
     limit
         Terminate after the given number of Twitter API calls
     """
-    def __init__(self, time_frame=900, max_requests=200, sync_time=15, limit=None, verbose=False):
-        super(StreamCrawler, self).__init__(time_frame, max_requests, sync_time, limit, verbose)
+    def __init__(self, time_frame=900, max_requests=200, sync_time=15, limit=None, only_geo=False, verbose=False):
+        super(StreamCrawler, self).__init__(time_frame, max_requests, sync_time, limit, only_geo, verbose)
         self._msg = "Stream search"
         
     def search(self, delta_t, termination_func, dev_ratio=0.1, feedback_time=15*60):
@@ -117,7 +124,7 @@ class PeopleCrawler(SearchCrawler):
         Terminate after the given number of Twitter API calls
     """
     def __init__(self, time_frame=900, max_requests=100, sync_time=15, limit=None, verbose=False):
-        super(PeopleCrawler, self).__init__(time_frame, max_requests, sync_time, limit, verbose)
+        super(PeopleCrawler, self).__init__(time_frame, max_requests, sync_time, limit, False, verbose)
         self._msg = "People search"
         
     def search(self, wait_for=2, feedback_time=15*60):

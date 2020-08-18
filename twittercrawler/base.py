@@ -150,8 +150,11 @@ class NetworkCrawler(Crawler):
         return u_id, cursor, cnt
                 
 class SearchCrawler(Crawler):    
-    def __init__(self, time_frame, max_requests, sync_time, limit, verbose=False):
+    def __init__(self, time_frame, max_requests, sync_time, limit, only_geo=False, verbose=False):
         super(SearchCrawler, self).__init__(time_frame, max_requests, sync_time, limit, verbose)
+        self.only_geo = only_geo
+        if self.only_geo:
+            print("Only geotagged tweets are exported!")
             
     def set_search_arguments(self,search_args):
         """Set search parameters with a dictionary"""
@@ -191,6 +194,8 @@ class SearchCrawler(Crawler):
                 for tweet in tweets['statuses']:
                     tweet_id = int(tweet['id'])
                     if custom_since_id == None or tweet_id >= custom_since_id:
+                        if self.only_geo and tweet["geo"] == None:
+                            continue
                         result_tweets.append(tweet)
                     if current_max_id == 0 or current_max_id > tweet_id:
                         current_max_id = tweet_id
@@ -209,7 +214,6 @@ class SearchCrawler(Crawler):
                     stop_search = True
 
                 # export tweets
-                self._export_to_output_framework(result_tweets)
                 cnt += len(result_tweets)
 
                 if stop_search:

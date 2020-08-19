@@ -194,9 +194,9 @@ class SearchCrawler(Crawler):
                 for tweet in tweets['statuses']:
                     tweet_id = int(tweet['id'])
                     if custom_since_id == None or tweet_id >= custom_since_id:
-                        if self.only_geo and tweet["geo"] == None:
-                            continue
-                        result_tweets.append(tweet)
+                        skip_record = self.only_geo and tweet["geo"] == None
+                        if not skip_record:
+                            result_tweets.append(tweet)
                     if current_max_id == 0 or current_max_id > tweet_id:
                         current_max_id = tweet_id
                     if latest_id < tweet_id:
@@ -214,6 +214,7 @@ class SearchCrawler(Crawler):
                     stop_search = True
 
                 # export tweets
+                self._export_to_output_framework(result_tweets)
                 cnt += len(result_tweets)
 
                 if stop_search:

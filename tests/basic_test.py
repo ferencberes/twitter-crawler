@@ -18,10 +18,10 @@ def test_recursive():
     "count":5
     }
     crawler.set_search_arguments(search_args=search_params)
-    max_id, latest_id, cnt = crawler.search(term_func=None)
+    success, max_id, latest_id, cnt = crawler.search(term_func=None)
     crawler.close()
     os.remove("recursive_results.txt")
-    assert cnt > 0
+    assert (success and cnt > 0)
     
 def test_stream():
     crawler = StreamCrawler(sync_time=1, limit=10)

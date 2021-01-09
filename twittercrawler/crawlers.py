@@ -98,10 +98,10 @@ class StreamCrawler(SearchCrawler):
                 # termination function is needed only for the first round!!!
                 recursive_info = self._search_by_query(wait_for=2, custom_since_id=since_id, term_func=termination_func, feedback_time=feedback_time)
                 print("Recursive search result: %s" % str(recursive_info))
-                max_id, latest_id, cnt = recursive_info
+                success, max_id, latest_id, cnt = recursive_info
                 last_since_id = since_id
                 since_id = latest_id
-            if self._terminate(False):
+            if (not success) or self._terminate(False):
                 break
             wait_for = np.random.normal(loc=delta_t,scale=delta_t*dev_ratio)
             if self.verbose:

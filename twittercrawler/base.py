@@ -1,4 +1,4 @@
-import json, twython, time
+import json, twython, time, traceback
 from twython import Twython
 from .scheduler import *
 from twython.exceptions import TwythonAuthError, TwythonError
@@ -121,13 +121,13 @@ class NetworkCrawler(Crawler):
                         res = self.twitter_api.get_follower_ids(user_id=u_id, cursor=cursor)
                 except TwythonAuthError:
                    # This error can occur when the node is not available!
-                   print(u_id, "TwythonAuthError")
-                   break
+                    print(u_id, "TwythonAuthError")
+                    break
                 except TwythonError:
-                   print(u_id, "TwythonError")
-                   break
+                    print(u_id, "TwythonError")
+                    break
                 except:
-                   raise	
+                    raise
                 # postprocess
                 new_links = []
                 for node in res["ids"]:
@@ -166,20 +166,19 @@ class SearchCrawler(Crawler):
             del self.search_args["max_id"]
         if "since_id" in self.search_args:
             del self.search_args["since_id"]
-        
+        success = True
         prev_max_id = -1
         latest_id = -1
         cnt = 0
-        while current_max_id != prev_max_id:
-            result_tweets = []
-            
-            # feedback
-            if time.time() - self._last_feedback > feedback_time:
-                self._show_time_diff()
-                print("max_id: %s, since_id: %s, latest_id: %s" % (str(current_max_id), str(custom_since_id), str(latest_id)))
-                
-            stop_search = False
-            try:
+        try:
+            while current_max_id != prev_max_id:
+                result_tweets = []
+
+                # feedback
+                if time.time() - self._last_feedback > feedback_time:
+                    self._show_time_diff()
+                    print("max_id: %s, since_id: %s, latest_id: %s" % (str(current_max_id), str(custom_since_id), str(latest_id)))
+                stop_search = False            
                 if current_max_id > 0:
                     self.search_args["max_id"] = current_max_id-1
                 if custom_since_id != None:
@@ -221,8 +220,10 @@ class SearchCrawler(Crawler):
                     break
                 if self._terminate():
                     break
-            except twython.exceptions.TwythonRateLimitError:
-                raise
-            except Exception as exc:
-                raise
-        return current_max_id, latest_id, cnt
+        except twython.exceptions.TwythonRateLimitError:
+            traceback.print_exc()
+            success = False
+        except Exception:
+            raise
+        finally:
+            return success, current_max_id, latest_id, cnt

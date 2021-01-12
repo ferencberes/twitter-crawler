@@ -1,12 +1,19 @@
 import json, shutil, os
 
 class UserTweetStore():
-    def __init__(self, store_dir):
+    def __init__(self, store_dir, reload=True):
         self.store_dir = store_dir
-        self._user_intervals = {}
+        self.reload = reload
+        #self._user_intervals = {}
+        if self.reload:
+            self.load()
+        else:
+            self.reset()
         
     @property
     def store_dir(self):
+        if not os.path.exists(self._store_dir):
+            os.makedirs(self._store_dir)
         return self._store_dir
     
     @property
@@ -15,8 +22,6 @@ class UserTweetStore():
     
     @store_dir.setter
     def store_dir(self, val):
-        if not os.path.exists(val):
-            os.makedirs(val)
         self._store_dir = val
         
     @property
@@ -35,8 +40,12 @@ class UserTweetStore():
             json.dump(self._user_intervals, f, indent=4)
         
     def load(self):
-        with open(self.interval_file) as f:
-            self._user_intervals = json.load(f)
+        if os.path.exists(self.interval_file):
+            with open(self.interval_file) as f:
+                self._user_intervals = json.load(f)
+            print("UserStore loaded from folder: %s" % self.store_dir)
+        else:
+            self.reset()
             
     def reset(self):
         print("UserStore reset in this directory: %s" % self.store_dir)

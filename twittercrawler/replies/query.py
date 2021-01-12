@@ -3,23 +3,63 @@ from datetime import datetime as dt
 import numpy as np
 
 class TweetQuery():
-    def __init__(self, tweet_dict):
+    def __init__(self, tweet_dict=None):
+        self._id = None
+        self._user_id = None
+        self._user_name = None
+        self._epoch = None
+        self._likes = None
+        self._retweets = None
+        self._max_id = None
+        self._since_id = None
+        self._last_access = None
+        if tweet_dict != None:
+            self._load_from_tweet(tweet_dict)
+        
+    def _load_from_tweet(self, tweet_dict):
         self._id = tweet_dict["id_str"]
-        self._user_name = tweet_dict["user"]["screen_name"]
         self._user_id = tweet_dict["user"]["id_str"]
-        self._epoch = tweet_time_2_epoch(tweet_dict["created_at"]) if "created_at" in tweet_dict else None
+        self._user_name = tweet_dict["user"]["screen_name"]
+        self._epoch = tweet_time_2_epoch(tweet_dict["created_at"])
         self._likes = tweet_dict["favorite_count"]
         self._retweets = tweet_dict["retweet_count"]
-        self._max_id = None
         self._since_id = int(self._id)
-        self._last_access = None
+    
+    def load(self, d):
+        self._id = d["id"]
+        self._user_id = d["user_id"]
+        self._user_name = d["user_name"]
+        self._epoch = d["epoch"]
+        self._likes = d["likes"]
+        self._retweets = d["retweets"]
+        self._max_id = d["max_id"]
+        self._since_id = d["since_id"]
+        self._last_access = d["last_access"]
+    
+    def get(self):
+        return {
+            "id":self.id,
+            "user_id":self.user_id,
+            "user_name":self.user_name,
+            "epoch":self.epoch,
+            "likes":self.likes,
+            "retweets":self.retweets,
+            "max_id":self.max_id,
+            "since_id":self.since_id,
+            "last_access":self._last_access,
+            "priority":self.priority,
+            "dt":self.dt
+        }
+        
+    def __repr__(self):
+        return str(self.get())
         
     def update_metrics(self, tweet_dict):
         if tweet_dict["id_str"] == self.id:
             self._likes = tweet_dict["favorite_count"]
             self._retweets = tweet_dict["retweet_count"]
         else:
-            raise ValueError("Id mismatch! Original id: %s, new id: %s" % (self.id, tweet_dict["id_str"]))
+            raise ValueError("Id mismatch! Original id: %s, new id: %s" % (self.id, tweet_dict["id_str"]))  
         
     def set_epoch(self, epoch):
         self._epoch = epoch
@@ -48,9 +88,6 @@ class TweetQuery():
         copy_q.set_max_id(self.max_id)
         copy_q.set_since_id(self.since_id)
         return copy_q
-        
-    def __repr__(self):
-        return "(%s, %s, %s, %s, %i, %i, %s, %s)" % (self.id, self.user_id, self.user_name, self.dt, self.likes, self.retweets, self.max_id, self.since_id)
     
     @property
     def id(self):

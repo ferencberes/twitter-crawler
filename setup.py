@@ -16,6 +16,8 @@ setup(name='twittercrawler',
           'pymongo',
           'matplotlib',
           'bokeh',
-          'pytest'
+          'pytest',
+          'tqdm',
+          'comet_ml'
       ],
 zip_safe=False)

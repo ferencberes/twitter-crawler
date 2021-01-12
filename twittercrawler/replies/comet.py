@@ -13,7 +13,7 @@ def init_experiment(api_key, project, workspace):
         project_name=project,
         workspace=workspace,
         log_code=False,
-        log_graph=False,
+        log_graph=True,
         auto_param_logging=False,
         auto_metric_logging=False,
         auto_output_logging='default',

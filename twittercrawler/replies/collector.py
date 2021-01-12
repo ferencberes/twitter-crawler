@@ -139,7 +139,9 @@ class ReplyCollector():
         
     def run(self, feedback_interval=10, max_requests=100, comet_info=None):
         def make_checkpoint():
-            x.append(i)
+            if comet_info != None:
+                exp.log_curve("total",x=[j],y=[self.status["total_queries"]],step=j)
+            x.append(j)
             y_total.append(self.status["total_queries"])
             y_remain.append(self.status["remaining_queries"])
             print("\n### STATUS ###")
@@ -151,9 +153,10 @@ class ReplyCollector():
             api_key = load_api_key(api_key_fp)
             exp = init_experiment(api_key, project, workspace)
             exp.log_parameters(self.params)
-        i = 0
+        i, j = 0, 0
         make_checkpoint()
         while len(self.queue) > 0:
+            j += 1
             query = self.queue.popleft()
             if query.priority == 0:
                 self._queue.appendleft(query)
@@ -188,6 +191,7 @@ class ReplyCollector():
         if comet_info != None:
             exp.log_metrics(self.status)
             exp.log_metric("executed_queries", i)
-            exp.log_curve("total_q",x,y_total)
-            exp.log_curve("remaining_q",x,y_remain)
+            #print(x, y_total, y_remain)
+            #exp.log_curve("total_q",x=x,y=y_total)
+            #exp.log_curve("remaining_q",x=x,y=y_remain)
             exp.end()

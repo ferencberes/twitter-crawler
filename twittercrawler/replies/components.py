@@ -94,7 +94,7 @@ class SearchEngine():
     def get_output_fp(self, query):
         return os.path.join(self.store.replies_dir,"%s.txt" % query.user_id)
         
-    def collect_replies(self, query, count=100, result_type='recent', wait_for=3, feedback_time=15):
+    def collect_replies(self, query, count=100, result_type='recent', wait_for=3, feedback_time=300):
         search_params = {
             "q" : "to:%s" % query.user_name,
             "result_type" : result_type,

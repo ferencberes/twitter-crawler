@@ -74,11 +74,11 @@ class ReplyCollector():
         
     @property
     def thread_fp(self):
-        return os.path.join(self.collector_dir, "thread.pkl")
+        return os.path.join(self.collector_dir, "thread.csv")
     
     @property
     def queue_fp(self):
-        return os.path.join(self.collector_dir, "queue.pkl")
+        return os.path.join(self.collector_dir, "queue.csv")
     
     @property
     def status(self):
@@ -90,11 +90,11 @@ class ReplyCollector():
     
     def _save_thread(self):
         df = pd.DataFrame(self.tweet_thread)
-        df.to_pickle(self.thread_fp)
+        df.to_csv(self.thread_fp, index=False)
         
     def _save_queue(self):
         df = pd.DataFrame([q.get() for q in self.queue])
-        df.to_pickle(self.queue_fp)
+        df.to_csv(self.queue_fp, index=False)
     
     def save(self):
         self.engine.store.save()
@@ -104,7 +104,7 @@ class ReplyCollector():
     def _load_thread(self):
         if os.path.exists(self.thread_fp):
             thread = []
-            df = pd.read_pickle(self.thread_fp)
+            df = pd.read_csv(self.thread_fp)
             for idx, row in df.iterrows():
                 thread.append(dict(row))
             self.tweet_thread = thread
@@ -112,7 +112,7 @@ class ReplyCollector():
     def _load_queue(self):
         if os.path.exists(self.queue_fp):
             queries = []
-            df = pd.read_pickle(self.queue_fp)
+            df = pd.read_csv(self.queue_fp)
             for idx, row in df.iterrows():
                 q = TweetQuery()
                 q.load(row)

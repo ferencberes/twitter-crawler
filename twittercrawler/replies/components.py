@@ -4,7 +4,6 @@ class UserTweetStore():
     def __init__(self, store_dir, reload=True):
         self.store_dir = store_dir
         self.reload = reload
-        #self._user_intervals = {}
         if self.reload:
             self.load()
         else:
@@ -65,8 +64,8 @@ class UserTweetStore():
                 from_id = qid
             else:
                 from_id = query.max_id
-        ## TODO: completely wrong if there is max_id in the query???
-        if to_id == None or latest_id > to_id:# what if there is max_id - (then latest id is not the present! in this case we formerly set the good latest id when it failed!!!)
+        if to_id == None or latest_id > to_id:
+            # In case of max_id the to_id is properly set. The gap in the interval will be fixed when the same query returns (after executing with max_id)
             to_id = latest_id
         self._user_intervals[user_id] = [from_id, to_id]
     
@@ -74,18 +73,22 @@ class UserTweetStore():
         queries = []
         if query.max_id == None:
             from_id, to_id = self.get_user(query.user_id)
+            print("ADJUST",query.user_id,from_id,to_id)
             if from_id == None:
                 queries.append(query)
             else:
-                # TODO: does not work properly with reloaded UserStore
+                print("STORE", from_id, query.since_id, from_id - query.since_id)
                 if query.since_id < from_id:
                     q = query.copy()
                     q.set_max_id(from_id)
                     queries.append(q)
                 # avoid collecting the same data twice
                 query.set_since_id(to_id)
-        # The original query is executed in case of max_id==None
-        queries.append(query)
+                queries.append(query)
+        else:
+            #The original query is executed in case of max_id!=None
+            queries.append(query)
+        print("ADJUST",len(queries))
         return queries
     
 from twittercrawler.utils import load_json_result

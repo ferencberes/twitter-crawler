@@ -1,6 +1,6 @@
 from collections import deque
 import pandas as pd
-import os, shutil
+import os, shutil, traceback
 from twittercrawler.replies.components import SearchEngine
 from twittercrawler.replies.query import TweetQuery
 from twittercrawler.replies.comet import init_experiment, load_api_key
@@ -47,7 +47,6 @@ class ReplyCollector():
             "renew_status":self.renew_status,
             "screen_name":self.seed_tweet["user"]["screen_name"],
             "user_id":self.seed_tweet["user"]["id_str"],
-            "text":self.seed_tweet["full_text"],
         }
         
     @property
@@ -144,59 +143,70 @@ class ReplyCollector():
         
     def run(self, feedback_interval=10, max_requests=100, comet_info=None):
         def make_checkpoint():
-            if comet_info != None:
-                exp.log_curve("total",x=[j],y=[self.status["total_queries"]],step=j)
             x.append(j)
+            y_exec.append(i)
             y_total.append(self.status["total_queries"])
             y_remain.append(self.status["remaining_queries"])
             print("\n### STATUS ###")
+            print("Executed queries: %i" % i)
             print(self.status)
             print()
-        x, y_total, y_remain = [], [], []
+        x, y_total, y_remain, y_exec = [], [], [], []
         if comet_info != None:
             api_key_fp, project, workspace = comet_info
             api_key = load_api_key(api_key_fp)
             exp = init_experiment(api_key, project, workspace)
             exp.log_parameters(self.params)
-        i, j = 0, 0
-        make_checkpoint()
-        while len(self.queue) > 0:
-            j += 1
-            query = self.queue.popleft()
-            if query.priority == 0:
-                self._queue.appendleft(query)
-                break
-            if self.renew_status and query.accessed_since_days > -1:
-                new_status = self.engine.get_status(query.id)
-                query.update_metrics(new_status)
-            execute_now = self._decide_execution(query)
-            if execute_now:
-                print(query)
-                success, new_query, replies = self.engine.execute(query)
-                print(query.id,len(replies))
-                self.tweet_thread += replies
-                for reply in replies:
-                    q = TweetQuery(reply)
-                    if not q.id in self.active_tweet_ids:
-                        self._queue.append(q)
-                if new_query.elapsed_days < self.drop_day_limit:
-                    self._queue.append(new_query)
-                self._sort_queries()
-                if not success:
+        try:
+            print("\n### SEED ###")
+            print(self.params)
+            print(self.seed_tweet["full_text"])
+            if comet_info != None:
+                exp.log_text(self.seed_tweet["full_text"])
+            i, j = 0, 0
+            make_checkpoint()
+            while len(self.queue) > 0:
+                j += 1
+                query = self.queue.popleft()
+                if query.priority == 0:
+                    self._queue.appendleft(query)
                     break
-                i += 1
-            else:
-                self._queue.append(query)
-            self.save()
-            if i % feedback_interval == 0:
-                make_checkpoint()
-            if i >= max_requests:
-                print("Exiting at %i executed queries!" % max_requests)
-        make_checkpoint()
-        if comet_info != None:
-            exp.log_metrics(self.status)
-            exp.log_metric("executed_queries", i)
-            print(x, y_total, y_remain)
-            exp.log_curve("total_q",x=x,y=y_total)
-            exp.log_curve("remaining_q",x=x,y=y_remain)
-            exp.end()
+                if self.renew_status and query.accessed_since_days > -1:
+                    new_status = self.engine.get_status(query.id)
+                    query.update_metrics(new_status)
+                execute_now = self._decide_execution(query)
+                if execute_now:
+                    print(query)
+                    success, new_query, replies = self.engine.execute(query)
+                    print(query.id,len(replies))
+                    self.tweet_thread += replies
+                    for reply in replies:
+                        q = TweetQuery(reply)
+                        if not q.id in self.active_tweet_ids:
+                            self._queue.append(q)
+                    if new_query.elapsed_days < self.drop_day_limit:
+                        self._queue.append(new_query)
+                    self._sort_queries()
+                    if not success:
+                        break
+                    i += 1
+                else:
+                    self._queue.append(query)
+                self.save()
+                if i % feedback_interval == 0:
+                    make_checkpoint()
+                if i >= max_requests:
+                    print("Exiting at %i executed queries!" % max_requests)
+            make_checkpoint()
+        except Exception:
+            traceback.print_exc()
+            print()
+            if comet_info != None:
+                exp.add_tag("Failed")
+        finally:
+            if comet_info != None:
+                exp.log_metrics(self.status)
+                exp.log_metric("executed_queries", i)
+                df = pd.DataFrame(list(zip(x,y_exec,y_remain,y_total)), columns=["step","executed","remaining","total"])
+                exp.log_table("step_metrics.csv",tabular_data=df,headers=True)
+                exp.end()

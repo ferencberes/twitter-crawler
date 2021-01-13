@@ -33,16 +33,9 @@ with open(tweet_ids_file) as f:
 print(tweet_ids)
 
 for tweet_id in tweet_ids:
-    try:
-        print()
-        print("New seed tweet:", tweet_id)
-        collector = ReplyCollector(engine, tweet_id, collector_dir)
-        collector.run(feedback_interval=10, max_requests=10000, comet_info=comet_info)
-        print("SLEEPING for 5 minutes")
-        time.sleep(300)
-        print()
-    except Exception:
-        print("\n### ERROR ###")
-        print("Error occured with tweet_id:", tweet_id)
-        traceback.print_exc()
-        print()
+    print()
+    print("New seed tweet:", tweet_id)
+    collector = ReplyCollector(engine, tweet_id, collector_dir)
+    collector.run(feedback_interval=1, max_requests=10000, comet_info=comet_info)
+    print()
+    

@@ -143,6 +143,9 @@ class ReplyCollector():
         
     def run(self, feedback_interval=10, max_requests=100, comet_info=None):
         def make_checkpoint():
+            if comet_info != None:
+                exp.log_metrics(self.status, step=j)
+                exp.log_metric("executed_queries", i, step=j)
             x.append(j)
             y_exec.append(i)
             y_total.append(self.status["total_queries"])
@@ -193,7 +196,7 @@ class ReplyCollector():
                 else:
                     self._queue.append(query)
                 self.save()
-                if i % feedback_interval == 0:
+                if j % feedback_interval == 0:
                     make_checkpoint()
                 if i >= max_requests:
                     print("Exiting at %i executed queries!" % max_requests)
@@ -205,8 +208,6 @@ class ReplyCollector():
                 exp.add_tag("Failed")
         finally:
             if comet_info != None:
-                exp.log_metrics(self.status)
-                exp.log_metric("executed_queries", i)
                 df = pd.DataFrame(list(zip(x,y_exec,y_remain,y_total)), columns=["step","executed","remaining","total"])
                 exp.log_table("step_metrics.csv",tabular_data=df,headers=True)
                 exp.end()

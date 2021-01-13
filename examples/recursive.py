@@ -23,8 +23,8 @@ print(time_str)
 time_terminator =  get_time_termination(time_str)
 
 # run search - FIRST STAGE
-max_id, latest_id, cnt = recursive.search(term_func=time_terminator)
-print(max_id, latest_id, cnt)
+success, max_id, latest_id, cnt = recursive.search(term_func=time_terminator)
+print(success, max_id, latest_id, cnt)
 
 # wait for 5 minutes
 time.sleep(5*60)
@@ -33,8 +33,8 @@ time.sleep(5*60)
 id_terminator =  get_id_termination(latest_id)
 
 # NEW search - SECOND STAGE
-new_max_id, new_latest_id, new_cnt = recursive.search(term_func=id_terminator)
-print(new_max_id, new_latest_id, new_cnt)
+success, new_max_id, new_latest_id, new_cnt = recursive.search(term_func=id_terminator)
+print(success, new_max_id, new_latest_id, new_cnt)
 
 # close
 recursive.close()

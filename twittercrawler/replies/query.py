@@ -74,19 +74,9 @@ class TweetQuery():
         self._last_access = dt.now()
         
     def copy(self):
-        params = {
-            "id_str":self.id,
-            "favorite_count":self.likes,
-            "retweet_count":self.retweets,
-            "user":{
-                "id_str": self.user_id,
-                "screen_name": self.user_name
-            }
-        }
-        copy_q = TweetQuery(params)
-        copy_q.set_epoch(self.epoch)
-        copy_q.set_max_id(self.max_id)
-        copy_q.set_since_id(self.since_id)
+        params = self.get()
+        copy_q = TweetQuery(tweet_dict=None)
+        copy_q.load(params)
         return copy_q
     
     @property
@@ -143,7 +133,7 @@ class TweetQuery():
     @property
     def priority(self):
         if self.max_id != None:
-            return 10.0
+            return 100.0
         elif self.accessed_since_days == 0:
             return 0.0
         else:

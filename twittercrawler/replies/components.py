@@ -61,23 +61,30 @@ class UserTweetStore():
         from_id, to_id = self.get_user(user_id)
         qid = int(query.id)
         if from_id == None or qid < from_id:
-            from_id = qid
-        if to_id == None or latest_id > to_id:
+            if query.max_id == None:
+                from_id = qid
+            else:
+                from_id = query.max_id
+        ## TODO: completely wrong if there is max_id in the query???
+        if to_id == None or latest_id > to_id:# what if there is max_id - (then latest id is not the present! in this case we formerly set the good latest id when it failed!!!)
             to_id = latest_id
         self._user_intervals[user_id] = [from_id, to_id]
     
     def adjust_query(self, query):
-        from_id, to_id = self.get_user(query.user_id)
         queries = []
-        if from_id == None:
-            queries.append(query)
-        else:
-            if query.since_id < from_id:
-                q = query.copy()
-                q.set_max_id(from_id)
-            # avoid collecting the same data twice
-            query.set_since_id(to_id)
-            queries.append(query)
+        if query.max_id == None:
+            from_id, to_id = self.get_user(query.user_id)
+            if from_id == None:
+                queries.append(query)
+            else:
+                if query.since_id < from_id:
+                    q = query.copy()
+                    q.set_max_id(from_id)
+                    queries.append(q)
+                # avoid collecting the same data twice
+                query.set_since_id(to_id)
+        # The original query is executed in case of max_id==None
+        queries.append(query)
         return queries
     
 from twittercrawler.utils import load_json_result
@@ -136,7 +143,7 @@ class SearchEngine():
             original_query.mark_access()
             if cnt > 0:
                 original_query.set_since_id(latest_id)
-                original_query.set_max_id(None)
+                original_query.set_max_id(None)#WHY is it inside cnt>0?
         else:
             original_query.set_max_id(max_id)
         return success, original_query, replies

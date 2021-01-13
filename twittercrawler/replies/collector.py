@@ -22,11 +22,13 @@ class ReplyCollector():
         
     def _clear(self):
         self.seed_tweet = self.engine.get_status(self.tweet_id)
+        self.tweet_thread = [self.seed_tweet]
+        seed_query = TweetQuery(self.seed_tweet)
+        self._queue = deque([seed_query])
         print("\n### SEED TWEET ###")
         print(self.seed_tweet['full_text'])
+        print(seed_query)
         print()
-        self.tweet_thread = [self.seed_tweet]
-        self._queue = deque([TweetQuery(self.seed_tweet)])
         self.active_tweet_ids = []
         
     def reset(self):

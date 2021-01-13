@@ -18,7 +18,7 @@ comet_key_fp = "../comet_key.txt"
 #    shutil.rmtree(data_dir)
 
 comet_info = (comet_key_fp,"collector","covid-vaccine")
-crawler = RecursiveCrawler()
+crawler = RecursiveCrawler(max_requests=400)
 crawler.authenticate(twitter_key_fp)
 store = UserTweetStore(store_dir)
 engine = SearchEngine(crawler, store)

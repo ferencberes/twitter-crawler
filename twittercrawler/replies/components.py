@@ -77,6 +77,7 @@ class UserTweetStore():
             if from_id == None:
                 queries.append(query)
             else:
+                # TODO: does not work properly with reloaded UserStore
                 if query.since_id < from_id:
                     q = query.copy()
                     q.set_max_id(from_id)
@@ -102,6 +103,7 @@ class SearchEngine():
         return os.path.join(self.store.replies_dir,"%s.txt" % query.user_id)
         
     def collect_replies(self, query, count=100, result_type='recent', wait_for=3, feedback_time=300):
+        print(query)
         search_params = {
             "q" : "to:%s" % query.user_name,
             "result_type" : result_type,

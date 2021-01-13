@@ -1,6 +1,6 @@
 import numpy as np
 import pandas as pd
-import os, shutil, sys, time
+import os, shutil, sys, time, traceback
 
 from twittercrawler.replies.components import SearchEngine, UserTweetStore
 from twittercrawler.replies.query import TweetQuery
@@ -17,7 +17,7 @@ comet_key_fp = "../comet_key.txt"
 #if os.path.exists(data_dir):
 #    shutil.rmtree(data_dir)
 
-comet_info = (comet_key_fp,"collector","covid-vaccine")
+comet_info = (comet_key_fp,"collector_test","covid-vaccine")
 crawler = RecursiveCrawler(max_requests=400)
 crawler.authenticate(twitter_key_fp)
 store = UserTweetStore(store_dir)
@@ -33,10 +33,16 @@ with open(tweet_ids_file) as f:
 print(tweet_ids)
 
 for tweet_id in tweet_ids:
-    print()
-    print("New seed tweet:", tweet_id)
-    collector = ReplyCollector(engine, tweet_id, collector_dir)
-    collector.run(feedback_interval=10, max_requests=10000, comet_info=comet_info)
-    print("SLEEPING for 5 minutes")
-    time.sleep(300)
-    print()
+    try:
+        print()
+        print("New seed tweet:", tweet_id)
+        collector = ReplyCollector(engine, tweet_id, collector_dir)
+        collector.run(feedback_interval=10, max_requests=10000, comet_info=comet_info)
+        print("SLEEPING for 5 minutes")
+        time.sleep(300)
+        print()
+    except Exception:
+        print("\n### ERROR ###")
+        print("Error occured with tweet_id:", tweet_id)
+        traceback.print_exc()
+        print()

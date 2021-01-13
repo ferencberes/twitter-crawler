@@ -44,7 +44,10 @@ class ReplyCollector():
             "action_day_limit":self.action_day_limit,
             "drop_day_limit":self.drop_day_limit,
             "reload":self.reload,
-            "renew_status":self.renew_status
+            "renew_status":self.renew_status,
+            "screen_name":self.seed_tweet["user"]["screen_name"],
+            "user_id":self.seed_tweet["user"]["id_str"],
+            "text":self.seed_tweet["full_text"],
         }
         
     @property
@@ -193,7 +196,7 @@ class ReplyCollector():
         if comet_info != None:
             exp.log_metrics(self.status)
             exp.log_metric("executed_queries", i)
-            #print(x, y_total, y_remain)
-            #exp.log_curve("total_q",x=x,y=y_total)
-            #exp.log_curve("remaining_q",x=x,y=y_remain)
+            print(x, y_total, y_remain)
+            exp.log_curve("total_q",x=x,y=y_total)
+            exp.log_curve("remaining_q",x=x,y=y_remain)
             exp.end()

@@ -101,7 +101,7 @@ class TweetQuery():
     
     @property
     def date_str(self):
-        return self.dt.strftime(pattern, '%Y-%m-%d')
+        return self.dt.strftime('%Y-%m-%d')
     
     @property
     def likes(self):

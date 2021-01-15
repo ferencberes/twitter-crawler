@@ -107,7 +107,7 @@ class ReplyCollector():
             df = pd.read_csv(self.thread_fp)
             for idx, row in df.iterrows():
                 thread.append(dict(row))
-            self.tweet_thread = thread
+            self.tweet_thread += thread
         
     def _load_queue(self):
         if os.path.exists(self.queue_fp):

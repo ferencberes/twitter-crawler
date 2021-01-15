@@ -222,6 +222,16 @@ class SearchCrawler(Crawler):
                     break
         except twython.exceptions.TwythonRateLimitError:
             traceback.print_exc()
+            print()
+            try:
+                current_time = time.time()
+                _, wait_for = self._check_remaining_limit(self.twitter_api, current_time)
+                print("RATE LIMIT RESET in %.1f seconds" % wait_for)
+                time.sleep(wait_for)
+            except Exception as e:
+                traceback.print_exc()
+                print("SLEEPING for 900 seconds!")
+                time.sleep(901)
             success = False
         except Exception:
             raise

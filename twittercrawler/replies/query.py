@@ -100,6 +100,10 @@ class TweetQuery():
         return dt.fromtimestamp(self.epoch)
     
     @property
+    def date_str(self):
+        return self.dt.strftime(pattern, '%Y-%m-%d')
+    
+    @property
     def likes(self):
         return self._likes
     

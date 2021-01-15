@@ -1,6 +1,6 @@
 from collections import deque
 import pandas as pd
-import os, shutil, traceback
+import os, sys, shutil, traceback
 from twittercrawler.replies.components import SearchEngine
 from twittercrawler.replies.query import TweetQuery
 from twittercrawler.replies.comet import init_experiment, load_api_key
@@ -159,6 +159,8 @@ class ReplyCollector():
             api_key_fp, project, workspace = comet_info
             api_key = load_api_key(api_key_fp)
             exp = init_experiment(api_key, project, workspace)
+            seed_query = TweetQuery(self.seed_tweet)
+            exp.add_tag(seed_query.date_str)
             exp.log_parameters(self.params)
         try:
             print("\n### SEED ###")
@@ -187,11 +189,11 @@ class ReplyCollector():
                         q = TweetQuery(reply)
                         if not q.id in self.active_tweet_ids:
                             self._queue.append(q)
-                    if new_query.elapsed_days < self.drop_day_limit:
+                    if new_query.elapsed_days < self.drop_day_limit or not success:
                         self._queue.append(new_query)
                     self._sort_queries()
-                    if not success:
-                        break
+                    #if not success:
+                    #    break
                     i += 1
                 else:
                     self._queue.append(query)
@@ -201,6 +203,12 @@ class ReplyCollector():
                 if i >= max_requests:
                     print("Exiting at %i executed queries!" % max_requests)
             make_checkpoint()
+        except KeyboardInterrupt:
+            print('Interrupted')
+            try:
+                sys.exit(0)
+            except SystemExit:
+                os._exit(0)
         except Exception:
             traceback.print_exc()
             print()

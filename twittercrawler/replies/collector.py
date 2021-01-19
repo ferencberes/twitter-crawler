@@ -202,6 +202,7 @@ class ReplyCollector():
                     make_checkpoint()
                 if i >= max_requests:
                     print("Exiting at %i executed queries!" % max_requests)
+                    break
             make_checkpoint()
         except KeyboardInterrupt:
             print('Interrupted')

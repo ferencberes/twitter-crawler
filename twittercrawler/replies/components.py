@@ -1,4 +1,4 @@
-import json, shutil, os
+import json, shutil, os, twython, time
 
 class UserTweetStore():
     def __init__(self, store_dir, reload=True):
@@ -100,7 +100,14 @@ class SearchEngine():
         self.tweet_mode = tweet_mode
         
     def get_status(self, tweet_id):
-        return self.crawler.twitter_api.show_status(id=tweet_id, tweet_mode=self.tweet_mode)
+        res = None
+        try:
+            res = self.crawler.twitter_api.show_status(id=tweet_id, tweet_mode=self.tweet_mode)
+        except Exception:
+            traceback.print_exc()
+            print()
+        finally:
+            return res 
     
     def get_output_fp(self, query):
         return os.path.join(self.store.replies_dir,"%s.txt" % query.user_id)

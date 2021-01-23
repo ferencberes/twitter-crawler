@@ -34,7 +34,12 @@ class TweetQuery():
         self._retweets = d["retweets"]
         self._max_id = d["max_id"]
         self._since_id = d["since_id"]
-        self._last_access = d["last_access"]
+        try:
+            self._last_access = dt.strptime(d["last_access"], '%Y-%m-%d %H:%M:%S.%f')
+        except TypeError:
+            self._last_access = None
+        except:
+            raise
     
     def get(self):
         return {

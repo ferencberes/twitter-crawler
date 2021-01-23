@@ -22,13 +22,18 @@ class ReplyCollector():
         
     def _clear(self):
         self.seed_tweet = self.engine.get_status(self.tweet_id)
-        self.tweet_thread = [self.seed_tweet]
-        seed_query = TweetQuery(self.seed_tweet)
-        self._queue = deque([seed_query])
-        print("\n### SEED TWEET ###")
-        print(self.seed_tweet['full_text'])
-        print(seed_query)
-        print()
+        if self.seed_tweet != None:
+            self.tweet_thread = [self.seed_tweet]
+            seed_query = TweetQuery(self.seed_tweet)
+            self._queue = deque([seed_query])
+            print("\n### SEED TWEET ###")
+            print(self.seed_tweet['full_text'])
+            print(seed_query)
+            print()
+        else:
+            print("SEED TWEET NOT FOUND!")
+            self.tweet_thread = []
+            self._queue = deque([])
         self.active_tweet_ids = []
         
     def reset(self):
@@ -45,8 +50,8 @@ class ReplyCollector():
             "drop_day_limit":self.drop_day_limit,
             "reload":self.reload,
             "renew_status":self.renew_status,
-            "screen_name":self.seed_tweet["user"]["screen_name"],
-            "user_id":self.seed_tweet["user"]["id_str"],
+            "screen_name":self.seed_tweet["user"]["screen_name"] if self.seed_tweet != None else None,
+            "user_id":self.seed_tweet["user"]["id_str"] if self.seed_tweet != None else None,
         }
         
     @property
@@ -159,15 +164,19 @@ class ReplyCollector():
             api_key_fp, project, workspace = comet_info
             api_key = load_api_key(api_key_fp)
             exp = init_experiment(api_key, project, workspace)
-            seed_query = TweetQuery(self.seed_tweet)
-            exp.add_tag(seed_query.date_str)
+            if self.seed_tweet != None:
+                seed_query = TweetQuery(self.seed_tweet)
+                exp.add_tag(seed_query.date_str)
+            else:
+                exp.add_tag("Failed")
             exp.log_parameters(self.params)
         try:
             print("\n### SEED ###")
             print(self.params)
-            print(self.seed_tweet["full_text"])
-            if comet_info != None:
-                exp.log_text(self.seed_tweet["full_text"])
+            if self.seed_tweet != None:
+                print(self.seed_tweet["full_text"])
+                if comet_info != None:
+                    exp.log_text(self.seed_tweet["full_text"])
             i, j = 0, 0
             make_checkpoint()
             while len(self.queue) > 0:
@@ -178,7 +187,8 @@ class ReplyCollector():
                     break
                 if self.renew_status and query.accessed_since_days > -1:
                     new_status = self.engine.get_status(query.id)
-                    query.update_metrics(new_status)
+                    if new_status != None:
+                        query.update_metrics(new_status)
                 execute_now = self._decide_execution(query)
                 if execute_now:
                     print(query)

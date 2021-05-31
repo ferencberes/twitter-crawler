@@ -8,7 +8,7 @@ api_key_file_path = os.path.join(dirpath, "..", "api_key.json")
 
 def test_api_key():
     os.path.exists(api_key_file_path)
-"""    
+
 def test_recursive():
     crawler = RecursiveCrawler(limit=2)
     crawler.authenticate(api_key_file_path)
@@ -61,13 +61,12 @@ def test_lookup():
     crawler.close()
     os.remove("lookup_results.txt")
     assert cnt > 0
-"""
-def test_friends():
-    crawler = FriendsCollector(limit=1)
-    crawler.authenticate(api_key_file_path)
-    crawler.connect_to_file("friends_results.txt")
-    user_id, cursor, cnt = crawler.collect([187908577, 34156194, 66003384, 19248625])
-    crawler.close()
-    os.remove("friends_results.txt")
-    assert cnt > 0
 
+#def test_friends():
+#    crawler = FriendsCollector(limit=1)
+#    crawler.authenticate(api_key_file_path)
+#    crawler.connect_to_file("friends_results.txt")
+#    user_id, cursor, cnt = crawler.collect([187908577, 34156194, 66003384, 19248625])
+#    crawler.close()
+#    os.remove("friends_results.txt")
+#    assert cnt > 0

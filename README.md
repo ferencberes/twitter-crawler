@@ -30,7 +30,7 @@ pip install .
 
 ## Twitter API keys
 
-In order to run examples and test scripts you must create a JSON file (named "api_key.json") in the root of the repository with following content:
+In order to run examples and test scripts in this repository you must create a JSON file (named "api_key.json") in the root folder with the following content:
 
 ```
 {
@@ -40,13 +40,12 @@ In order to run examples and test scripts you must create a JSON file (named "ap
   "access_token_secret":""YOUR_ACCESS_TOKEN_SECRET"
 }
 ```
-You can make your own Twitter API key [here](https://dev.twitter.com/apps/new).
+You can generate your own Twitter API keys in the [Twitter developer portal](https://developer.twitter.com).
 
 ## Run Tests
 
 ```bash
-cd tests
-py.test
+pytest
 ```
 
 # Examples

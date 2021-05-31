@@ -52,7 +52,7 @@ def test_people():
     crawler.close()
     os.remove("people_results.txt")
     assert cnt > 0
-"""
+
 def test_lookup():
     crawler = UserLookup()
     crawler.authenticate(api_key_file_path)
@@ -61,7 +61,7 @@ def test_lookup():
     crawler.close()
     os.remove("lookup_results.txt")
     assert cnt > 0
-
+"""
 #def test_friends():
 #    crawler = FriendsCollector(limit=1)
 #    crawler.authenticate(api_key_file_path)

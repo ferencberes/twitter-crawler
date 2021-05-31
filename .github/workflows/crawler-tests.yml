@@ -18,7 +18,8 @@ jobs:
           pip install -U .
       - name: Prepare credentials
         run: |
-          bash prepare_credentials.sh ${{ secrets.api_key }} ${{ secrets.api_key_secret }} ${{ secrets.access_token }} ${{ secrets.access_token_secret }}
+          bash prepare_credentials.sh "${{ secrets.api_key }}" "${{ secrets.api_key_secret }}" "${{ secrets.access_token }}" "${{ secrets.access_token_secret }}"
+          cat api_key.json
       - name: Test with pytest
         run: |
           pytest

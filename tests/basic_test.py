@@ -23,7 +23,7 @@ def test_recursive():
     crawler.close()
     os.remove("recursive_results.txt")
     assert (success and cnt > 0)
-    
+"""    
 def test_stream():
     crawler = StreamCrawler(sync_time=1, limit=10)
     crawler.authenticate(api_key_file_path)
@@ -39,7 +39,7 @@ def test_stream():
     results = load_json_result("stream_results.txt")
     os.remove("stream_results.txt")
     assert len(results) > 0
-
+"""
 def test_people():
     crawler = PeopleCrawler(limit=2)
     crawler.authenticate(api_key_file_path)
@@ -61,12 +61,13 @@ def test_lookup():
     crawler.close()
     os.remove("lookup_results.txt")
     assert cnt > 0
+    
+def test_friends():
+    crawler = FriendsCollector(limit=1)
+    crawler.authenticate(api_key_file_path)
+    crawler.connect_to_file("friends_results.txt")
+    user_id, cursor, cnt = crawler.collect([187908577, 34156194, 66003384, 19248625])
+    crawler.close()
+    os.remove("friends_results.txt")
+    assert cnt > 0
 """
-#def test_friends():
-#    crawler = FriendsCollector(limit=1)
-#    crawler.authenticate(api_key_file_path)
-#    crawler.connect_to_file("friends_results.txt")
-#    user_id, cursor, cnt = crawler.collect([187908577, 34156194, 66003384, 19248625])
-#    crawler.close()
-#    os.remove("friends_results.txt")
-#    assert cnt > 0

@@ -3,7 +3,7 @@ from twittercrawler.utils import load_json_result
 
 # initialize
 people = PeopleCrawler()
-people.authenticate("../api_key.json")
+people.authenticate(None)#"../api_key.json")
 people.connect_to_file("people_results.txt")
 
 # query

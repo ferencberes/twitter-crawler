@@ -16,11 +16,16 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -U .
-      - name: Prepare credentials
-        run: |
-          bash prepare_credentials.sh "${{ secrets.api_key }}" "${{ secrets.api_key_secret }}" "${{ secrets.access_token }}" "${{ secrets.access_token_secret }}"
-          cat api_key.json
+          #- name: Prepare credentials
+          #run: |
+          #bash prepare_credentials.sh "${{ secrets.api_key }}" "${{ secrets.api_key_secret }}" "${{ secrets.access_token }}" "${{ secrets.access_token_secret }}"
+          #cat api_key.json
       - name: Generate coverage report
+        env: # Or as an environment variable
+          API_KEY: ${{ secrets.API_KEY }}
+          API_SECRET: ${{ secrets.API_SECRET }}
+          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+          ACCESS_TOKEN_SECRET: ${{ secrets.ACCESS_TOKEN_SECRET }}
         run: |
           pip install pytest
           pip install pytest-cov
@@ -29,6 +34,3 @@ jobs:
         uses: codecov/codecov-action@v1
         with:
           fail_ci_if_error: true
-      #      - name: Test with pytest
-      #       run: |
-      #          pytest

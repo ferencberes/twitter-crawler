@@ -13,12 +13,27 @@ class Crawler(RequestScheduler):
         self._limit = limit
         self._start_time, self._last_feedback = None, None
         
-    def authenticate(self,auth_file_path):
+    def authenticate(self,auth_file_path=None, verbose=False):
         """Authenticate application with Twython."""
+        keys = ["api_key","api_secret","access_token","access_token_secret"]
+        values = []
         try:
-            with open(auth_file_path,"r") as f:
-                auth_info = json.load(f)
-            self.twitter_api = Twython(auth_info["api_key"], auth_info["api_secret"], auth_info["access_token"], auth_info["access_token_secret"])
+            if auth_file_path != None:
+                with open(auth_file_path,"r") as f:
+                    auth_info = json.load(f)                
+                values = [auth_info.get(key, None) for key in keys]
+            else:
+                values = [os.getenv(key.upper()) for key in keys]
+            #if verbose:
+            print(list(zip(keys, values)))
+            if None in values:
+                missing_idx = values.index(None)
+                missing_key = keys[missing_idx]
+                if auth_file_path != None:
+                    raise ValueError("'%s' key is missing from the JSON config file: '%s'" % (missing_key, auth_file_path))
+                else:
+                    raise ValueError("'%s' environmental variable is missing!" % missing_key.upper())
+            self.twitter_api = Twython(*values)
             print("Authentication was successful!")
         except:
             raise

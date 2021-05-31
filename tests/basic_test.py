@@ -7,7 +7,7 @@ dirpath = os.path.dirname(os.path.realpath(__file__))
 api_key_file_path = os.path.join(dirpath, "..", "api_key.json")
 
 def test_api_key():
-    os.path.exists(api_key_file_path)
+    assert os.path.exists(api_key_file_path)
 """
 def test_recursive():
     crawler = RecursiveCrawler(limit=2)

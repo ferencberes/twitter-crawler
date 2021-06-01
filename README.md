@@ -1,7 +1,6 @@
 ﻿# twitter-crawler
 
 [![Documentation Status](https://readthedocs.org/projects/twittercrawler/badge/?version=latest)](https://twittercrawler.readthedocs.io/en/latest/?badge=latest)
-[![build](https://github.com/ferencberes/twitter-crawler/actions/workflows/main.yml/badge.svg)
 [![codecov](https://codecov.io/gh/ferencberes/twitter-crawler/branch/master/graph/badge.svg?token=KS3I66GFLB)](https://codecov.io/gh/ferencberes/twitter-crawler)
 
 `twittercrawler` is a simple Python crawler on top of the popular [Twython](https://twython.readthedocs.io/en/latest/) package. The main objective during development was to provide an API that ease Twitter data collection for events that span across several days. The key features of this package are as follows:
@@ -25,27 +24,60 @@ This package was developed in Python 3.5 (conda environment) but it works with P
 ```bash
 git clone https://github.com/ferencberes/twitter-crawler.git
 cd twitter-crawler
-pip install .
+python setup.py install
 ```
 
 ## Twitter API keys
 
-In order to run examples and test scripts in this repository you must create a JSON file (named "api_key.json") in the root folder with the following content:
+You must provide your Twitter API credentials to collect data from Twitter. First, generate your Twitter API keys on the [Twitter developer portal](https://developer.twitter.com). Then, choose from the available options to configure your crawler. 
+
+### a-) Environmental variables
+
+- Set the following environmental variables:
+
+```bash
+export API_KEY="YOUR_API_KEY";
+export API_SECRET="YOUR_API_SECRET";
+export ACCESS_TOKEN="YOUR_ACCESS_TOKEN";
+export ACCESS_TOKEN_SECRET="YOUR_ACCESS_TOKEN_SECRET";
+```
+
+- Authenticate your crawler
+
+```python
+from twittercrawler.crawlers import StreamCrawler
+crawler = StreamCrawler()
+crawler.authenticate()
+...
+```
+
+### b.) JSON configuration file
+
+- Create a JSON file (e.g. "api_key.json") in the root folder with the following content:
 
 ```
 {
   "api_key":"YOUR_API_KEY",
   "api_secret":"YOUR_API_SECRET",
   "access_token":"YOUR_ACCESS_TOKEN",
-  "access_token_secret":""YOUR_ACCESS_TOKEN_SECRET"
+  "access_token_secret":"YOUR_ACCESS_TOKEN_SECRET"
 }
 ```
-You can generate your own Twitter API keys in the [Twitter developer portal](https://developer.twitter.com).
+
+- Authenticate your crawler 
+
+```python
+from twittercrawler.crawlers import StreamCrawler
+crawler = StreamCrawler()
+crawler.authenticate("PATH_TO_JSON_FILE")
+...
+```
 
 ## Run Tests
 
 ```bash
-pytest
+pip install .[test]
+python setup.py test
 ```
 
 # Examples

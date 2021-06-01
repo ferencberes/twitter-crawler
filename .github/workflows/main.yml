@@ -31,7 +31,6 @@ jobs:
       - name: Run installation.
         run: |
          pip install codecov
-         #pip install sphinx sphinx_rtd_theme
          pip install .[test]
          python setup.py install
       - name: Test coverage.

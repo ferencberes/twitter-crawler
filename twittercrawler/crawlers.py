@@ -146,7 +146,7 @@ class PeopleCrawler(SearchCrawler):
             hits, last_page = search_people(self.twitter_api, search_params, page)
             self._register_request(delta_t=wait_for)
             # postprocess
-            self._export_to_output_framework(hits)
+            self._export(hits)
             cnt += len(hits)
             page += 1
             if self._terminate():

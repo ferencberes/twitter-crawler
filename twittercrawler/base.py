@@ -39,14 +39,12 @@ class Crawler(RequestScheduler):
             self._num_requests += 1
         return self._limit != None and self._num_requests >= self._limit
 
-    def _export_to_output_framework(self, results):
-        for res in results:
-            if self._connection_type == "mongo":
-                self._mongo_coll.insert_one(res)
-            elif self._connection_type == "file":
-                self._output_file.write("%s\n" % json.dumps(res))
-            else:
-                raise RuntimeError("You did not specify any output for your search! Use connect_to_mongodb() ot connect_to_file() functions!")
+    def _export(self, results):
+        if self._writers == None:
+            raise RuntimeError("You did not specify any output for your search! Use the connect_output() function!")
+        else:
+            for writer in self._writers:
+                writer.write(results)
 
 class UserLookup(Crawler):
     def __init__(self, time_frame=900, max_requests=300, sync_time=15, limit=None, verbose=False):
@@ -77,7 +75,7 @@ class UserLookup(Crawler):
                     res = self.twitter_api.lookup_user(screen_name=query)
                 # postprocess
                 cnt += len(res)
-                self._export_to_output_framework(res)
+                self._export(res)
             except TwythonAuthError:
                # This error can occur when some ids are not available!
                print("TwythonAuthError", query)
@@ -141,7 +139,7 @@ class NetworkCrawler(Crawler):
                         new_links.append({"target":u_id, "source":node})
                 if len(new_links) > 0:
                     cnt += len(new_links)
-                    self._export_to_output_framework(new_links)
+                    self._export(new_links)
                 if res["next_cursor"] == 0:
                     cursor = -1
                     has_more = False
@@ -217,7 +215,7 @@ class SearchCrawler(Crawler):
                     stop_search = True
 
                 # export tweets
-                self._export_to_output_framework(result_tweets)
+                self._export(result_tweets)
                 cnt += len(result_tweets)
 
                 if stop_search:

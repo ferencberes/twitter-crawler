@@ -6,7 +6,7 @@ install_requires=[
 'pandas',
 'scipy',
 'networkx',
-'pymongo',
+#'pymongo',
 'matplotlib',
 'bokeh',
 'tqdm',
@@ -16,7 +16,7 @@ install_requires=[
 setup_requires = ['pytest-runner']
 
 tests_require = [
-'codecov',
+#'codecov',
 'pytest',
 'pytest-cov',
 ]

@@ -1,4 +1,4 @@
-﻿# twitter-crawler
+# twitter-crawler
 
 [![Documentation Status](https://readthedocs.org/projects/twittercrawler/badge/?version=latest)](https://twittercrawler.readthedocs.io/en/latest/?badge=latest)
 [![codecov](https://codecov.io/gh/ferencberes/twitter-crawler/branch/master/graph/badge.svg?token=KS3I66GFLB)](https://codecov.io/gh/ferencberes/twitter-crawler)
@@ -9,7 +9,7 @@
 - respect Twitter API [rate limits](https://developer.twitter.com/en/docs/basics/rate-limits) during search
 - search for people
 - collect friend or follower network
-- export search results to MongoDB collections (or files)
+- easily export search results to multiple output channels
    
 **Detailed documentation:** https://twittercrawler.readthedocs.io/en/latest/
 

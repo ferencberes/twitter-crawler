@@ -1,10 +1,28 @@
 from .search import tweet_time_2_epoch
-
 from pymongo import MongoClient
 import networkx as nx
 import pandas as pd
 import numpy as np
-import json
+import json, os
+
+### authentication ###
+
+def load_credentials(keys, auth_file_path=None):
+    values = []
+    if auth_file_path != None:
+        with open(auth_file_path,"r") as f:
+            auth_info = json.load(f)                
+            values = [auth_info.get(key, None) for key in keys]
+    else:
+        values = [os.getenv(key.upper()) for key in keys]
+    config = dict(zip(keys, values))
+    for key, val in config.items():
+        if val == None:
+            if auth_file_path != None:
+                raise ValueError("'%s' key is missing from the JSON config file: '%s'" % (key, auth_file_path))
+            else:
+                raise ValueError("'%s' environmental variable is missing!" % missing_key.upper())
+    return config  
 
 ### json ###
 

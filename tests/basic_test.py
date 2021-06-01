@@ -1,12 +1,20 @@
-import os, sys
+import os, sys, json
 #from twittercrawler.base import UserLookup
 from twittercrawler.crawlers import *
-from twittercrawler.utils import load_json_result
+from twittercrawler.utils import load_json_result, load_credentials
 
 dirpath = os.path.dirname(os.path.realpath(__file__))
 api_key_file_path = os.path.join(dirpath, "..", "api_key.json")
-if not os.path.exists(api_key_file_path):
-    api_key_file_path = None
+keys = ["api_key","api_secret","access_token","access_token_secret"]
+if os.path.exists(api_key_file_path):
+    with open(api_key_file_path) as f:
+        config = json.load(f)
+    for key in keys:
+        os.environ[key.upper()] = config[key]
+else:
+    config = load_credentials(keys, None)
+    with open(api_key_file_path, 'w') as f:
+        json.dump(config, f)
 
 def test_api_key():
     if api_key_file_path == None:
@@ -14,6 +22,14 @@ def test_api_key():
     else:
         assert os.path.exists(api_key_file_path)
 
+def test_json_auth():
+    crawler = StreamCrawler()
+    assert crawler.authenticate(api_key_file_path)
+    
+def test_env_auth():
+    crawler = StreamCrawler()
+    assert crawler.authenticate(None)
+    
 def test_recursive():
     crawler = RecursiveCrawler(limit=2)
     crawler.authenticate(api_key_file_path)
@@ -28,7 +44,7 @@ def test_recursive():
     crawler.close()
     os.remove("recursive_results.txt")
     assert (success and cnt > 0)
-  
+
 def test_stream():
     crawler = StreamCrawler(sync_time=1, limit=10)
     crawler.authenticate(api_key_file_path)
@@ -75,4 +91,3 @@ def test_friends():
     crawler.close()
     os.remove("friends_results.txt")
     assert cnt > 0
-

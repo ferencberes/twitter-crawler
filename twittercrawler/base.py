@@ -1,6 +1,7 @@
 import json, twython, time, traceback
 from twython import Twython
 from .scheduler import *
+from .utils import load_credentials
 from twython.exceptions import TwythonAuthError, TwythonError
 
 class Crawler(RequestScheduler):    
@@ -13,30 +14,20 @@ class Crawler(RequestScheduler):
         self._limit = limit
         self._start_time, self._last_feedback = None, None
         
-    def authenticate(self,auth_file_path=None, verbose=False):
+    def authenticate(self, auth_file_path=None, verbose=False):
         """Authenticate application with Twython."""
-        keys = ["api_key","api_secret","access_token","access_token_secret"]
-        values = []
+        success = False
+        config = load_credentials(["api_key","api_secret","access_token","access_token_secret"], auth_file_path)
+        if verbose:
+            print(config)
         try:
-            if auth_file_path != None:
-                with open(auth_file_path,"r") as f:
-                    auth_info = json.load(f)                
-                values = [auth_info.get(key, None) for key in keys]
-            else:
-                values = [os.getenv(key.upper()) for key in keys]
-            if verbose:
-            	print(list(zip(keys, values)))
-            if None in values:
-                missing_idx = values.index(None)
-                missing_key = keys[missing_idx]
-                if auth_file_path != None:
-                    raise ValueError("'%s' key is missing from the JSON config file: '%s'" % (missing_key, auth_file_path))
-                else:
-                    raise ValueError("'%s' environmental variable is missing!" % missing_key.upper())
-            self.twitter_api = Twython(*values)
+            self.twitter_api = Twython(config["api_key"], config["api_secret"], config["access_token"], config["access_token_secret"])
             print("Authentication was successful!")
+            success = True
         except:
             raise
+        finally:
+            return success
         
     def _show_time_diff(self):
         current_time = time.time()

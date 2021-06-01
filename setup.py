@@ -10,7 +10,8 @@ install_requires=[
 'matplotlib',
 'bokeh',
 'tqdm',
-'comet_ml'
+'comet_ml',
+'kafka-python'
 ]
 
 setup_requires = ['pytest-runner']

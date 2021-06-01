@@ -64,7 +64,7 @@ class RequestScheduler():
             valid = num_remaining > 0
             wait_for = rate_limit_reset - current_time + self.sync_time 
         except TwythonError:
-           print("No former request were made!") 
+            print("No former request were made!") 
         except:
             raise
         finally:

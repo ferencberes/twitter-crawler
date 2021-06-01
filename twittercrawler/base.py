@@ -14,12 +14,10 @@ class Crawler(RequestScheduler):
         self._limit = limit
         self._start_time, self._last_feedback = None, None
         
-    def authenticate(self, auth_file_path=None, verbose=False):
+    def authenticate(self, auth_file_path=None):
         """Authenticate application with Twython."""
         success = False
         config = load_credentials(["api_key","api_secret","access_token","access_token_secret"], auth_file_path)
-        if verbose:
-            print(config)
         try:
             self.twitter_api = Twython(config["api_key"], config["api_secret"], config["access_token"], config["access_token_secret"])
             print("Authentication was successful!")

@@ -24,6 +24,17 @@ def load_credentials(keys, auth_file_path=None):
                 raise ValueError("'%s' environmental variable is missing!" % missing_key.upper())
     return config  
 
+def prepare_credentials(keys, api_key_file_path):
+    if os.path.exists(api_key_file_path):
+        with open(api_key_file_path) as f:
+            config = json.load(f)
+        for key in keys:
+            os.environ[key.upper()] = config[key]
+    else:
+        config = load_credentials(keys, None)
+        with open(api_key_file_path, 'w') as f:
+            json.dump(config, f)
+
 ### json ###
 
 def load_json_result(file_name):

@@ -24,8 +24,8 @@ class Crawler(RequestScheduler):
                 values = [auth_info.get(key, None) for key in keys]
             else:
                 values = [os.getenv(key.upper()) for key in keys]
-            #if verbose:
-            print(list(zip(keys, values)))
+            if verbose:
+            	print(list(zip(keys, values)))
             if None in values:
                 missing_idx = values.index(None)
                 missing_key = keys[missing_idx]

@@ -2,12 +2,11 @@ import os, sys
 #from twittercrawler.base import UserLookup
 from twittercrawler.crawlers import *
 from twittercrawler.utils import load_json_result
-#sys.path.insert(0, "../twittercrawler")
-#from crawlers import *
-#from utils import load_json_result
 
 dirpath = os.path.dirname(os.path.realpath(__file__))
-api_key_file_path = None#os.path.join(dirpath, "..", "api_key.json")
+api_key_file_path = os.path.join(dirpath, "..", "api_key.json")
+if not os.path.exists(api_key_file_path):
+    api_key_file_path = None
 
 def test_api_key():
     if api_key_file_path == None:

@@ -31,7 +31,7 @@ python setup.py install
 
 You must provide your Twitter API credentials to collect data from Twitter. First, generate your Twitter API keys on the [Twitter developer portal](https://developer.twitter.com). Then, choose from the available options to configure your crawler. 
 
-### a-) Environmental variables
+### a.) Environmental variables
 
 - Set the following environmental variables:
 
@@ -42,7 +42,7 @@ export ACCESS_TOKEN="YOUR_ACCESS_TOKEN";
 export ACCESS_TOKEN_SECRET="YOUR_ACCESS_TOKEN_SECRET";
 ```
 
-- Authenticate your crawler
+- Authenticate your crawler:
 
 ```python
 from twittercrawler.crawlers import StreamCrawler
@@ -64,7 +64,7 @@ crawler.authenticate()
 }
 ```
 
-- Authenticate your crawler 
+- Authenticate your crawler:
 
 ```python
 from twittercrawler.crawlers import StreamCrawler

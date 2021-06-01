@@ -2,6 +2,9 @@ import os, sys
 #from twittercrawler.base import UserLookup
 from twittercrawler.crawlers import *
 from twittercrawler.utils import load_json_result
+#sys.path.insert(0, "../twittercrawler")
+#from crawlers import *
+#from utils import load_json_result
 
 dirpath = os.path.dirname(os.path.realpath(__file__))
 api_key_file_path = None#os.path.join(dirpath, "..", "api_key.json")
@@ -11,7 +14,7 @@ def test_api_key():
         assert True
     else:
         assert os.path.exists(api_key_file_path)
-"""
+
 def test_recursive():
     crawler = RecursiveCrawler(limit=2)
     crawler.authenticate(api_key_file_path)
@@ -26,7 +29,7 @@ def test_recursive():
     crawler.close()
     os.remove("recursive_results.txt")
     assert (success and cnt > 0)
-"""    
+  
 def test_stream():
     crawler = StreamCrawler(sync_time=1, limit=10)
     crawler.authenticate(api_key_file_path)
@@ -42,7 +45,7 @@ def test_stream():
     results = load_json_result("stream_results.txt")
     os.remove("stream_results.txt")
     assert len(results) > 0
-"""
+
 def test_people():
     crawler = PeopleCrawler(limit=2)
     crawler.authenticate(api_key_file_path)
@@ -73,4 +76,4 @@ def test_friends():
     crawler.close()
     os.remove("friends_results.txt")
     assert cnt > 0
-"""
+

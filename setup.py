@@ -1,23 +1,34 @@
-from distutils.core import setup
+from setuptools import find_packages, setup
 
-setup(name='twittercrawler',
-      version='0.1',
-      description='Simple Twitter crawler based on Twython',
-      url='',
-      author='Ferenc Beres',
-      author_email='fberes@info.ilab.sztaki.hu',
-      packages=['twittercrawler','twittercrawler.replies'],
-      install_requires=[
-          'twython',
-          'numpy',
-          'pandas',
-          'scipy',
-          'networkx',
-          'pymongo',
-          'matplotlib',
-          'bokeh',
-          'pytest',
-          'tqdm',
-          'comet_ml'
-      ],
-zip_safe=False)
+install_requires=[
+'twython',
+'numpy',
+'pandas',
+'scipy',
+'networkx',
+'pymongo',
+'matplotlib',
+'bokeh',
+'tqdm',
+'comet_ml'
+]
+
+setup_requires = ['pytest-runner']
+
+tests_require = [
+'pytest',
+'pytest-cov',
+]
+
+setup(
+  name='twittercrawler',
+  packages = find_packages(),
+  version='0.1.1',
+  description='Simple Twitter crawler based on Twython',
+  url='https://twittercrawler.readthedocs.io/en/latest/',
+  author='Ferenc Beres',
+  author_email='fberes@info.ilab.sztaki.hu',
+  install_requires=install_requires,
+  setup_requires=setup_requires,
+  tests_require=tests_require,
+)

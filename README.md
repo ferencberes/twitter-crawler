@@ -127,13 +127,13 @@ stream.search(15, time_terminator)
 
 ```python
 from twittercrawler.data_io import FileReader
-results_df = FileReader(file_path).read()
+results_df = FileReader("stream_results.txt").read()
 print(results_df.head())
 ```
 
 ## Crawlers
 
-In this package you can find crawlers for various Twitter data collection tasks.
+In this package you can find crawlers for various Twitter data collection tasks. Before executing the provided sample scripts make sure to prepare your Twitter API keys.
 
 - [Recursive search](examples/recursive.py)
 - [Stream search](examples/stream.py)
@@ -141,7 +141,9 @@ In this package you can find crawlers for various Twitter data collection tasks.
 
 **TODO: friends or followers, reply clusters**
 
-## Run Tests
+## Tests
+
+Before executing the provided tests make sure to prepare your Twitter API keys. 
 
 ```bash
 pip install .[test]

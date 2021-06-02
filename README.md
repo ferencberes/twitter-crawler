@@ -10,8 +10,6 @@
 - search for people
 - collect friend or follower network
 - easily export search results to multiple output channels
-   
-**Detailed documentation:** https://twittercrawler.readthedocs.io/en/latest/
 
 # How to deploy?
 
@@ -73,20 +71,79 @@ crawler.authenticate("PATH_TO_JSON_FILE")
 ...
 ```
 
+# Examples
+
+## Streaming example
+
+- Initialize and authenticate the crawler:
+
+```python
+from twittercrawler.crawlers import StreamCrawler
+stream = StreamCrawler()
+stream.authenticate("../api_key.json")
+```
+
+- Connect a FileWriter that will export the collected tweets:
+
+```python
+from twittercrawler.data_io import FileWriter
+stream.connect_output([FileWriter("stream_results.txt")])
+```
+
+- Set search parameters:
+
+```python
+search_params = {
+    "q":"#bitcoin OR #ethereum OR blockchain",
+    "result_type":"recent",
+    "lang":"en",
+    "count":100
+}
+stream.set_search_arguments(search_args=search_params)
+```
+
+- Initialize a termination function that will collect tweets from the last 5 minutes:
+
+```python
+from twittercrawler.search import get_time_termination
+import datetime
+
+now = datetime.datetime.now()
+time_str = (now-datetime.timedelta(seconds=300)).strftime("%a %b %d %H:%M:%S +0000 %Y")
+time_terminator =  get_time_termination(time_str)
+```
+
+- Run search:
+   - First, tweets from the last 5 minutes are collected
+   - Then, new tweets are collected for every 15 seconds
+   
+```python
+stream.search(15, time_terminator)
+```
+
+## Load collected data
+
+- Load collected data into a Pandas dataframe
+
+```python
+from twittercrawler.data_io import FileReader
+results_df = FileReader(file_path).read()
+print(results_df.head())
+```
+
+## Crawlers
+
+In this package you can find crawlers for various Twitter data collection tasks.
+
+- [Recursive search](examples/recursive.py)
+- [Stream search](examples/stream.py)
+- [People search](examples/people.py)
+
+**TODO: friends or followers, reply clusters**
+
 ## Run Tests
 
 ```bash
 pip install .[test]
 python setup.py test
 ```
-
-# Examples
-
-## Notebook
-
-- [Quick example](examples/SimpleSearch.ipynb)
-
-## Scripts
-- [Recursive search](examples/recursive.py)
-- [Stream search](examples/stream.py)
-- [People search](examples/people.py)

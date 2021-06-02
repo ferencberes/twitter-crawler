@@ -1,10 +1,11 @@
 from twittercrawler.crawlers import PeopleCrawler
-from twittercrawler.utils import load_json_result
+from twittercrawler.data_io import FileWriter, FileReader
 
 # initialize
-people = PeopleCrawler()
+file_path = "people_results.txt"
+people = PeopleCrawler(limit=10)
 people.authenticate("../api_key.json")
-people.connect_to_file("people_results.txt")
+people.connect_output([FileWriter(file_path, clear=True)])
 
 # query
 search_params = {
@@ -20,6 +21,6 @@ print(page, cnt)
 people.close()
 
 #load results
-results = load_json_result("people_results.txt")
-print("Hits:", len(results))
-print(results[0]["name"])
+results_df = FileReader(file_path).read()
+print("Hits:", len(results_df))
+print(results_df.loc[0])

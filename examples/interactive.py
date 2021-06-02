@@ -26,7 +26,7 @@ interactive.authenticate("../api_key.json")
 # query
 search_params = {
     "q":" OR ".join(["@CNN","@BBC","@guardian","@nytimes","#BREAKING"]),
-    "result_type":'recent',
+    "result_type":"recent",
     "count":10
 }
 interactive.set_search_arguments(search_args=search_params)

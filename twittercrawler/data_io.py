@@ -1,4 +1,4 @@
-import os, json
+import os, json, socket
 import pandas as pd
 from kafka import KafkaProducer, KafkaConsumer
 from .utils import load_json_result
@@ -63,6 +63,45 @@ class FileWriter(Writer):
             
     def close(self):
         self._output_file.close()
+
+class SocketWriter(Writer):
+    def __init__(self, port, host="localhost", ip=None, max_size=10000, separator="###SOCKETSEP###", include_mask=None, exclude_mask=None, export_filter=None):
+        super(SocketWriter, self).__init__(include_mask, exclude_mask, export_filter)
+        self._conn = None
+        self._port = port
+        self._ip = socket.gethostbyname(host) if ip == None else ip
+        self._sep = separator
+        self.max_size = max_size
+        self.seen_ids = []
+        self._connect()
+        
+    def _connect(self):
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        s.bind((self._ip, self._port))
+        print ("Socket binded to port %i" % self._port)
+        s.listen(5)
+        print ("Socket is listening...")
+        self._conn, addr = s.accept()
+        print ('Got connection from', addr)
+        
+    def write(self, results):
+        if self._conn == None:
+            raise RuntimeError("No connection was established!")
+        else:
+            for res in results:
+                record = self._prepare_record(res)
+                tweet_id = res["id_str"]
+                if record != None and not tweet_id in self.seen_ids:
+                    record += self._sep
+                    msg = record.encode("utf-8")
+                    self._conn.send(msg)
+                    self.seen_ids.append(tweet_id)
+            if len(self.seen_ids) > self.max_size:
+                self.seen_ids = self.seen_ids[int(max_size*0.2):]
+            
+    def close(self):
+        if self._conn != None:
+            self._conn.close()
         
 class KafkaWriter(Writer):
     def __init__(self, topic, host="localhost", port=9092, include_mask=None, exclude_mask=None, export_filter=None):
@@ -95,6 +134,34 @@ class FileReader():
             return pd.DataFrame(records)
         else:
             return records
+        
+class SocketReader():
+    def __init__(self, port, host="localhost", ip=None, separator="###SOCKETSEP###"):
+        self.sock = None
+        self._port = port
+        self._ip = socket.gethostbyname(host) if ip == None else ip
+        self._sep = separator
+        self._connect()
+        
+    def _connect(self):
+        self.sock = socket.socket()
+        self.sock.connect((self._ip, self._port))
+            
+    def read(self, buffersize=1024, return_dict=False):
+        received_str = ""
+        received_msg = 0
+        while True:
+            bytes_received = self.sock.recv(buffersize)
+            received_str += bytes_received.decode("utf-8") 
+            if self._sep in received_str:
+                splitted = received_str.split(self._sep)
+                received_str = splitted[-1]
+                for msg in splitted[:-1]:
+                    yield json.loads(msg) if return_dict else msg
+            
+    def close(self):
+        if self.sock != None:
+            self.sock.close()
         
 class KafkaReader():
     def __init__(self, topic, host="localhost", port=9092):

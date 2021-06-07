@@ -1,17 +1,23 @@
 from twittercrawler.crawlers import StreamCrawler
-from twittercrawler.data_io import FileWriter, FileReader
+from twittercrawler.data_io import FileWriter, SocketWriter
 from twittercrawler.search import get_time_termination
 import datetime
 
-# initialize
+# prepare writers
+keys = ["created_at","full_text"]
 file_path = "stream_results.txt"
+fw = FileWriter(file_path, clear=True, include_mask=keys)
+sw = SocketWriter(7000, include_mask=keys)
+# execute this command in a bash console to continue: telnet localhost 7000
+
+# initialize crawler
 stream = StreamCrawler()
 stream.authenticate("../api_key.json")
-stream.connect_output([FileWriter(file_path, clear=True)])
+stream.connect_output([fw, sw])
 
 # query
 search_params = {
-    "q":"#bitcoin OR #ethereum OR blockchain",
+    "q":"#bitcoin OR #ethereum OR blockchain OR crypto",
     "result_type":"recent",
     "lang":"en",
     "count":100

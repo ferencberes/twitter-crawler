@@ -1,15 +1,22 @@
 from twittercrawler.crawlers import PeopleCrawler
-from twittercrawler.data_io import FileWriter, FileReader
+from twittercrawler.data_io import FileWriter, SocketWriter, FileReader
+
+# prepare writers
+keys = ["name","location","description"]
+file_path = "people_results.txt"
+fw = FileWriter(file_path, clear=True, include_mask=keys)
+sw = SocketWriter(7000, include_mask=keys)
+# execute this command in a bash console to continue: telnet localhost 7000
 
 # initialize
-file_path = "people_results.txt"
-people = PeopleCrawler(limit=10)
+
+people = PeopleCrawler(limit=5)
 people.authenticate("../api_key.json")
-people.connect_output([FileWriter(file_path, clear=True)])
+people.connect_output([fw, sw])
 
 # query
 search_params = {
-    "q":"data scientist AND phd student"
+    "q":"data scientist AND phd student",
 }
 people.set_search_arguments(search_args=search_params)
 

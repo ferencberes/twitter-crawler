@@ -1,5 +1,5 @@
 from twittercrawler.data_io import *
-import pytest
+import pytest, time
 
 sample_tweets = [
     {
@@ -128,6 +128,22 @@ def test_quote_filter():
     reader = FileReader(test_file)
     df = reader.read()
     assert len(df) == 0
+    
+def start_socket_server(port):
+    server = SocketWriter(port)
+    server.write(sample_tweets)
+    server.close()
+    
+def test_socket_io():
+    from multiprocessing import Process
+    port = 7000
+    p = Process(target=start_socket_server, args=(port,))
+    p.start()
+    time.sleep(3)
+    client = SocketReader(port)
+    received_records = [msg for msg in client.read()]
+    client.close()
+    assert len(received_records) == len(sample_tweets)
     
 """
 def test_kafka_io():

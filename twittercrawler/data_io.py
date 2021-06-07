@@ -55,7 +55,7 @@ class FileWriter(Writer):
         else:
             self._output_file = open(file_path, 'a')
             
-    def write(self, results):
+    def write(self, results, enc="utf-8"):
         for res in results:
             record = self._prepare_record(res)
             if record != None:
@@ -83,8 +83,8 @@ class SocketWriter(Writer):
         print ("Socket is listening...")
         self._conn, addr = s.accept()
         print ('Got connection from', addr)
-        
-    def write(self, results):
+
+    def write(self, results, enc="utf-8"):
         if self._conn == None:
             raise RuntimeError("No connection was established!")
         else:
@@ -93,7 +93,7 @@ class SocketWriter(Writer):
                 tweet_id = res["id_str"]
                 if record != None and not tweet_id in self.seen_ids:
                     record += self._sep
-                    msg = record.encode("utf-8")
+                    msg = record.encode(enc)
                     self._conn.send(msg)
                     self.seen_ids.append(tweet_id)
             if len(self.seen_ids) > self.max_size:
@@ -111,12 +111,12 @@ class KafkaWriter(Writer):
         self.topic = topic
         self._producer = KafkaProducer(bootstrap_servers='%s:%i' % (self.host, self.port))
 
-    def write(self, results):
+    def write(self, results, enc="utf-8"):
         for res in results:
             record = self._prepare_record(res)
             if record != None:
-                key_b = res["id_str"].encode("utf-8")
-                value_b = record.encode("utf-8")
+                key_b = res["id_str"].encode(enc)
+                value_b = record.encode(enc)
                 self._producer.send(self.topic, key=key_b, value=value_b)
             
     def close(self):
@@ -147,12 +147,14 @@ class SocketReader():
         self.sock = socket.socket()
         self.sock.connect((self._ip, self._port))
             
-    def read(self, buffersize=1024, return_dict=False):
+    def read(self, buffersize=1024, return_dict=True, enc="utf-8"):
         received_str = ""
         received_msg = 0
         while True:
             bytes_received = self.sock.recv(buffersize)
-            received_str += bytes_received.decode("utf-8") 
+            if bytes_received == b'':
+                break
+            received_str += bytes_received.decode(enc) 
             if self._sep in received_str:
                 splitted = received_str.split(self._sep)
                 received_str = splitted[-1]
@@ -169,6 +171,12 @@ class KafkaReader():
         self.port = port
         self.topic = topic
         self.consumer = KafkaConsumer(bootstrap_servers='%s:%i' % (self.host, self.port))
+        
+    def read(self, return_dict=True, enc="utf-8"):
+        for message in consumer:
+            msg_bytes = message.value
+            msg = msg_bytes.decode(enc)
+            yield json.loads(msg) if return_dict else msg
             
     def close(self):
         self.consumer.close()

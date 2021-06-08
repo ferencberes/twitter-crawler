@@ -145,7 +145,7 @@ def test_socket_io():
     client.close()
     assert len(received_records) == len(sample_tweets)
     
-"""
+
 def test_kafka_io():
     topic, host, port = "sample", "localhost", 9092 
     success = False
@@ -153,7 +153,8 @@ def test_kafka_io():
         reader = KafkaReader(topic, host, port)
         writer = KafkaWriter(topic, host, port)
         writer.write(sample_tweets)
-        #cnt = 0
+        cnt = 0
+        #execution halts here
         #for message in reader.consumer:
         #    cnt += 1
         #assert cnt > 0
@@ -163,4 +164,3 @@ def test_kafka_io():
     except:
         raise
     assert success
-"""

@@ -73,7 +73,7 @@ crawler.authenticate("PATH_TO_JSON_FILE")
 
 # Examples
 
-## Streaming example
+## Tweet streaming example
 
 - Initialize and authenticate the crawler:
 
@@ -120,6 +120,8 @@ time_terminator =  get_time_termination(time_str)
 ```python
 stream.search(15, time_terminator)
 ```
+
+With a few modifications (e.g. socket programming) the collected Twitter data can be transformed into a **[graph stream](examples/graph_stream)**.
 
 ## Load collected data
 

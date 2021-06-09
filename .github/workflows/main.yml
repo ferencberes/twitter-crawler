@@ -3,7 +3,9 @@ name: CI
 on:
 
   push:
-    branches: [ master ]
+    branches:
+      - master
+      - streaming 
   pull_request:
     branches: [ master ]
 

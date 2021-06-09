@@ -6,7 +6,7 @@ install_requires=[
 'pandas',
 'scipy',
 'networkx',
-#'pymongo',
+'pymongo',
 'matplotlib',
 'bokeh',
 'tqdm',

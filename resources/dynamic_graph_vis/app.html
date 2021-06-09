@@ -50,15 +50,37 @@
   var options = { layout: { randomSeed: 2 } };
   var network = new vis.Network(container, data, options);
   
-  try {
-    nodes.add({
-      id: 6,
-      label: "Node 6",
-    });
-  } catch (err) {
-    alert(err);
-  }
-  
+  const { Kafka } = require('kafkajs')
+
+  const kafka = new Kafka({
+    clientId: 'dynamic_network_visualization',
+    brokers: ['localhost:9092']
+  })
+
+  const consumer = kafka.consumer({ groupId: 'test-group' })
+  //await consumer.connect()
+  consumer.connect()
+  //await consumer.subscribe({ topic: 'sample', fromBeginning: true })
+  consumer.subscribe({ topic: 'sample', fromBeginning: true })
+  //await 
+  consumer.run({
+    eachMessage: async ({ topic, partition, message }) => {
+      var node_str = message.value.toString()
+      var node_int = parseInt(node_str)
+      alert(node_str)
+      /*
+      try {
+        nodes.add({
+          id: node_int,
+          label: "Node ".concat(node_str),
+        });
+      } catch (err) {
+        alert(err);
+      }
+      */
+    },
+  })
+ 
 </script>
 </body>
 </html>

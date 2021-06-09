@@ -5,13 +5,14 @@ If you want to push the collected data to Kafka queues then you need to execute 
 ## Setup
 
 **1.) Install Kafka**
-**Note:** `conda` is used to install `openjdk`.
 
 ```bash
 conda activate YOUR_ENV
 cd resources
 ./install_kafka.sh
 ```
+
+**NOTE:** `conda` is used to install `openjdk`.
 
 **2. Start Zookeeper and Kafka**
 
@@ -27,6 +28,7 @@ In this example, we create a topic called `sample` and suppose that Kafka is usi
 ```bash
 ./topic.sh 9092 sample create
 ```
+**NOTE:** This topic will be available every time we start Kafka. So there is no need to create it multiple times.
 
 ## Test
 

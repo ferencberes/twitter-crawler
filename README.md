@@ -150,6 +150,5 @@ In this package you can find crawlers for various Twitter data collection tasks.
 Before executing the provided tests make sure to prepare your Twitter API keys. 
 
 ```bash
-pip install .[test]
 python setup.py test
 ```

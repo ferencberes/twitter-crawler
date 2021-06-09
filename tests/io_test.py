@@ -1,61 +1,11 @@
 from twittercrawler.data_io import *
-import pytest, time
+import pytest, time, json
 
-sample_tweets = [
-    {
-        "id_str":"199",
-        "full_text":"abc",
-        "lang":"en",
-        "user":{"screen_name":"john doe"},
-        "created_at": "Wed Jun 02 11:43:27 +0000 2021",
-        "entities": {
-            "user_mentions": [
-            ],
-        }
-    },
-    {
-        "id_str":"200",
-        "full_text":"@ferencberes91 uses @twitterapi often",
-        "lang":"es",
-        "user":{"screen_name":"jane doe"},
-        "created_at": "Wed Jun 02 11:45:33 +0000 2021",
-        "entities": {
-            "user_mentions": [
-                {
-                  "name": "Twitter API",
-                  "screen_name": "twitterapi",
-                  "id_str": "6253282"
-                },
-                {
-                  "name": "Ferenc Beres",
-                  "screen_name": "ferencberes91",
-                  "id_str": "6253000"
-                }
-            ],
-        }
-    },
-    {
-        "id_str":"201",
-        "full_text":"RT abs",
-        "lang":"en",
-        "user":{"screen_name":"jane doe"},
-        "created_at": "Wed Jun 02 11:46:27 +0000 2021",
-        "entities": {},
-        "retweeted_status":{
-            "id_str":"199",
-            "full_text":"abc",
-            "lang":"en",
-            "user":{"screen_name":"john doe"},
-            "created_at": "Wed Jun 02 11:43:27 +0000 2021",
-            "entities": {
-                "user_mentions": [
-                ],
-            }
-        }
-    },
-    
-]
 test_file = "log.txt"
+dirpath = os.path.dirname(os.path.realpath(__file__))
+json_fp = os.path.join(dirpath, "sample_tweets.json")
+with open(json_fp) as f:
+    sample_tweets = json.load(f)
 
 def test_file_io():
     writer = FileWriter(test_file, clear=True)
@@ -145,7 +95,7 @@ def test_socket_io():
     client.close()
     assert len(received_records) == len(sample_tweets)
     
-
+"""
 def test_kafka_io():
     topic, host, port = "sample", "localhost", 9092 
     success = False
@@ -164,3 +114,4 @@ def test_kafka_io():
     except:
         raise
     assert success
+"""

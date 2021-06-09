@@ -1,0 +1,51 @@
+[
+    {
+        "id_str":"199",
+        "full_text":"abc",
+        "lang":"en",
+        "user":{"screen_name":"john doe"},
+        "created_at": "Wed Jun 02 11:43:27 +0000 2021",
+        "entities": {
+            "user_mentions": []
+    	}
+    },
+    {
+        "id_str":"200",
+        "full_text":"@ferencberes91 uses @twitterapi often",
+        "lang":"es",
+        "user":{"screen_name":"jane doe"},
+        "created_at": "Wed Jun 02 11:45:33 +0000 2021",
+        "entities": {
+            "user_mentions": [
+                {
+                  "name": "Twitter API",
+                  "screen_name": "twitterapi",
+                  "id_str": "6253282"
+                },
+                {
+                  "name": "Ferenc Beres",
+                  "screen_name": "ferencberes91",
+                  "id_str": "6253000"
+                }
+            ]
+        }
+    },
+    {
+        "id_str":"201",
+        "full_text":"RT abs",
+        "lang":"en",
+        "user":{"screen_name":"jane doe"},
+        "created_at": "Wed Jun 02 11:46:27 +0000 2021",
+        "entities": {},
+        "retweeted_status":{
+            "id_str":"199",
+            "full_text":"abc",
+            "lang":"en",
+            "user":{"screen_name":"john doe"},
+            "created_at": "Wed Jun 02 11:43:27 +0000 2021",
+            "entities": {
+                "user_mentions": []
+            }
+        }
+    }
+]

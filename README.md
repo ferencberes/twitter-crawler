@@ -9,7 +9,7 @@
 - respect Twitter API [rate limits](https://developer.twitter.com/en/docs/basics/rate-limits) during search
 - search for people
 - collect friend or follower network
-- easily export search results to multiple output channels
+- easily export search results to multiple output channels (File, Socket, Kafka queues)
 
 # How to deploy?
 
@@ -24,6 +24,8 @@ git clone https://github.com/ferencberes/twitter-crawler.git
 cd twitter-crawler
 python setup.py install
 ```
+
+**NOTE:** If you want to push the collected data to Kafka queues then you need to execute a few additional [steps](resources/).
 
 ## Twitter API keys
 

@@ -9,7 +9,8 @@ Our tiny streaming framework has two components. A socket is used for communicat
 ## Producer
 
 - collects Twitter data related to the latest news on the fly
-   - Tweets containing the following keywords and hashtags: #BREAKING, BREAKING, "breaking news", breakingnews
+   - Tweets containing the following keywords and hashtags are collected: 
+   #BREAKING, BREAKING, "breaking news", breakingnews
 - **sender of the graph stream:**
    - the latest tweets containing @-mentions are pushed to the socket in every 15 seconds
 
@@ -18,13 +19,13 @@ Our tiny streaming framework has two components. A socket is used for communicat
 - **receiver of the graph stream:**
    - read tweets from the socket
 - extract @-mentions from each tweet JSON object
-- print @-mentions links with timestamp, source and target user account
+- print @-mention links with timestamp, source and target user account
 
 # Usage
 
 **1.) Start the producer:** You must specify..
 
-- your Twitter API credentials for the producer (API_JSON_PATH)
+- your Twitter API credentials (API_JSON_PATH). See the details [here](https://github.com/ferencberes/twitter-crawler/tree/streaming#b-json-configuration-file).
 - a port for the socket (PORT)
 
 ```bash

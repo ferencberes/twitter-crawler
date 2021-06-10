@@ -1,7 +1,7 @@
 Welcome to twittercrawler's documentation!
 ==========================================
 
-This is a simple Twitter crawler in Python built on top of the popular Twython package. The main objective during development was to provide an API that ease Twitter data collection for events that span across several days.
+This is a simple Twitter crawler in Python built on top of the popular Twython package. The main objective during development was to provide an API that ease Twitter data collection for events that span across multiple days.
 
 .. toctree::
    :maxdepth: 2
@@ -15,6 +15,7 @@ This is a simple Twitter crawler in Python built on top of the popular Twython p
    :caption: API documentation:
 
    twittercrawler.crawlers
+   twittercrawler.data_io
    twittercrawler.base
    twittercrawler.scheduler
 

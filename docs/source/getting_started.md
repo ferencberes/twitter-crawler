@@ -1,9 +1,6 @@
-# twitter-crawler
+# Getting started
 
-[![Documentation Status](https://readthedocs.org/projects/twittercrawler/badge/?version=latest)](https://twittercrawler.readthedocs.io/en/latest/?badge=latest)
-![build](https://github.com/github/docs/actions/workflows/main.yml/badge.svg?branch=streaming)
-[![codecov](https://codecov.io/gh/ferencberes/twitter-crawler/branch/master/graph/badge.svg?token=KS3I66GFLB)](https://codecov.io/gh/ferencberes/twitter-crawler)
-![PyPI - Python Version](https://img.shields.io/pypi/pyversions/django)
+## Introduction
 
 `twittercrawler` is a simple Python crawler on top of the popular [Twython](https://twython.readthedocs.io/en/latest/) package. The main objective during development was to provide an API that ease Twitter data collection for events that span across multiple days. The key features of this package are as follows:
 
@@ -13,8 +10,6 @@
 - collect friend or follower network
 - easily export search results to multiple output channels (File, Socket, Kafka queues)
 
-# How to deploy?
-
 ## Install
 
 ```bash
@@ -23,7 +18,7 @@ cd twitter-crawler
 python setup.py install
 ```
 
-**NOTE:** If you want to push the collected data to Kafka queues then you need to execute a few additional [steps](resources/).
+**NOTE:** If you want to push the collected data to Kafka queues then you need to execute a few additional [steps](https://github.com/ferencberes/twitter-crawler/tree/master/resources).
 
 ## Twitter API keys
 
@@ -71,9 +66,41 @@ crawler.authenticate("PATH_TO_API_KEY_JSON")
 ...
 ```
 
-# Examples
+## Examples
 
-## Tweet streaming example
+### a.) Quickstart
+
+Execute the following code to see whether your Twitter API key configuration works.
+
+
+```python
+from twittercrawler.crawlers import InteractiveCrawler
+
+# initialize
+interactive = InteractiveCrawler()
+interactive.authenticate("PATH_TO_API_KEY_JSON")
+
+# set query parameters
+search_params = {
+    "q":"#BREAKING",
+    "result_type":'recent',
+    "count":10
+}
+interactive.set_search_arguments(search_args=search_params)
+
+# search
+res = interactive.search()
+
+print("Number of tweets: %i" % len(res["statuses"]))
+print(res["statuses"][0]["text"])
+
+# close
+interactive.close()
+```
+
+If your configuration works then you should proceed to the detailed [documentation](crawler_docs) of implemented crawlers.
+
+### b.) Streaming example
 
 - Initialize and authenticate the crawler:
 
@@ -126,31 +153,11 @@ finally:
     stream.close()
 ```
 
-With a few modifications (e.g. socket programming) the collected Twitter data can be transformed into a **[graph stream](examples/graph_stream)**.
+With a few modifications (e.g. socket programming) the collected Twitter data can be transformed into a **[graph stream](ehttps://github.com/ferencberes/twitter-crawler/tree/master/examples/graph_streamS)**.
 
-## Load collected data
+## Run tests
 
-- Load collected data into a Pandas dataframe
-
-```python
-from twittercrawler.data_io import FileReader
-results_df = FileReader("stream_results.txt").read()
-print(results_df.head())
-```
-
-## Crawlers
-
-In this package you can find crawlers for various Twitter data collection tasks. Before executing the provided sample scripts make sure to prepare your Twitter API keys.
-
-- [Recursive search](examples/recursive.py)
-- [Stream search](examples/stream.py)
-- [People search](examples/people.py)
-
-**TODO: friends or followers, reply clusters**
-
-## Tests
-
-Before executing the provided tests make sure to prepare your Twitter API keys. 
+Before executing the provided tests make sure to prepare your Twitter API keys.
 
 ```bash
 python setup.py test

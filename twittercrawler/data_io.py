@@ -20,6 +20,18 @@ def filter_data(record, filter_type):
         return True
 
 class Writer():
+    """
+    Abstract class to handle tweets export.
+
+    Parameters
+    ----------
+    include_mask
+        Include only the specified keys in the exported tweet JSON content.
+    exclude_mask
+        Exclude the specified keys from the exported tweet JSON content.
+    export_filter
+        Choose from these values `[None,"tweet","retweet","quote","mention"]` to filter the exported content. In case of the default value `None` every hit is exported.
+    """
     def __init__(self, include_mask=None, exclude_mask=None, export_filter=None):
         self._include_mask = include_mask
         self._exclude_mask = exclude_mask
@@ -44,10 +56,34 @@ class Writer():
         else:
             return None
         
-    def write(self, results):
+    def write(self, results, enc="utf-8"):
+        """
+        Export recently collected tweets
+        
+        Parameters
+        ----------
+        results
+           List of collected tweets in JSON
+        enc
+           Set encoding for serialization
+        """
+        pass
+    
+    def close(self):
+        """Close writer object"""
         pass
 
 class FileWriter(Writer):
+    """
+    Export tweets to file.
+
+    Parameters
+    ----------
+    file_path
+        Output file path
+    clear
+        Clear output file. Use `clear=False` to append new tweets to former search results.
+    """
     def __init__(self, file_path, clear=False, include_mask=None, exclude_mask=None, export_filter=None):
         super(FileWriter, self).__init__(include_mask, exclude_mask, export_filter)
         if clear or not os.path.exists(file_path):
@@ -65,6 +101,22 @@ class FileWriter(Writer):
         self._output_file.close()
 
 class SocketWriter(Writer):
+    """
+    Export tweets to socket.
+
+    Parameters
+    ----------
+    port
+        Set port for the socket
+    host
+        Set host for the socket
+    ip
+        Set IP address for the socket.
+    max_size
+        Set maximum set size for stored Tweet identifiers
+    separator
+        Set string separator between exported tweets
+    """
     def __init__(self, port, host="localhost", ip=None, max_size=10000, separator="###SOCKETSEP###", include_mask=None, exclude_mask=None, export_filter=None):
         super(SocketWriter, self).__init__(include_mask, exclude_mask, export_filter)
         self._conn = None
@@ -104,7 +156,19 @@ class SocketWriter(Writer):
             self._conn.close()
         
 class KafkaWriter(Writer):
-    def __init__(self, topic, host="localhost", port=9092, include_mask=None, exclude_mask=None, export_filter=None):
+    """
+    Export tweets to Kafka queue.
+
+    Parameters
+    ----------
+    topic
+        Set topic for the KafkaProducer
+    port
+        Set port for the KafkaProducer
+    host
+        Set host for the KafkaProducer
+    """
+    def __init__(self, topic, port=9092, host="localhost", include_mask=None, exclude_mask=None, export_filter=None):
         super(KafkaWriter, self).__init__(include_mask, exclude_mask, export_filter)
         self.host = host
         self.port = port
@@ -124,22 +188,73 @@ class KafkaWriter(Writer):
 
 ### Readers ###
 
+class StreamReader():
+    def read(self, return_dict=True, enc="utf-8"):
+        """
+        Read exported tweets.
+        
+        Parameters
+        ----------
+        return dict
+            Return tweet as a dictionary (instead of string)
+        enc
+            Encoding used for serialization
+        """
+        pass
+    
+    def close(self):
+        """Close reader object"""
+        pass
+
 class FileReader():
+    """
+    Read exported tweets from file.
+
+    Parameters
+    ----------
+    file_path
+        File path of the exported tweets
+    """
     def __init__(self, file_path):
         self._input_file = file_path
         
     def read(self, dataframe=True):
+        """
+        Read exported tweets.
+        
+        Parameters
+        ----------
+        dataframe
+            Return results in a pandas.DataFrame
+        """
         records = load_json_result(self._input_file)
         if dataframe:
             return pd.DataFrame(records)
         else:
             return records
         
-class SocketReader():
-    def __init__(self, port, host="localhost", ip=None, separator="###SOCKETSEP###"):
+class SocketReader(StreamReader):
+    """
+    Read exported tweets from socket.
+
+    Parameters
+    ----------
+    port
+        Port of the socket
+    host
+        Host of the socket
+    ip
+        IP address of the socket.
+    buffersize
+        Set buffersize for socket I/O
+    separator
+        String separator between exported tweets
+    """
+    def __init__(self, port, host="localhost", ip=None, buffersize=1024, separator="###SOCKETSEP###"):
         self.sock = None
         self._port = port
         self._ip = socket.gethostbyname(host) if ip == None else ip
+        self._buffsize = buffersize
         self._sep = separator
         self._connect()
         
@@ -147,11 +262,11 @@ class SocketReader():
         self.sock = socket.socket()
         self.sock.connect((self._ip, self._port))
             
-    def read(self, buffersize=1024, return_dict=True, enc="utf-8"):
+    def read(self, return_dict=True, enc="utf-8"):
         received_str = ""
         received_msg = 0
         while True:
-            bytes_received = self.sock.recv(buffersize)
+            bytes_received = self.sock.recv(self._buffsize)
             if bytes_received == b'':
                 break
             received_str += bytes_received.decode(enc) 
@@ -165,8 +280,20 @@ class SocketReader():
         if self.sock != None:
             self.sock.close()
         
-class KafkaReader():
-    def __init__(self, topic, host="localhost", port=9092):
+class KafkaReader(StreamReader):
+    """
+    Read exported tweets from Kafka queue.
+
+    Parameters
+    ----------
+    topic
+        Topic for the KafkaConsumer
+    port
+        Port for the KafkaConsumer
+    host
+        Host for the KafkaConsumer
+    """
+    def __init__(self, topic, port=9092, host="localhost"):
         self.host = host
         self.port = port
         self.topic = topic

@@ -25,7 +25,7 @@ tests_require = [
 setup(
   name='twittercrawler',
   packages = find_packages(),
-  version='0.1.1',
+  version='0.1.2',
   description='Simple Twitter crawler based on Twython',
   url='https://twittercrawler.readthedocs.io/en/latest/',
   author='Ferenc Beres',

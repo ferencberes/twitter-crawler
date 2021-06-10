@@ -146,8 +146,6 @@ In this package you can find crawlers for various Twitter data collection tasks.
 - [Stream search](examples/stream.py)
 - [People search](examples/people.py)
 
-**TODO: friends or followers, reply clusters**
-
 ## Tests
 
 Before executing the provided tests make sure to prepare your Twitter API keys. 

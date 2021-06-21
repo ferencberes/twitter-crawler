@@ -107,6 +107,57 @@ class StreamCrawler(SearchCrawler):
             if self.verbose:
                 print("STREAM epoch: Sleeping for %.1f seconds" % wait_for)
             time.sleep(wait_for)
+
+from twython import TwythonStreamer
+from .utils import load_credentials
+
+class TwythonStreamCrawler():
+    def __init__(self, writers=None, auth_file_path=None):
+        self._writers = writers
+        self.auth_file_path = auth_file_path
+        
+    def close(self):
+        """Close writer objects"""
+        try:
+            if self._writers != None:
+                for writer in self._writers:
+                    writer.close()
+            print("Connection was closed successfully!")
+        except:
+            raise
+            
+    def set_search_arguments(self,search_args):
+        """Set search parameters with a dictionary"""
+        self.search_args = search_args
+        print(self.search_args)
+        
+    def search(self, wait_for=0.0):
+        query = self.search_args["q"].replace(" OR ",",")
+        lang = self.search_args.get("lang", None)
+        WRITERS = self._writers
+        class MyStreamer(TwythonStreamer):
+            def on_success(self, data):
+                if WRITERS == None:
+                    raise RuntimeError("You did not specify any output for your search! Use the connect_output() function!")
+                    #if 'text' in data:
+                    #    print(data['text'])
+                else:
+                    if "id_str" in data:
+                        for writer in WRITERS:
+                            writer.write([data])
+                    else:
+                        print("NO ID:", data)
+                    if wait_for > 0.0:
+                        time.sleep(wait_for)
+
+            def on_error(self, data):
+                print("ERROR occured")
+                print(data)
+                print()
+        
+        config = load_credentials(["api_key","api_secret","access_token","access_token_secret"], self.auth_file_path)
+        stream = MyStreamer(config["api_key"], config["api_secret"], config["access_token"], config["access_token_secret"])
+        stream.statuses.filter(track=query, language=lang)
             
 class PeopleCrawler(SearchCrawler):
     """

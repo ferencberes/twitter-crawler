@@ -8,18 +8,19 @@ Our tiny streaming framework has two components. A socket is used for communicat
 
 ## Producer
 
-- collects Twitter data related to the latest news on the fly
-   - Tweets containing the following keywords and hashtags are collected: 
-   #BREAKING, BREAKING, "breaking news", breakingnews
+- collects Twitter data related to the latest news on the fly:
+   - only English tweets with the following hashtags are collected: 
+   #BREAKING, #BREAKINGNEWS, #breakingnews
 - **sender of the graph stream:**
-   - the latest tweets containing @-mentions are pushed to the socket in every 15 seconds
+   - filter for tweets containing @-mentions 
+   - push collected tweets to a socket
 
 ## Consumer
 
 - **receiver of the graph stream:**
    - read tweets from the socket
 - extract @-mentions from each tweet JSON object
-- print @-mention links with timestamp, source and target user account
+- print @-mention links with timestamp, source and target user account identifiers
 
 # Usage
 

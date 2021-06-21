@@ -1,4 +1,4 @@
-from twittercrawler.crawlers import StreamCrawler
+from twittercrawler.crawlers import TwythonStreamCrawler
 from twittercrawler.data_io import SocketWriter
 from twittercrawler.search import get_time_termination
 import datetime, sys
@@ -13,27 +13,19 @@ else:
     sw = SocketWriter(port=port, export_filter="mention")
 
     # initialize crawler
-    stream = StreamCrawler()
-    stream.authenticate(api_fp)
-    stream.connect_output([sw])
+    stream = TwythonStreamCrawler([sw], api_fp)
 
     # query
     search_params = {
-        "q":'#BREAKING OR BREAKING OR "breaking news" OR breakingnews',
-        "result_type":"recent",
-        "count":100
+        "q":'#BREAKING OR #BREAKINGNEWS OR #breakingnews',
+        "lang":"en",
     }
     stream.set_search_arguments(search_args=search_params)
 
-    # termination (collect tweets from the last 5 minutes - THEN continue online)
-    now = datetime.datetime.now()
-    time_str = (now-datetime.timedelta(seconds=300)).strftime("%a %b %d %H:%M:%S +0000 %Y")
-    print(time_str)
-    time_terminator =  get_time_termination(time_str)
-
-    # run search (after collecting latest tweets sleep for 15 seconds)
+    # run stream search (pause for 0.5 second after each tweet) 
     try:
-        stream.search(15, time_terminator) # YOU MUST TERMINATE THIS SEARCH MANUALLY!
+        # YOU MUST TERMINATE THIS SEARCH MANUALLY!
+        stream.search()
     except:
         raise
     finally:

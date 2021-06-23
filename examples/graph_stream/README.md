@@ -1,14 +1,14 @@
 # Graph stream example
 
-In this example we demonstrate how to create a graph stream from Twitter data using Python socket programming.
+In this example, we demonstrate how to create a graph stream from Twitter data using Python socket programming.
 
 # Overview
 
-Our tiny streaming framework has two components. A socket is used for communication between the producer and the consumer.
+Our streaming framework has two main components. A socket is used for communication between the producer and the consumer.
 
 ## Producer
 
-- collects Twitter data related to the latest news on the fly:
+- collects tweets with the Twitter Streaming API in real-time:
    - only English tweets with the following hashtags are collected: 
    #BREAKING, #BREAKINGNEWS, #breakingnews
 - **sender of the graph stream:**
@@ -24,7 +24,7 @@ Our tiny streaming framework has two components. A socket is used for communicat
 
 # Usage
 
-**1.) Start the producer:** You must specify..
+**1.) Start the producer:** Specify
 
 - your Twitter API credentials (API_JSON_PATH). See the details [here](https://github.com/ferencberes/twitter-crawler/tree/streaming#b-json-configuration-file).
 - a port for the socket (PORT)

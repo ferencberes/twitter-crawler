@@ -11,7 +11,9 @@ install_requires=[
 'bokeh',
 'tqdm',
 'comet_ml',
-'kafka-python'
+'kafka-python',
+'tweepy',
+'pyvis'
 ]
 
 setup_requires = ['pytest-runner']

@@ -3,7 +3,7 @@
 [![Documentation Status](https://readthedocs.org/projects/twittercrawler/badge/?version=latest)](https://twittercrawler.readthedocs.io/en/latest/?badge=latest)
 ![build](https://github.com/ferencberes/twitter-crawler/actions/workflows/main.yml/badge.svg)
 [![codecov](https://codecov.io/gh/ferencberes/twitter-crawler/branch/master/graph/badge.svg?token=KS3I66GFLB)](https://codecov.io/gh/ferencberes/twitter-crawler)
-![PyPI - Python Version](https://img.shields.io/pypi/pyversions/django)
+![PyPI - Python Version](https://img.shields.io/badge/python-3.6%20|%203.7%20|%203.8%20|%203.9-blue.svg)
 
 `twittercrawler` is a simple Python crawler on top of the popular [Twython](https://twython.readthedocs.io/en/latest/) package. The main objective during development was to provide an API that ease Twitter data collection for events that span across multiple days. The key features of this package are as follows:
 
